@@ -19,7 +19,7 @@ public class Lagerverwaltung {
 		gui = new LagerverwaltungGUI();
 		daten = new LagerverwaltungDaten();
 		gui.setDaten(daten);
-		//Jojo ändert was
+		//Jojo ändert nochmal was
 	}
 	
 	public static void main(String[] args) {
