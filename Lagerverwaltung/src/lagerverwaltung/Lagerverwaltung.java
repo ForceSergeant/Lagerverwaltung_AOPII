@@ -20,6 +20,7 @@ public class Lagerverwaltung {
 		daten = new LagerverwaltungDaten();
 		gui.setDaten(daten);
 		//Erik war hier
+		//und nochmal
 	}
 	
 	public static void main(String[] args) {
