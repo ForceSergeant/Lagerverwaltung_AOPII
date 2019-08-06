@@ -44,9 +44,9 @@ public class Actionlistener {
 
 	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
 		//Entfernt die Panels der Startübersicht
-		gui.remove(leftpanel);
-		gui.remove(middlepanel);
-		gui.remove(rightpanel);
+		for (Component c : gui.getContentPane().getComponents()) {
+			gui.remove(c);
+		}
 		JPanel lagerpanel = new JPanel();
 		lagerpanel.setLayout(new BorderLayout());
 		lagerpanel.setBackground(Color.DARK_GRAY);
