@@ -19,8 +19,7 @@ public class Lagerverwaltung {
 		gui = new LagerverwaltungGUI();
 		daten = new LagerverwaltungDaten();
 		gui.setDaten(daten);
-		//Test ob es wirklich funktioniert
-		//Zweiter Test
+
 	}
 	
 	public static void main(String[] args) {

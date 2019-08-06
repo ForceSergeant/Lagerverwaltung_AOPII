@@ -19,8 +19,6 @@ import javax.swing.border.MatteBorder;
 
 public class LagerverwaltungGUI extends JFrame{
 	
-	//Komponenten der Oberfläche
-	
 	private LagerverwaltungDaten daten;
 	private Actionlistener actionlistener = new Actionlistener();
 	
@@ -116,9 +114,6 @@ public class LagerverwaltungGUI extends JFrame{
 		rightpanel.add(btnAnzeigenLagerinhalt);
 		middlepanel.add(btnEntnehmen);
 		rightpanel.add(btnEinlagern);
-		
-		
-		
 		
 		
 		//Actionlistener
