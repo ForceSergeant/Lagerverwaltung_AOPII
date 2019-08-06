@@ -27,12 +27,15 @@ public class LagerverwaltungGUI extends JFrame{
 	//Menübar
 	private JMenuBar menubar;
 	private JMenu menuDatei;
+	private JMenu menuZurueck;
 	private JMenuItem oeffnenitem;
-	private JMenuItem menuBeenden;
-	private JMenuItem menuSpeichern;
-	private JMenuItem menuanzeigenLagerinhalt;
-	private JMenuItem menuentnehmen;
-	private JMenuItem menueinlagern;
+	private JMenuItem beendenitem;
+	private JMenuItem speichernitem;
+	private JMenuItem anzeigenLagerinhaltitem;
+	private JMenuItem entnehmenitem;
+	private JMenuItem einlagernitem;
+	private JMenuItem zurueckitem;
+	private JMenuItem startseiteitem;
 	
 	//Startoberfläche
 	private JButton btnDateioeffnen;
@@ -66,20 +69,26 @@ public class LagerverwaltungGUI extends JFrame{
 		//Menü
 		menubar = new JMenuBar();
 		menuDatei = new JMenu("Datei");
+		menuZurueck = new JMenu("Zurück");
 		oeffnenitem = new JMenuItem("Datei laden");
-		menuBeenden = new JMenuItem("Beenden");
-		menuSpeichern = new JMenuItem("Speichern");
-		menuanzeigenLagerinhalt = new JMenuItem ("Anzeigen Lagerinhalt");
-		menuentnehmen = new JMenuItem("Entnehmen eines Teils");
-		menueinlagern = new JMenuItem("Einlagern");
+		beendenitem = new JMenuItem("Beenden");
+		speichernitem = new JMenuItem("Speichern");
+		anzeigenLagerinhaltitem = new JMenuItem ("Anzeigen Lagerinhalt");
+		entnehmenitem = new JMenuItem("Entnehmen eines Teils");
+		einlagernitem = new JMenuItem("Einlagern");
+		zurueckitem = new JMenuItem("Zurück");
+		startseiteitem = new JMenuItem("Zurück zur Startseite");
 		menuDatei.add(oeffnenitem);
 		menuDatei.add(menuDatei);
-		menuDatei.add(menuBeenden);
-		menuDatei.add(menuSpeichern);
-		menuDatei.add(menuanzeigenLagerinhalt);
-		menuDatei.add(menuentnehmen);
-		menuDatei.add(menueinlagern);
+		menuDatei.add(beendenitem);
+		menuDatei.add(speichernitem);
+		menuDatei.add(anzeigenLagerinhaltitem);
+		menuDatei.add(entnehmenitem);
+		menuDatei.add(einlagernitem);
+		menuZurueck.add(zurueckitem);
+		menuZurueck.add(startseiteitem);
 		menubar.add(menuDatei);
+		menubar.add(menuZurueck);		
 		this.setJMenuBar(menubar);
 		
 		//Startpanels
@@ -102,8 +111,6 @@ public class LagerverwaltungGUI extends JFrame{
 		btnEntnehmen = new JButton("Entnahme eines Teils");
 		btnEinlagern = new JButton("Einlagern eines Teils");
 		
-		btnDateioeffnen.setBackground(Color.CYAN);
-
 		
 		middlepanel.add(btnDateioeffnen);
 		rightpanel.add(btnAnzeigenLagerinhalt);
@@ -116,11 +123,13 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		//Actionlistener
 		oeffnenitem.addActionListener(e -> actionlistener.oeffnen(this));
-		menuBeenden.addActionListener(e -> actionlistener.beenden(this));
-		menuSpeichern.addActionListener(e -> actionlistener.speichern(this));
-		menuanzeigenLagerinhalt.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this));
-		menuentnehmen.addActionListener(e -> actionlistener.entnehmen(this));
-		menueinlagern.addActionListener(e -> actionlistener.einlagern(this));
+		beendenitem.addActionListener(e -> actionlistener.beenden(this));
+		speichernitem.addActionListener(e -> actionlistener.speichern(this));
+		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel, middlepanel));
+		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
+		einlagernitem.addActionListener(e -> actionlistener.einlagern(this));
+		zurueckitem.addActionListener(e -> actionlistener.zurueck());
+		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, middlepanel));
 		
 	}
 
