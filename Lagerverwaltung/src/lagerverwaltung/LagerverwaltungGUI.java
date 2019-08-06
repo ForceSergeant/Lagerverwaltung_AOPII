@@ -1,23 +1,15 @@
 package lagerverwaltung;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.MatteBorder;
 
 public class LagerverwaltungGUI extends JFrame{
 	
@@ -119,19 +111,15 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		
 		//Actionlistener
-		oeffnenitem.addActionListener(e -> actionlistener.oeffnen(this));
+		oeffnenitem.addActionListener(e -> actionlistener.oeffnen("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt"));
 		beendenitem.addActionListener(e -> actionlistener.beenden(this));
-		speichernitem.addActionListener(e -> actionlistener.speichern(this));
+		speichernitem.addActionListener(e -> actionlistener.speichern("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt"));
 		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel, middlepanel));
 		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernitem.addActionListener(e -> actionlistener.einlagern(this));
 		zurueckitem.addActionListener(e -> actionlistener.zurueck());
 		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, middlepanel));
 		
-	}
-
-	private void beenden() {
-		System.out.println("Schließen-Button");
 	}
 
 

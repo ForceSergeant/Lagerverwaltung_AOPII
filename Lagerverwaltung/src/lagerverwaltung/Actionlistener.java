@@ -3,14 +3,15 @@ package lagerverwaltung;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -18,13 +19,31 @@ import javax.swing.table.TableRowSorter;
 public class Actionlistener {
 	
 	private LagerverwaltungGUI gui;
-
-	public void oeffnen(LagerverwaltungGUI gui) {
-		System.out.println("Öffnen-Button");
+	//Test
+	public void oeffnen(String dateipfad) {
+		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
+		JFileChooser chooser = new JFileChooser(dateipfad);
+		chooser.setDialogTitle("Datei laden");
+		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+		chooser.setSelectedFile(new File(dateipfad));
+		chooser.setFileFilter(filter);
+		chooser.setVisible(true);
+		int result = chooser.showSaveDialog(chooser);
+		
+		if (result == JFileChooser.APPROVE_OPTION) {
+			dateipfad = chooser.getSelectedFile().toString();
+			if(chooser.getFileFilter().accept(new File(dateipfad))) {
+				//Öffnenalgorithmus
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Sie können nur Textdateien (txt) öffnen.");
+				oeffnen("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt");
+			}
+		}
 	}
 	
 	public void beenden(LagerverwaltungGUI gui) {
-			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Programm wirklich beenden?", "Programm schließen?",
+			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?", "Programm schließen?",
 					 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
 							 {"Ja", "Nein"}, "Ja");
 			if(i == JOptionPane.YES_OPTION) {
@@ -33,8 +52,29 @@ public class Actionlistener {
 			 }
 		}
 
-	public void speichern(LagerverwaltungGUI gui) {
+	public void speichern(String dateipfad) {
+		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
+		JFileChooser chooser = new JFileChooser(dateipfad);
+		chooser.setDialogTitle("Speichern unter");
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		chooser.setSelectedFile(new File(dateipfad));
+		chooser.setFileFilter(filter);
+		chooser.setVisible(true);
+		int result = chooser.showSaveDialog(chooser);
 		
+		
+	
+		if(result == JFileChooser.APPROVE_OPTION) {
+			dateipfad = chooser.getSelectedFile().toString();
+			if(chooser.getFileFilter().accept(new File(dateipfad))) {
+				//Speicheralgorithmus
+				System.out.println("Datei korrekt");
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Speichern Sie nur in Textdateien (txt).");
+				speichern("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt");
+			}
+		}
 	}
 
 	public void  schließen(LagerverwaltungGUI gui) {
