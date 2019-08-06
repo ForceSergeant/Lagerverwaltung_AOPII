@@ -19,7 +19,7 @@ public class Lagerverwaltung {
 		gui = new LagerverwaltungGUI();
 		daten = new LagerverwaltungDaten();
 		gui.setDaten(daten);
-
+    //Erik war hier
 	}
 	
 	public static void main(String[] args) {
