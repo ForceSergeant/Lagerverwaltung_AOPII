@@ -19,27 +19,29 @@ import javax.swing.table.TableRowSorter;
 public class Actionlistener {
 	
 	private LagerverwaltungGUI gui;
-	//Test
-	public void oeffnen(String dateipfad) {
+	
+	public void oeffnen() {
 		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
-		JFileChooser chooser = new JFileChooser(dateipfad);
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(filter);
 		chooser.setDialogTitle("Datei laden");
 		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-		chooser.setSelectedFile(new File(dateipfad));
-		chooser.setFileFilter(filter);
-		chooser.setVisible(true);
-		int result = chooser.showSaveDialog(chooser);
+		chooser.setSelectedFile(new File("Lagerverwaltung.txt"));
+		chooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\Save"));
 		
-		if (result == JFileChooser.APPROVE_OPTION) {
-			dateipfad = chooser.getSelectedFile().toString();
+		int result = chooser.showOpenDialog(null);
+		
+		if(result == JFileChooser.APPROVE_OPTION) {
+			String dateipfad = chooser.getSelectedFile().toString();
 			if(chooser.getFileFilter().accept(new File(dateipfad))) {
-				//Öffnenalgorithmus
+				//Öffnenalgorithmus			
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Sie können nur Textdateien (txt) öffnen.");
-				oeffnen("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt");
+				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen, versuchen Sie es erneut");
+				oeffnen();
 			}
 		}
+		
 	}
 	
 	public void beenden(LagerverwaltungGUI gui) {
@@ -47,32 +49,31 @@ public class Actionlistener {
 					 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
 							 {"Ja", "Nein"}, "Ja");
 			if(i == JOptionPane.YES_OPTION) {
-				 //Hier kommt der Speicheralgorithmus
+				 speichern();
 				 System.exit(0);
 			 }
 		}
 
-	public void speichern(String dateipfad) {
+	public void speichern() {
 		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
-		JFileChooser chooser = new JFileChooser(dateipfad);
+		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Speichern unter");
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setSelectedFile(new File(dateipfad));
+		chooser.setSelectedFile(new File("Lagerverwaltung.txt"));
 		chooser.setFileFilter(filter);
+		chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+ "\\Save"));
 		chooser.setVisible(true);
-		int result = chooser.showSaveDialog(chooser);
 		
-		
+		int result = chooser.showSaveDialog(chooser);		
 	
 		if(result == JFileChooser.APPROVE_OPTION) {
-			dateipfad = chooser.getSelectedFile().toString();
+			String dateipfad = chooser.getSelectedFile().toString();
 			if(chooser.getFileFilter().accept(new File(dateipfad))) {
 				//Speicheralgorithmus
-				System.out.println("Datei korrekt");
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Speichern Sie nur in Textdateien (txt).");
-				speichern("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt");
+				speichern();
 			}
 		}
 	}

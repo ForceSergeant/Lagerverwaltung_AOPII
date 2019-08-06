@@ -111,9 +111,9 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		
 		//Actionlistener
-		oeffnenitem.addActionListener(e -> actionlistener.oeffnen("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt"));
+		oeffnenitem.addActionListener(e -> actionlistener.oeffnen());
 		beendenitem.addActionListener(e -> actionlistener.beenden(this));
-		speichernitem.addActionListener(e -> actionlistener.speichern("D:\\git\\Lagerverwaltung_AOPII\\Save\\save.txt"));
+		speichernitem.addActionListener(e -> actionlistener.speichern());
 		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel, middlepanel));
 		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernitem.addActionListener(e -> actionlistener.einlagern(this));
