@@ -34,7 +34,7 @@ public class Actionlistener {
 		}
 
 	public void speichern(LagerverwaltungGUI gui) {
-		System.out.println("Speichern-Button");
+		
 	}
 
 	public void  schlieﬂen(LagerverwaltungGUI gui) {
