@@ -27,6 +27,7 @@ public class Fach {
 		for (int i = 0; i<itemliste.size(); i++) {
 			if (itemliste.get(i).getName().equals(name)) {
 				vorhanden = true;
+				break;
 			}
 			else vorhanden = false;
 		}
