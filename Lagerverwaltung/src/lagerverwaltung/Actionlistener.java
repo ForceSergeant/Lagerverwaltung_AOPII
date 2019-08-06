@@ -2,6 +2,7 @@ package lagerverwaltung;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -41,17 +42,21 @@ public class Actionlistener {
 	}
 
 
-	public void anzeigenLagerinhalt(LagerverwaltungGUI gui) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.DARK_GRAY);
-		gui.add(panel, BorderLayout.CENTER);
+	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
+		//Entfernt die Panels der Startübersicht
+		gui.remove(leftpanel);
+		gui.remove(middlepanel);
+		gui.remove(rightpanel);
+		JPanel lagerpanel = new JPanel();
+		lagerpanel.setLayout(new BorderLayout());
+		lagerpanel.setBackground(Color.DARK_GRAY);
+		gui.add(lagerpanel, BorderLayout.CENTER);
 		gui.pack();
 		gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		tabelleErzeugen(gui,panel);	
+		tabelleErzeugen(gui,lagerpanel, leftpanel, rightpanel, middlepanel);	
 	}
 
-	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel panel) {		
+	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {		
 		//Tabelle
 		JTable tabelle = null;
 		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Lagerort", "Anzahl"};
@@ -66,14 +71,14 @@ public class Actionlistener {
 		
 		tabelle.setDefaultRenderer(Object.class, new TableCellRenderer());
 
-		panel.add(new JScrollPane(tabelle), BorderLayout.CENTER);
-		panel.repaint();
+		lagerpanel.add(new JScrollPane(tabelle), BorderLayout.CENTER);
+		lagerpanel.repaint();
 		
-		sorting(tabelle, panel);
+		sorting(tabelle, gui, lagerpanel, leftpanel, rightpanel, middlepanel);
 		
 	}
 
-	private void sorting(JTable tabelle, JPanel panel) {
+	private void sorting(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
 		int i = JOptionPane.showOptionDialog(null,
 				"Wonach möchten Sie sortieren?", "Lagerinhalt anzeigen",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
@@ -85,7 +90,10 @@ public class Actionlistener {
 			sortierenTeilenummer(tabelle);
 		}
 		else if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
-			gui.remove(panel);
+			gui.add(leftpanel);
+			gui.add(middlepanel);
+			gui.add(rightpanel);
+			gui.remove(lagerpanel);
 			gui.repaint();
 		}
 	}
@@ -114,6 +122,20 @@ public class Actionlistener {
 
 	public void einlagern(LagerverwaltungGUI gui) {
 		System.out.println("Einlagern-Button");
+	}
+
+	public void zurueck() {
+		
+	}
+
+	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
+		for (Component c : gui.getContentPane().getComponents()) {
+			gui.remove(c);
+		}
+		gui.add(leftpanel);
+		gui.add(middlepanel);
+		gui.add(rightpanel);
+		gui.repaint();
 	}
 
 }
