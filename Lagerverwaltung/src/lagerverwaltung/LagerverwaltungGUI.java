@@ -122,6 +122,10 @@ public class LagerverwaltungGUI extends JFrame{
 		
 	}
 
+	private void beenden() {
+		System.out.println("Schlieﬂen-Button");
+	}
+
 
 	public void setDaten(LagerverwaltungDaten daten) {
 		this.daten = daten;

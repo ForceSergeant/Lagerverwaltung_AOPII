@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -19,9 +18,8 @@ import javax.swing.table.TableRowSorter;
 public class Actionlistener {
 	
 	private LagerverwaltungGUI gui;
-	
 	public void oeffnen() {
-		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileFilter(filter);
 		chooser.setDialogTitle("Datei laden");
@@ -41,11 +39,10 @@ public class Actionlistener {
 				oeffnen();
 			}
 		}
-		
 	}
 	
 	public void beenden(LagerverwaltungGUI gui) {
-			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?", "Programm schlieﬂen?",
+			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Programm wirklich beenden?", "Programm schlieﬂen?",
 					 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
 							 {"Ja", "Nein"}, "Ja");
 			if(i == JOptionPane.YES_OPTION) {
@@ -55,7 +52,7 @@ public class Actionlistener {
 		}
 
 	public void speichern() {
-		FileFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Speichern unter");
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -63,7 +60,7 @@ public class Actionlistener {
 		chooser.setFileFilter(filter);
 		chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+ "\\Save"));
 		chooser.setVisible(true);
-		
+
 		int result = chooser.showSaveDialog(chooser);		
 	
 		if(result == JFileChooser.APPROVE_OPTION) {
