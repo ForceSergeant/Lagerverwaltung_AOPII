@@ -20,5 +20,9 @@ public class Regal {
 		return regal.get(spalte).get(zeile);
 	}
 	
+	public void suche() {
+		
+	}
+	
 	
 }

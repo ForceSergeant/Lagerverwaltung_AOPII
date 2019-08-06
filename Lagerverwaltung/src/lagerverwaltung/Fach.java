@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Fach {
 	private int grundeinheit;
 	private ArrayList<Item> itemliste = new ArrayList<Item>();
-	private boolean platz;
 	
 	public Fach() {
 		grundeinheit = 10;
@@ -21,6 +20,16 @@ public class Fach {
 			return true;
 		}
 		else return false;
+	}
+	
+	public boolean itemVorhanden(String name) {
+		for (int i=0; i<itemliste.size(); i++) {
+			if (itemliste.get(i).getName().equals(name)) {
+				return true;
+			}
+			else return false;		
+		}
+		return true;
 	}
 	
 	public int getItemanzahl() {

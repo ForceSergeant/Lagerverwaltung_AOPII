@@ -11,5 +11,11 @@ public class LagerverwaltungDaten {
 			lager.add(regal);
 		}
 	}
+	
+	public void einlagern(String name) {
+		for (int i = 0; i<lager.size(); i++) {
+			lager.get(i).suche();
+		}
+	}
 
 }
