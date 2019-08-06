@@ -23,13 +23,17 @@ public class Fach {
 	}
 	
 	public boolean itemVorhanden(String name) {
-		for (int i=0; i<itemliste.size(); i++) {
+		boolean vorhanden=false;
+		for (int i = 0; i<itemliste.size(); i++) {
 			if (itemliste.get(i).getName().equals(name)) {
-				return true;
+				vorhanden = true;
 			}
-			else return false;		
+			else vorhanden = false;
 		}
-		return true;
+		if (vorhanden) {
+			return true;
+		}
+		else return false;
 	}
 	
 	public int getItemanzahl() {
