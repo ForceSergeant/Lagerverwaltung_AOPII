@@ -19,8 +19,7 @@ public class Lagerverwaltung {
 		gui = new LagerverwaltungGUI();
 		daten = new LagerverwaltungDaten();
 		gui.setDaten(daten);
-		//Frederic war hier
-		//Eriks Kommentar
+		//Erik war hier kkk
 	}
 	
 	public static void main(String[] args) {
