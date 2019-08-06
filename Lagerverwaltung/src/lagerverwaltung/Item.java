@@ -10,4 +10,25 @@ public class Item {
 		this.teilenummer = teilenummer;
 		this.größe = größe;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getTeilenummer() {
+		return teilenummer;
+	}
+
+	public void setTeilenummer(int teilenummer) {
+		this.teilenummer = teilenummer;
+	}
+
+	public int getGröße() {
+		return größe;
+	}
+
 }
