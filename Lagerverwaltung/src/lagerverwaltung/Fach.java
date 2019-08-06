@@ -23,15 +23,15 @@ public class Fach {
 	}
 	
 	public boolean itemVorhanden(String name) {
-		for (int i=0; i<itemliste.size(); i++) {
-			if (itemliste.get(i).getName().equals(name)) {
+		for(Item i: itemliste) {
+			if(i.getName().equals(name)) {
 				return true;
 			}
-			else return false;		
+			else return false;
 		}
-		return true;
+		return false;
 	}
-	
+		
 	public int getItemanzahl() {
 		return itemliste.size();
 	}
