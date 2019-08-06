@@ -24,7 +24,7 @@ public class Actionlistener {
 	}
 	
 	public void beenden(LagerverwaltungGUI gui) {
-			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?", "Programm schlieﬂen?",
+			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Programm wirklich beenden?", "Programm schlieﬂen?",
 					 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
 							 {"Ja", "Nein"}, "Ja");
 			if(i == JOptionPane.YES_OPTION) {
