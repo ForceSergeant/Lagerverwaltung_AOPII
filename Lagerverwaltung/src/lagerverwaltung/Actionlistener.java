@@ -171,8 +171,10 @@ public class Actionlistener {
 	
 	public void entnehmen(LagerverwaltungGUI gui) {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) Math.round(screensize.getWidth()/3);
-		int height = (int) Math.round(screensize.getHeight()/3);		
+		int width = (int) Math.round(screensize.getWidth()/2);
+		int height = (int) Math.round(screensize.getHeight()/2);
+		//Ist für Laptops noch zu klein;
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 		JDialog entnehmendialog = new JDialog();
 		JPanel radiopanel = new JPanel();
