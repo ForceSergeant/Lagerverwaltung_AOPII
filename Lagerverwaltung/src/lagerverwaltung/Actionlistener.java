@@ -3,13 +3,27 @@ package lagerverwaltung;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.io.File;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -155,7 +169,77 @@ public class Actionlistener {
 	}
 	
 	public void entnehmen(LagerverwaltungGUI gui) {
-		System.out.println("Entnehmen-Button");
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) Math.round(screensize.getWidth()/3);
+		int height = (int) Math.round(screensize.getHeight()/3);
+		GridBagConstraints gbc = new GridBagConstraints();
+		JDialog entnehmenpanel = new JDialog();
+		JPanel radiopanel = new JPanel();
+		JLabel wahllabel = new JLabel("Wählen Sie aus, ob sie die Bezeichnung oder die Teilenummer angeben wollen:");
+		JLabel artlabel = new JLabel("Bezeichnung des Teils:");
+		JTextField eingabetxtfield = new JTextField(15);
+		ButtonGroup btngroup = new ButtonGroup();
+		JRadioButton btnbezeichnung = new JRadioButton("Bezeichnung");
+		JRadioButton btnteilenummer = new JRadioButton("Teilenummer");
+		JButton btnok = new JButton("Entnehmen");
+		
+		btnbezeichnung.setSelected(true);
+		btnbezeichnung.addActionListener(e -> btnbezeichnung(artlabel));
+		btnteilenummer.addActionListener(e -> btnteilenummer(artlabel));
+		
+		btngroup.add(btnteilenummer);
+		btngroup.add(btnbezeichnung);
+		radiopanel.add(btnbezeichnung);
+		radiopanel.add(btnteilenummer);
+		wahllabel.setVerticalAlignment(JLabel.NORTH);
+		wahllabel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		artlabel.setVerticalAlignment(JLabel.NORTH);
+		artlabel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		
+		entnehmenpanel.setTitle("Teil einlagern");
+		entnehmenpanel.setLayout(new GridBagLayout());
+		
+		gbc.gridx = 0; //Spalte
+		gbc.gridy = 0; //Zeile
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		entnehmenpanel.add(wahllabel, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		entnehmenpanel.add(radiopanel, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		entnehmenpanel.add(artlabel, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		entnehmenpanel.add(eingabetxtfield, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+//		gbc.gridheight = 2;
+		entnehmenpanel.add(btnok, gbc);
+		
+		entnehmenpanel.setSize(width, height);
+		entnehmenpanel.setLocationRelativeTo(null);
+		entnehmenpanel.setVisible(true);
+		
+	}
+
+	private void btnbezeichnung(JLabel artlabel) {
+		artlabel.setText("Bezeichnung des Teils:");
+	}
+
+	private void btnteilenummer(JLabel artlabel) {
+		artlabel.setText("Teilenummer des Teils:");
 	}
 
 	public void einlagern(LagerverwaltungGUI gui) {
