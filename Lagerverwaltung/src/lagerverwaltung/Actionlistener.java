@@ -171,8 +171,15 @@ public class Actionlistener {
 	
 	public void entnehmen(LagerverwaltungGUI gui) {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) Math.round(screensize.getWidth()/2);
-		int height = (int) Math.round(screensize.getHeight()/2);
+		int width, height;
+		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
+			width = (int) Math.round(screensize.getWidth()/2);
+			height = (int) Math.round(screensize.getHeight()/2);
+		}
+		else {
+			width = (int) Math.round(screensize.getWidth()/3);
+			height = (int) Math.round(screensize.getHeight()/3);
+		}
 		//Ist für Laptops noch zu klein;
 		
 		GridBagConstraints gbc = new GridBagConstraints();
