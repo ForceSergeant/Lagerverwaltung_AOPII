@@ -78,27 +78,27 @@ public class LagerverwaltungDaten {
             statusSuche = i.suche(name);
             if (statusSuche) {
                 statusEntnehmen = i.entfernen(name, teilenummer);
-                	int[] temp_arr = new int[4];
+                	int[] coord_arr = new int[4];
                 	x = 2 + (i.getRegalnummer()-1) * 4;
                     y = (statusEntnehmen[1]-1) * 2;
                     z = (statusEntnehmen[2]-1) * 2;
-                    temp_arr[0] = 1;
-                    temp_arr[1] = x;
-                    temp_arr[2] = y;
-                    temp_arr[3] = z;
+                    coord_arr[0] = 1;
+                    coord_arr[1] = x;
+                    coord_arr[2] = y;
+                    coord_arr[3] = z;
                     System.out.println("Item erfolgreich entnommen!");
-                    return temp_arr;
+                    return coord_arr;
             }
 
         }
         if (!statusSuche || (statusEntnehmen[0] == 0)) {
-        	int[] temp_arr = {0}; 
+        	int[] coord_arr = {0,0,0,0}; 
             System.out.println("Item nicht gefunden!");
-            return temp_arr;
+            return coord_arr;
         }
-        int[] temp_arr = {0}; 
+        int[] coord_arr = {0,0,0,0}; 
         System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
-        return temp_arr;
+        return coord_arr;
     }
     
     public void inhaltAnzeigen() {
