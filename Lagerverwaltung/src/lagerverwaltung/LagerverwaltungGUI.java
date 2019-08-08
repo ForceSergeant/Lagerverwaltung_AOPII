@@ -52,7 +52,6 @@ public class LagerverwaltungGUI extends JFrame{
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			UIManager.put("ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI");
-			//Test
 		} catch (Exception e) {
 			System.out.println("Fehler");
 		}
