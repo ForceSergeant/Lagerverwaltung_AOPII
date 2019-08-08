@@ -27,10 +27,10 @@ public class Regal {
         return regalnummer;
     }
 
-    public boolean suche(String name) {
+    public boolean sucheViaNamen(String name) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
-                if(j.itemVorhanden(name)) {
+                if(j.itemVorhandenViaNamen(name)) {
                     System.out.println("REGAL: Item vorhanden!");
                     return true;
                 }
@@ -41,59 +41,105 @@ public class Regal {
 
     }
     
-    public int[] einfügenVorhanden(String name, int teilenummer, int größe) {
+    public boolean sucheViaNummer(int teilenummer) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
-                if(j.itemVorhanden(name) && j.getGrundeinheit() >= größe) {
+                if(j.itemVorhandenViaNummer(teilenummer)) {
+                    System.out.println("REGAL: Item vorhanden!");
+                    return true;
+                }
+            }
+        }
+        System.out.println("REGAL: Item nicht vorhanden!");
+        return false;
+    }
+    
+    public int[] einfuegenVorhanden(String name, int teilenummer, int größe) {
+        int y=0, z=0;
+        int[] arr = new int[4];
+        for (ArrayList<Fach> i: regal) {
+            for (Fach j: i) {
+                if(j.itemVorhandenViaNamen(name) && j.getGrundeinheit() >= größe) {
                     j.addItem(name, teilenummer, größe);
                     System.out.println("REGAL EinfügenVorhanden: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
-                    int y = j.getSpalte();
-                    int z = j.getZeile();
-                    int[] arr = {1,y,z};
+                    y = j.getSpalte();
+                    z = j.getZeile();
+                    arr[0] = 1;
+                    arr[1] = y;
+                    arr[2] = z;
                     return arr;
                 }
             }
         }
         System.out.println("REGAL: EinfügenVorhanden nicht erfolgreich!");
-        int[] arr = {0,0,0};
+        arr[0] = 0;
+        arr[1] = 0;
+        arr[2] = 0;
         return arr;
 
     }
 
-    public int[] einfügenNeu(String name, int teilenummer, int größe) {
+    public int[] einfuegenNeu(String name, int teilenummer, int größe) {
+        int y=0, z=0;
+        int[] arr = new int[4];
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.istLeer() && (j.getGrundeinheit() >= größe)) {
                     j.addItem(name, teilenummer, größe);
                     System.out.println("REGAL EinfügenNeu: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
-                    int y = j.getSpalte();
-                    int z = j.getZeile();
-                    int[] arr = {1,y,z};
+                    y = j.getSpalte();
+                    z = j.getZeile();
+                    arr[0] = 1;
+                    arr[1] = y;
+                    arr[2] = z;
                     return arr;
                 }
             }
         }
         System.out.println("REGAL: EinfügenNeu nicht erfolgreich!");
-        int[] arr = {0,0,0};
+        arr[0] = 0;
+        arr[1] = 0;
+        arr[2] = 0;
         return arr;
 
     }
 
-    public int[] entfernen (String name, int teilenummer) {
+    public int[] entfernen(String name, int teilenummer) {
+        int y=0, z=0;
+        int [] arr = new int[3];
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(!j.istLeer()) {
-                    int y = j.getSpalte();
-                    int z = j.getZeile();
-                    int[] arr = {1,y,z};
-                    j.removeItem(name, teilenummer);
-                    return arr;
-
+                    if (j.removeItem(name, teilenummer)) {
+                        y = j.getSpalte();
+                        z = j.getZeile();
+                        arr[0] = 1;
+                        arr[1] = y;
+                        arr[2] = z;
+                        return arr;
+                    }
+                }
+                else {
+                    continue;
                 }
             }
         }
-        int[] arr = {0,0,0};
+        arr[0] = 0;
+        arr[1] = 0;
+        arr[2] = 0;
         return arr;
+    }
+    
+    public int freieFaecher() {
+    	int zaehler = 0;
+    	for (ArrayList<Fach> i: regal) {
+    		for (Fach j: i) {
+    			if(j.istLeer()) {
+    				zaehler++;
+    			}
+    		}
+    	}
+    	return zaehler;
     }
     
     

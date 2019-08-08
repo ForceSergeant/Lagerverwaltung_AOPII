@@ -46,7 +46,7 @@ public class Fach {
         else return null;
     }*/
 
-    public void removeItem(String name, int teilenummer) {
+    public boolean removeItem(String name, int teilenummer) {
         System.out.println("FACH: Bis hierhin komme ich. Vor der For-Schleife.");
         for (Item i: itemliste) {
             System.out.println("FACH: Bis hierhin komme ich. In die For-Schleife.");
@@ -54,9 +54,11 @@ public class Fach {
                 System.out.println("FACH: Bis hierhin komme ich. In die If-Bedingung.");
                 grundeinheit += i.getGröße();
                 itemliste.remove(i);
-                break;
+                System.out.println(itemliste.size());
+                return true;
             }
         }
+        return false;
     }
 
     public boolean istLeer() {
@@ -66,7 +68,7 @@ public class Fach {
         else return false;
     }
 
-    public boolean itemVorhanden(String name) {
+    public boolean itemVorhandenViaNamen(String name) {
         for(Item i: itemliste) {
             if(i.getName().equals(name)) {
                 return true;
@@ -75,6 +77,15 @@ public class Fach {
         return false;
     }
 
+    public boolean itemVorhandenViaNummer(int teilenummer) {
+        for(Item i: itemliste) {
+            if(i.getTeilenummer() == teilenummer) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public int getItemanzahl() {
         return itemliste.size();
     }
