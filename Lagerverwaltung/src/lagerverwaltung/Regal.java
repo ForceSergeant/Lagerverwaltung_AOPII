@@ -12,7 +12,7 @@ public class Regal {
         for (int i = 0; i<10; i++) {
             ArrayList<Fach> fächerreihe = new ArrayList<Fach>();
             for (int j = 0; j<10; j++) {
-                Fach fach = new Fach(i+1,j+1);
+                Fach fach = new Fach(i,j);
                 fächerreihe.add(fach);
             }
             regal.add(fächerreihe);
@@ -23,46 +23,79 @@ public class Regal {
         return regal.get(spalte).get(zeile);
     }
 
-    public int getY() {
+    public int getRegalnummer() {
         return regalnummer;
     }
-
-    /*public void sucheX(String name) {
-        for (int i = 0; i<10; i++) {
-            for (int j =0; j<10; j++) {
-                if(this.getFach(i, j).itemVorhanden(name)) {
-                    zeile = j;
-                    spalte = i;
-                }
-            }
-        }
-
-    }*/
 
     public boolean suche(String name) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.itemVorhanden(name)) {
+                    System.out.println("REGAL: Item vorhanden!");
                     return true;
                 }
             }
         }
+        System.out.println("REGAL: Item nicht vorhanden!");
         return false;
 
     }
-
-    public boolean einfügen(String name, int teilenummer, int größe) {
+    
+    public int[] einfügenVorhanden(String name, int teilenummer, int größe) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
-                if(j.getGrundeinheit() >= größe) {
+                if(j.itemVorhanden(name) && j.getGrundeinheit() >= größe) {
                     j.addItem(name, teilenummer, größe);
-                    return true;
+                    System.out.println("REGAL EinfügenVorhanden: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
+                    int y = j.getSpalte();
+                    int z = j.getZeile();
+                    int[] arr = {1,y,z};
+                    return arr;
                 }
             }
         }
-        return false;
+        System.out.println("REGAL: EinfügenVorhanden nicht erfolgreich!");
+        int[] arr = {0,0,0};
+        return arr;
 
     }
 
+    public int[] einfügenNeu(String name, int teilenummer, int größe) {
+        for (ArrayList<Fach> i: regal) {
+            for (Fach j: i) {
+                if(j.istLeer() && (j.getGrundeinheit() >= größe)) {
+                    j.addItem(name, teilenummer, größe);
+                    System.out.println("REGAL EinfügenNeu: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
+                    int y = j.getSpalte();
+                    int z = j.getZeile();
+                    int[] arr = {1,y,z};
+                    return arr;
+                }
+            }
+        }
+        System.out.println("REGAL: EinfügenNeu nicht erfolgreich!");
+        int[] arr = {0,0,0};
+        return arr;
+
+    }
+
+    public int[] entfernen (String name, int teilenummer) {
+        for (ArrayList<Fach> i: regal) {
+            for (Fach j: i) {
+                if(!j.istLeer()) {
+                    int y = j.getSpalte();
+                    int z = j.getZeile();
+                    int[] arr = {1,y,z};
+                    j.removeItem(name, teilenummer);
+                    return arr;
+
+                }
+            }
+        }
+        int[] arr = {0,0,0};
+        return arr;
+    }
+    
+    
 
 }
