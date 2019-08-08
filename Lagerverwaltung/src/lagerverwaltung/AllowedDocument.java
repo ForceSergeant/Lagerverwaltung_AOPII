@@ -13,7 +13,7 @@ public class AllowedDocument extends PlainDocument  {
 	public AllowedDocument(int maxlenght) {
 		this.maxlenght = maxlenght;
 	}
-	
+	//TODO nur 10 bei grosse für fach
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		try{
