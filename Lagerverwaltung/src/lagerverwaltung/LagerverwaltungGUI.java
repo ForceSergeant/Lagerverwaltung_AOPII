@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 
 public class LagerverwaltungGUI extends JFrame{
@@ -50,8 +51,9 @@ public class LagerverwaltungGUI extends JFrame{
 	public LagerverwaltungGUI() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.put("ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI");
 		} catch (Exception e) {
-			
+			System.out.println("Fehler");
 		}
 		
 		//Eigenschaften
@@ -115,6 +117,7 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		//TODO NIMBUS LAF für Progressbar schöner, schauen ob nur setzen dafür geht
 		//Progressbar
+		
 		freierPlatz = new CustomProgressBar(8000);
 		freieFaecher = new CustomProgressBar(800);
 		
