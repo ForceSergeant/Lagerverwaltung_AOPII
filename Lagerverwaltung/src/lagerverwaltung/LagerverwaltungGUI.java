@@ -111,15 +111,15 @@ public class LagerverwaltungGUI extends JFrame{
 		this.add(rightpanel);
 		
 		//Progressbar
-		freierPlatz = new CustomProgressBar();
-		freieFaecher = new CustomProgressBar();
+		freierPlatz = new CustomProgressBar(8000);
+		freieFaecher = new CustomProgressBar(800);
 		
 		freierPlatz.setModel(new DefaultBoundedRangeModel(0, 0 , 0, 8000));
 		freieFaecher.setModel(new DefaultBoundedRangeModel(0, 0, 0, 800));
 		
 //		freierPlatz.setUI(new CustomProgressBarUI() );
 		
-		freierPlatz.setValue(800);
+		freierPlatz.setValue(7000);
 		freieFaecher.setValue(0);
 		freierPlatz.setStringPainted(true);
 		freieFaecher.setStringPainted(true);
