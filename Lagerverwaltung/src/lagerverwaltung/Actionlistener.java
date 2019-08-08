@@ -10,8 +10,10 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -92,12 +95,6 @@ public class Actionlistener {
 		}
 	}
 
-	//TODO
-	public void  schließen(LagerverwaltungGUI gui) {
-		System.out.println();
-	}
-
-
 	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
 		//Entfernt die Panels der Startübersicht
 		for (Component c : gui.getContentPane().getComponents()) {
@@ -113,7 +110,6 @@ public class Actionlistener {
 	}
 
 	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {		
-		//Tabelle
 		JTable tabelle = null;
 		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Lagerort", "Anzahl"};
 		String[][] inhalt = new String[50][5];
@@ -198,6 +194,9 @@ public class Actionlistener {
 		Document standarddocument = eingabetxtfield.getDocument();
 		
 		btnbezeichnung.setSelected(true);
+		
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(entnehmendialog) );
 	    
 	    //Ermöglicht nur eine Auswahl
 		btngroup.add(btnteilenummer);
@@ -248,8 +247,8 @@ public class Actionlistener {
 		//Actionlistener
 		btnbezeichnung.addActionListener(e -> btnbezeichnung(artlabel, eingabetxtfield, standarddocument));
 		btnteilenummer.addActionListener(e -> btnteilenummer(artlabel, eingabetxtfield));
-		eingabetxtfield.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
-		btnok.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
+		eingabetxtfield.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
+		btnok.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
 	}
 
 	//Ändert den Text des artlabel
@@ -261,23 +260,18 @@ public class Actionlistener {
 	
 	//Ändert den Text des artlabel
 	private void btnteilenummer(JLabel artlabel, JTextField eingabetxtfield) {
-			eingabetxtfield.setDocument(new AllowedDocument());
+			eingabetxtfield.setDocument(new AllowedDocument(9));
 			artlabel.setText("Teilenummer des Teils:");
 			eingabetxtfield.requestFocusInWindow(); 
 		}
 	
-	private void btnannehmeneingabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel) {
+	private void entnehmenDatenuebergabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel) {
 		String bezeichnung = "";
 		String teilenummer = "";
 		int teilenummerint = 0;
 		int[] ergebnis = new int[4];
-		//TODO alles in else in if und umgekehrt
-		if(eingabetxtfield.getText().length() <= 0) {
-			JOptionPane.showMessageDialog(null, "Sie müssen etwas in das Textfeld eingeben",
-					"Fehler", JOptionPane.ERROR_MESSAGE);
-			entnehmen(gui);
-		}
-		else {
+		
+		if(eingabetxtfield.getText().length() > 0) {
 			if(btnbezeichnung.isSelected()) {
 				bezeichnung = eingabetxtfield.getText();
 				teilenummerint = -1;
@@ -289,12 +283,13 @@ public class Actionlistener {
 			}
 
 			ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
+			
 			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
-					oeffnenergebnisdialog(bezeichnung, ergebnis);
+					gui.entnehmenErgebnisDialog(bezeichnung, ergebnis);
 				}
 				else if(btnteilenummer.isSelected()) {
-					oeffnenergebnisdialog(teilenummer, ergebnis);
+					gui.entnehmenErgebnisDialog(teilenummer, ergebnis);
 				}
 			}
 			else  {
@@ -304,116 +299,15 @@ public class Actionlistener {
 				entnehmen(gui);
 			}
 		}
+		else {
+			JOptionPane.showMessageDialog(null, "Sie müssen etwas in das Textfeld eingeben",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
+			entnehmen(gui);
+		}
 		entnehmenpanel.dispose();	
 	}
 
-	private void oeffnenergebnisdialog(String teilenamen, int[] ergebnis) {
-		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width, height;
-		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
-			width = (int) Math.round(screensize.getWidth()/2);
-			height = (int) Math.round(screensize.getHeight()/2);
-		}
-		else {
-			width = (int) Math.round(screensize.getWidth()/3);
-			height = (int) Math.round(screensize.getHeight()/3);
-		}
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		JDialog ergebnisdialog = new JDialog();
-		JLabel teil = new JLabel();
-		JLabel ergebnisx = new JLabel();
-		JLabel ergebnisy = new JLabel();
-		JLabel ergebnisz = new JLabel();
-		JLabel ausschriftx = new JLabel("Der Fahrtweg in x-Richtung betrug: ");
-		JLabel ausschrifty = new JLabel("Der Fahrtweg in y-Richtung betrug: ");
-		JLabel ausschriftz = new JLabel("Der Fahrtweg in z-Richtung betrug: ");
-		JButton btnok = new JButton("OK");
-		
-		EmptyBorder eborder = new EmptyBorder(0, 20, 0, 0);
-		
-		if(pruefeString(teilenamen)) {
-			teil.setText("Das Teil mit der Teilenummer " + teilenamen + " wurde erfolgreich entnommen");	
-		}
-		else {
-			teil.setText("Das Teil mit der Bezeichnung " + teilenamen + " wurde erfolgreich entnommen");
-		}
-		
-		ergebnisx.setText(ergebnis[1] + " Meter");
-		ergebnisy.setText(ergebnis[2] + " Meter");
-		ergebnisz.setText(ergebnis[3] + " Meter");
-		
-		ausschriftx.setBorder(eborder);
-		ausschrifty.setBorder(eborder);
-		ausschriftz.setBorder(eborder);
-		
-		ergebnisdialog.setTitle("Teil wurde aus dem Lager entnommen.");
-		ergebnisdialog.setLayout(new GridBagLayout());
-		
-		btnok.setBorder(new EmptyBorder(7, 25, 7, 25));		
-		
-		gbc.gridx = 0; //Spalte
-		gbc.gridy = 1; //Zeile
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		ergebnisdialog.add(ausschriftx, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		ergebnisdialog.add(ergebnisx, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		ergebnisdialog.add(ausschrifty, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-
-		ergebnisdialog.add(ergebnisy, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ausschriftz, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ergebnisz, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(btnok, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(teil, gbc);
-		
-		ergebnisdialog.setSize(width, height);
-		ergebnisdialog.setLocationRelativeTo(null);
-		ergebnisdialog.setVisible(true);
-
-		//Actionlistener
-		btnok.addActionListener(e -> schlieseErgebnisDialog(ergebnisdialog));
-		
-	}
-
-	private boolean pruefeString(String teilenamen) {
-		boolean testbestanden;
-		try {
-			Integer.parseInt(teilenamen);
-		    testbestanden = true;
-		} catch(NumberFormatException e) {
-		      testbestanden = false;
-		   }
-		   return testbestanden;
-	}
-
-	private void schlieseErgebnisDialog(JDialog ergebnisdialog) {
-		ergebnisdialog.dispose();
-	}
-
-	public void einlagern(LagerverwaltungGUI gui) {
+	public void einlagern(LagerverwaltungGUI gui, String bezeichnung, String groesse) {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width, height;
 		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
@@ -427,10 +321,10 @@ public class Actionlistener {
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		JDialog einlagerndialog = new JDialog();
-		JLabel bezeichnung = new JLabel("Bezeichnung:");
-		JLabel teilenummer = new JLabel("Teilenummer:");
-		JLabel groesse = new JLabel("Größe des Teils in Grundeinheiten:");
-		JTextField eingabebezeichnung = new JTextField(20);
+		JLabel bezeichnunglabel = new JLabel("Bezeichnung:");
+		JLabel teilenummerlabel  = new JLabel("Teilenummer:");
+		JLabel groesslabel = new JLabel("Größe des Teils in Grundeinheiten:");
+		JTextField eingabebezeichnung = new JTextField(bezeichnung, 20);
 		JTextField eingabeteilenummer = new JTextField(20);
 		JTextField eingabegroesse = new JTextField(2);
 		JButton btnok = new JButton("Ok");
@@ -442,41 +336,106 @@ public class Actionlistener {
 			} 
 		} );
 		
+		
+		btnok.setBorder(new EmptyBorder(7, 20, 7, 20));
+		eingabeteilenummer.setDocument(new AllowedDocument(9));
+		eingabegroesse.setDocument(new AllowedDocument(2));
+		eingabegroesse.setText(groesse);
+		
 		einlagerndialog.setTitle("Teil einlagern");
 		einlagerndialog.setLayout(new GridBagLayout());
+		
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(einlagerndialog) );
 		
 		gbc.gridx = 0; //Spalte
 		gbc.gridy = 0; //Zeile
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
-		einlagerndialog.add(bezeichnung, gbc);
+		einlagerndialog.add(bezeichnunglabel, gbc);
 		
 		gbc.gridx = 1;
 		einlagerndialog.add(eingabebezeichnung, gbc);
 		
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		einlagerndialog.add(teilenummer, gbc);
+		einlagerndialog.add(teilenummerlabel, gbc);
 		
 		gbc.gridx = 1;
 		einlagerndialog.add(eingabeteilenummer, gbc);
 		
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		einlagerndialog.add(groesse, gbc);
+		einlagerndialog.add(groesslabel, gbc);
 		
 		gbc.gridx = 1;
 		einlagerndialog.add(eingabegroesse, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		einlagerndialog.add(btnok, gbc);
 		
 		einlagerndialog.setSize(width, height);
 		einlagerndialog.setLocationRelativeTo(null);
 		einlagerndialog.setVisible(true);
 		
+		//ActionListener
+		btnok.addActionListener(e -> einlagernDatenuebergabe(einlagerndialog, eingabebezeichnung, eingabeteilenummer, eingabegroesse, gui));
+		eingabegroesse.addActionListener(e -> einlagernDatenuebergabe(einlagerndialog, eingabebezeichnung, eingabeteilenummer, eingabegroesse, gui));
 		
 	}
 
-	public void zurueck() {
+	private void einlagernDatenuebergabe(JDialog einlagerndialog, JTextField eingabebezeichnung, JTextField eingabeteilenummer, JTextField eingabegroesse, LagerverwaltungGUI gui2) {
 		
+		int[] ergebnis = new int[];
+		
+		if(eingabebezeichnung.getText().length() > 0 && eingabegroesse.getText().length() > 0) {
+			int teilenummer = Integer.parseInt(eingabeteilenummer.getText());
+			int groesse = Integer.parseInt(eingabegroesse.getText());
+			ergebnis = daten.einlagern(eingabebezeichnung.getText(), teilenummer, groesse);
+			
+			/*
+			 * erste nummer:
+			 * 0 -> 
+			 * 1 -> 
+			 * 2 -> 
+			 */
+			
+			switch(ergebnis[0]) {
+			case 0:
+				
+				break;
+			case 1: 
+				
+				break;
+			case 2:
+				
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Es ist ein unerwarteter Fehler aufgetreten.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+		else {		
+			if(eingabebezeichnung.getText().length() > 0 && eingabegroesse.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "Sie müssen die Größe des Teils angeben.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+				einlagern(gui, eingabebezeichnung.getText(), null);
+			}
+			else if(eingabegroesse.getText().length() > 0 && eingabebezeichnung.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils angeben.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+				einlagern(gui, null, eingabegroesse.getText());
+			}
+			else if(eingabebezeichnung.getText().length() == 0 && eingabegroesse.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils und die Größe des Teils angeben.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+				einlagern(gui, null, null);
+			}
+		}
+		einlagerndialog.dispose();
 	}
 
 	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {

@@ -8,7 +8,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 public class AllowedDocument extends PlainDocument  {
-	private int maxlenght = 8;
+	private int maxlenght;
+	
+	public AllowedDocument(int maxlenght) {
+		this.maxlenght = maxlenght;
+	}
 	
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -32,7 +36,7 @@ public class AllowedDocument extends PlainDocument  {
 		}
 		else {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Sie dürfen nicht mehr als 8 Zeichen eingeben!",
+			JOptionPane.showMessageDialog(null, "Sie dürfen nicht mehr als " + maxlenght + " Zahlen eingeben!",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 	}
