@@ -77,7 +77,7 @@ public class LagerverwaltungDaten {
 	                	}
 	                }
 	                x = 2 + (i.getRegalnummer()-1) * 4;
-                    y = (statusEinfügen[1]-1) * 2;
+                    y = (statusEinfügen[1]) * 2;
                     z = (statusEinfügen[2]-1) * 2;
                     coord_arr[0] = 2;	//2 = Vorhandenes Einfügen erfolgreich
                     coord_arr[1] = x;
