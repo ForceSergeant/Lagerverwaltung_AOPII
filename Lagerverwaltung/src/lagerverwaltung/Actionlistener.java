@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -212,7 +214,7 @@ public class Actionlistener {
 			    } 
 			} );
 		
-		entnehmendialog.setTitle("Teil einlagern");
+		entnehmendialog.setTitle("Teil entnehmen");
 		entnehmendialog.setLayout(new GridBagLayout());
 		
 		//Hinzufügen der Komponenten
@@ -246,8 +248,8 @@ public class Actionlistener {
 		//Actionlistener
 		btnbezeichnung.addActionListener(e -> btnbezeichnung(artlabel, eingabetxtfield, standarddocument));
 		btnteilenummer.addActionListener(e -> btnteilenummer(artlabel, eingabetxtfield));
-		eingabetxtfield.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog ,gui));
-		btnok.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog ,gui));
+		eingabetxtfield.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
+		btnok.addActionListener(e -> btnannehmeneingabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
 	}
 
 	//Ändert den Text des artlabel
@@ -264,9 +266,11 @@ public class Actionlistener {
 			eingabetxtfield.requestFocusInWindow(); 
 		}
 	
-	private void btnannehmeneingabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel, LagerverwaltungGUI gui2) {
+	private void btnannehmeneingabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel) {
 		String bezeichnung = "";
 		String teilenummer = "";
+		int teilenummerint = 0;
+		//TODO alles in else in if und umgekehrt
 		if(eingabetxtfield.getText().length() <= 0) {
 			JOptionPane.showMessageDialog(null, "Sie müssen etwas in das Textfeld eingeben",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -275,21 +279,22 @@ public class Actionlistener {
 		else {
 			if(btnbezeichnung.isSelected()) {
 				bezeichnung = eingabetxtfield.getText();
-				//TODO bezeichnung übergeben an daten
+				teilenummerint = -1;
 			}
 			else if(btnteilenummer.isSelected()) {
 				teilenummer = eingabetxtfield.getText();
-				//TODO teilenummer übergeben an daten
+				teilenummerint = Integer.parseInt(teilenummer);
+				bezeichnung = "";
 			}
 			
 			//TODO methode die true zurück liefert, wenn teil gefunden
-			if(true) {
+			int[] ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
+			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
-					oeffnenergebnisdialog(bezeichnung);
-					
+					oeffnenergebnisdialog(bezeichnung, ergebnis);
 				}
 				else if(btnteilenummer.isSelected()) {
-					oeffnenergebnisdialog(teilenummer);
+					oeffnenergebnisdialog(teilenummer, ergebnis);
 				}
 			}
 			else  {
@@ -302,7 +307,7 @@ public class Actionlistener {
 		entnehmenpanel.dispose();	
 	}
 
-	private void oeffnenergebnisdialog(String teilenamen) {
+	private void oeffnenergebnisdialog(String teilenamen, int[] ergebnis) {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width, height;
 		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
@@ -334,10 +339,9 @@ public class Actionlistener {
 			teil.setText("Das Teil mit der Bezeichnung " + teilenamen + " wurde erfolgreich entnommen");
 		}
 		
-		//TODO Text wird durch eine Methode zurückgeliefert
-//		ergebnisx.setText(text + " Meter");
-//		ergebnisy.setText(text + " Meter");
-//		ergebnisz.setText(text + " Meter");
+		ergebnisx.setText(ergebnis[1] + " Meter");
+		ergebnisy.setText(ergebnis[2] + " Meter");
+		ergebnisz.setText(ergebnis[3] + " Meter");
 		
 		ausschriftx.setBorder(eborder);
 		ausschrifty.setBorder(eborder);
@@ -410,7 +414,57 @@ public class Actionlistener {
 	}
 
 	public void einlagern(LagerverwaltungGUI gui) {
-		System.out.println("Einlagern-Button");
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width, height;
+		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
+			width = (int) Math.round(screensize.getWidth()/2);
+			height = (int) Math.round(screensize.getHeight()/2);
+		}
+		else {
+			width = (int) Math.round(screensize.getWidth()/3);
+			height = (int) Math.round(screensize.getHeight()/3);
+		}
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		JDialog einlagerndialog = new JDialog();
+		JLabel bezeichnung = new JLabel("Bezeichnung");
+		JLabel teilenummer = new JLabel("Teilenummer");
+		JTextField eingabebezeichnung = new JTextField(20);
+		JTextField eingabeteilenummer = new JTextField(20);
+		
+		//Setzt den Focus in das Textfeld
+		SwingUtilities.invokeLater( new Runnable() { 
+			public void run() { 
+				eingabebezeichnung.requestFocus(); 
+			} 
+		} );
+		
+		einlagerndialog.setTitle("Teil einlagern");
+		einlagerndialog.setLayout(new GridBagLayout());
+		
+		gbc.gridx = 0; //Spalte
+		gbc.gridy = 0; //Zeile
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		einlagerndialog.add(bezeichnung, gbc);
+		
+		gbc.gridx = 1;
+		einlagerndialog.add(eingabebezeichnung, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		einlagerndialog.add(teilenummer, gbc);
+		
+		gbc.gridx = 1;
+		einlagerndialog.add(eingabeteilenummer, gbc);
+		
+		
+		
+		einlagerndialog.setSize(width, height);
+		einlagerndialog.setLocationRelativeTo(null);
+		einlagerndialog.setVisible(true);
+		
+		
 	}
 
 	public void zurueck() {

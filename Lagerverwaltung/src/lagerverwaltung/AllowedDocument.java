@@ -15,12 +15,12 @@ public class AllowedDocument extends PlainDocument  {
 		try{
             Integer.parseInt(str);
         }
-        catch(Exception ex)   //only allow integer values
+        catch(Exception ex)
         {
         	Toolkit.getDefaultToolkit().beep();
         	JOptionPane.showMessageDialog(null, "Sie dürfen hier nur Zahlen eingeben!",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
-           return ;
+           return;
         }
 		
 		if(str == null) {
