@@ -270,6 +270,7 @@ public class Actionlistener {
 		String bezeichnung = "";
 		String teilenummer = "";
 		int teilenummerint = 0;
+		int[] ergebnis = new int[4];
 		//TODO alles in else in if und umgekehrt
 		if(eingabetxtfield.getText().length() <= 0) {
 			JOptionPane.showMessageDialog(null, "Sie müssen etwas in das Textfeld eingeben",
@@ -288,7 +289,7 @@ public class Actionlistener {
 			}
 			
 			//TODO methode die true zurück liefert, wenn teil gefunden
-			int[] ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
+			ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
 			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
 					oeffnenergebnisdialog(bezeichnung, ergebnis);
@@ -427,10 +428,11 @@ public class Actionlistener {
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		JDialog einlagerndialog = new JDialog();
-		JLabel bezeichnung = new JLabel("Bezeichnung");
-		JLabel teilenummer = new JLabel("Teilenummer");
+		JLabel bezeichnung = new JLabel("Bezeichnung:");
+		JLabel teilenummer = new JLabel("Teilenummer:");
 		JTextField eingabebezeichnung = new JTextField(20);
 		JTextField eingabeteilenummer = new JTextField(20);
+		JButton btnok = new JButton("Ok");
 		
 		//Setzt den Focus in das Textfeld
 		SwingUtilities.invokeLater( new Runnable() { 
