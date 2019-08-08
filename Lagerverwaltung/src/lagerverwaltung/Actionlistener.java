@@ -33,7 +33,7 @@ import javax.swing.text.Document;
 public class Actionlistener {
 	
 	private LagerverwaltungGUI gui;
-	private LagerverwaltungDaten daten;
+	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
 	
 	public void oeffnen() {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
@@ -287,8 +287,7 @@ public class Actionlistener {
 				teilenummerint = Integer.parseInt(teilenummer);
 				bezeichnung = "";
 			}
-			
-			//TODO methode die true zurück liefert, wenn teil gefunden
+
 			ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
 			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
@@ -433,7 +432,7 @@ public class Actionlistener {
 		JLabel groesse = new JLabel("Größe des Teils in Grundeinheiten:");
 		JTextField eingabebezeichnung = new JTextField(20);
 		JTextField eingabeteilenummer = new JTextField(20);
-		JTextField eingabegroesse = new JTextField(20);
+		JTextField eingabegroesse = new JTextField(2);
 		JButton btnok = new JButton("Ok");
 		
 		//Setzt den Focus in das Textfeld
@@ -468,9 +467,6 @@ public class Actionlistener {
 		
 		gbc.gridx = 1;
 		einlagerndialog.add(eingabegroesse, gbc);
-		
-		
-		
 		
 		einlagerndialog.setSize(width, height);
 		einlagerndialog.setLocationRelativeTo(null);
