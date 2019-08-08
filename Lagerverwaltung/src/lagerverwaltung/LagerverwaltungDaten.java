@@ -1,11 +1,6 @@
 package lagerverwaltung;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Iterator;
-import java.util.List;
 
 public class LagerverwaltungDaten {
     private ArrayList<Regal> lager = new ArrayList<Regal>();
@@ -27,7 +22,7 @@ public class LagerverwaltungDaten {
             System.out.println("LDATEN: Ich bin jetzt in For-Schleife 1");
             statusSuche = i.suche(name);
             if (statusSuche) {
-                statusEinfügen = i.einfügenVorhanden(name, teilenummer, größe);
+                statusEinfügen = i.einfuegenVorhanden(name, teilenummer, größe);
                 if(statusEinfügen[0]==1) {
                     System.out.println("LDATEN: Erfolgreich eingefügt!");
                     for(ArrayList<String> arr : item_table) {
@@ -44,7 +39,7 @@ public class LagerverwaltungDaten {
         if (!statusSuche) {
             for (Regal i: lager) {
                 System.out.println("LDATEN: Ich bin jetzt in For-Schleife 2");
-                statusEinfügen = i.einfügenNeu(name, teilenummer, größe);
+                statusEinfügen = i.einfuegenNeu(name, teilenummer, größe);
                     if (statusEinfügen[0]==1) {
                         System.out.println("LDATEN: Erfolgreich eingefügt!");
                         ArrayList<String> temp_arr = new ArrayList<String>();
@@ -72,14 +67,15 @@ public class LagerverwaltungDaten {
     }
     
     public int[] entnehmen(String name, int teilenummer) {
-    	boolean statusSuche = false;
+        boolean statusSuche = false;
         int[] statusEntnehmen = new int[3];
         int[] coord_arr = new int[4];
+        
         for (Regal i: lager) {
             statusSuche = i.suche(name);
             if (statusSuche) {
                 statusEntnehmen = i.entfernen(name, teilenummer);
-                	x = 2 + (i.getRegalnummer()-1) * 4;
+                    x = 2 + (i.getRegalnummer()-1) * 4;
                     y = (statusEntnehmen[1]-1) * 2;
                     z = (statusEntnehmen[2]-1) * 2;
                     coord_arr[0] = 1;
@@ -92,15 +88,15 @@ public class LagerverwaltungDaten {
 
         }
         if (!statusSuche || (statusEntnehmen[0] == 0)) {
-        	for(int i = 0; i < coord_arr.length; i++) {
-        		coord_arr[i] = 0;
-        	}
+            for(int i = 0; i < coord_arr.length; i++) {
+                coord_arr[i] = 0;
+            }
             System.out.println("Item nicht gefunden!");
             return coord_arr;
         }
         for(int i = 0; i < coord_arr.length; i++) {
-    		coord_arr[i] = 0;
-    	} 
+            coord_arr[i] = 0;
+        } 
         System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
         return coord_arr;
     }
@@ -112,5 +108,13 @@ public class LagerverwaltungDaten {
     			System.out.print(arr.get(i) + " , ");
     		}
     	}
+    }
+    
+    public int freieRegalfaecher() {
+    	int zaehleFreieFaecher=0;
+    	for (Regal i: lager) {
+    		zaehleFreieFaecher += i.freieFaecher();
+    	}
+    	return zaehleFreieFaecher;
     }
 }

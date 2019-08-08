@@ -41,7 +41,7 @@ public class Regal {
 
     }
     
-    public int[] einfügenVorhanden(String name, int teilenummer, int größe) {
+    public int[] einfuegenVorhanden(String name, int teilenummer, int größe) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.itemVorhanden(name) && j.getGrundeinheit() >= größe) {
@@ -60,7 +60,7 @@ public class Regal {
 
     }
 
-    public int[] einfügenNeu(String name, int teilenummer, int größe) {
+    public int[] einfuegenNeu(String name, int teilenummer, int größe) {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.istLeer() && (j.getGrundeinheit() >= größe)) {
@@ -94,6 +94,18 @@ public class Regal {
         }
         int[] arr = {0,0,0};
         return arr;
+    }
+    
+    public int freieFaecher() {
+    	int zaehler = 0;
+    	for (ArrayList<Fach> i: regal) {
+    		for (Fach j: i) {
+    			if(j.istLeer()) {
+    				zaehler++;
+    			}
+    		}
+    	}
+    	return zaehler;
     }
     
     
