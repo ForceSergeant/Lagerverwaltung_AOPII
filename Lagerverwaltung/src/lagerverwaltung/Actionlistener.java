@@ -430,6 +430,7 @@ public class Actionlistener {
 		JDialog einlagerndialog = new JDialog();
 		JLabel bezeichnung = new JLabel("Bezeichnung:");
 		JLabel teilenummer = new JLabel("Teilenummer:");
+		JLabel anzahl = new JLabel("Größe des Teils");
 		JTextField eingabebezeichnung = new JTextField(20);
 		JTextField eingabeteilenummer = new JTextField(20);
 		JButton btnok = new JButton("Ok");
@@ -459,6 +460,10 @@ public class Actionlistener {
 		
 		gbc.gridx = 1;
 		einlagerndialog.add(eingabeteilenummer, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		
 		
 		
 		

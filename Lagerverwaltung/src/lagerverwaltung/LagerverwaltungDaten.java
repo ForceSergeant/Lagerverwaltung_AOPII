@@ -74,11 +74,11 @@ public class LagerverwaltungDaten {
     public int[] entnehmen(String name, int teilenummer) {
     	boolean statusSuche = false;
         int[] statusEntnehmen = new int[3];
+        int[] coord_arr = new int[4];
         for (Regal i: lager) {
             statusSuche = i.suche(name);
             if (statusSuche) {
                 statusEntnehmen = i.entfernen(name, teilenummer);
-                	int[] coord_arr = new int[4];
                 	x = 2 + (i.getRegalnummer()-1) * 4;
                     y = (statusEntnehmen[1]-1) * 2;
                     z = (statusEntnehmen[2]-1) * 2;
@@ -92,11 +92,15 @@ public class LagerverwaltungDaten {
 
         }
         if (!statusSuche || (statusEntnehmen[0] == 0)) {
-        	int[] coord_arr = {0,0,0,0}; 
+        	for(int i = 0; i < coord_arr.length; i++) {
+        		coord_arr[i] = 0;
+        	}
             System.out.println("Item nicht gefunden!");
             return coord_arr;
         }
-        int[] coord_arr = {0,0,0,0}; 
+        for(int i = 0; i < coord_arr.length; i++) {
+    		coord_arr[i] = 0;
+    	} 
         System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
         return coord_arr;
     }
