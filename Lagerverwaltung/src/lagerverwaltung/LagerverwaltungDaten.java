@@ -124,8 +124,8 @@ public class LagerverwaltungDaten {
                         temp_arr.add(Integer.toString(zk));
                         item_table.add(temp_arr);
                         x = 2 + (i.getRegalnummer()-1) * 4;
-                        y = (statusEinfügen[1]-1) * 2;
-                        z = (statusEinfügen[2]-1) * 2;
+                        y = (statusEinfügen[1]) * 2;
+                        z = (statusEinfügen[2]) * 2;
                         coord_arr[0] = 3;	//3 = Neues Einfügen erfolgreich
                         coord_arr[1] = x;
                         coord_arr[2] = y;
