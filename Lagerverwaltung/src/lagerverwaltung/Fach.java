@@ -9,11 +9,19 @@ public class Fach {
 
     public Fach(int zeile, int spalte) {
         grundeinheit = 10;
-        this.zeile = zeile;
-        this.spalte = spalte;
+        this.zeile = zeile+1;
+        this.spalte = spalte+1;
     }
 
-    public int getGrundeinheit() {
+    public int getZeile() {
+		return zeile;
+	}
+    
+	public int getSpalte() {
+		return spalte;
+	}
+
+	public int getGrundeinheit() {
         return grundeinheit;
     }
 
@@ -39,10 +47,14 @@ public class Fach {
     }*/
 
     public void removeItem(String name, int teilenummer) {
+        System.out.println("FACH: Bis hierhin komme ich. Vor der For-Schleife.");
         for (Item i: itemliste) {
+            System.out.println("FACH: Bis hierhin komme ich. In die For-Schleife.");
             if (i.getName().equals(name) || (i.getTeilenummer() == teilenummer)) {
+                System.out.println("FACH: Bis hierhin komme ich. In die If-Bedingung.");
                 grundeinheit += i.getGröße();
                 itemliste.remove(i);
+                break;
             }
         }
     }
