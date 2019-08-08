@@ -388,7 +388,7 @@ public class Actionlistener {
 
 	private void einlagernDatenuebergabe(JDialog einlagerndialog, JTextField eingabebezeichnung, JTextField eingabeteilenummer, JTextField eingabegroesse, LagerverwaltungGUI gui2) {
 		
-		int[] ergebnis = new int[];
+		int[] ergebnis = new int[4];
 		
 		if(eingabebezeichnung.getText().length() > 0 && eingabegroesse.getText().length() > 0) {
 			int teilenummer = Integer.parseInt(eingabeteilenummer.getText());
