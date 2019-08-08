@@ -119,7 +119,7 @@ public class LagerverwaltungGUI extends JFrame{
 		
 //		freierPlatz.setUI(new CustomProgressBarUI() );
 		
-		freierPlatz.setValue(7000);
+		freierPlatz.setValue(7500);
 		freieFaecher.setValue(0);
 		freierPlatz.setStringPainted(true);
 		freieFaecher.setStringPainted(true);

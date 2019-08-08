@@ -247,8 +247,8 @@ public class Actionlistener {
 		//Actionlistener
 		btnbezeichnung.addActionListener(e -> btnbezeichnung(artlabel, eingabetxtfield, standarddocument));
 		btnteilenummer.addActionListener(e -> btnteilenummer(artlabel, eingabetxtfield));
-		eingabetxtfield.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
-		btnok.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog));
+		eingabetxtfield.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog, gui));
+		btnok.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabetxtfield, entnehmendialog, gui));
 	}
 
 	//Ändert den Text des artlabel
@@ -265,7 +265,7 @@ public class Actionlistener {
 			eingabetxtfield.requestFocusInWindow(); 
 		}
 	
-	private void entnehmenDatenuebergabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel) {
+	private void entnehmenDatenuebergabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenpanel, LagerverwaltungGUI gui) {
 		String bezeichnung = "";
 		String teilenummer = "";
 		int teilenummerint = 0;
@@ -386,39 +386,40 @@ public class Actionlistener {
 		
 	}
 
-	private void einlagernDatenuebergabe(JDialog einlagerndialog, JTextField eingabebezeichnung, JTextField eingabeteilenummer, JTextField eingabegroesse, LagerverwaltungGUI gui2) {
-		
+	private void einlagernDatenuebergabe(JDialog einlagerndialog, JTextField eingabebezeichnung, JTextField eingabeteilenummer, JTextField eingabegroesse, LagerverwaltungGUI gui) {
 		int[] ergebnis = new int[4];
+		int teilenummer;
 		
 		if(eingabebezeichnung.getText().length() > 0 && eingabegroesse.getText().length() > 0) {
-			int teilenummer = Integer.parseInt(eingabeteilenummer.getText());
+			if(eingabeteilenummer.getText().length() > 0) {
+				teilenummer = Integer.parseInt(eingabeteilenummer.getText());	
+			}
+			else {
+				teilenummer = -1;
+			}
 			int groesse = Integer.parseInt(eingabegroesse.getText());
 			ergebnis = daten.einlagern(eingabebezeichnung.getText(), teilenummer, groesse);
 			
-			/*
-			 * erste nummer:
-			 * 0 -> 
-			 * 1 -> 
-			 * 2 -> 
-			 */
+			for(int i = 0; i < ergebnis.length; i++) {
+				System.out.println(ergebnis[i]);
+			}
 			
 			switch(ergebnis[0]) {
 			case 0:
-				
+				JOptionPane.showMessageDialog(null, "Das Teil kann nicht eingelagert werden, da das Fach bereits voll ist.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 				break;
 			case 1: 
-				
+				JOptionPane.showMessageDialog(null, "Das Teil kann nicht eingelagert werden, da das Lager voll ist.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 				break;
 			case 2:
-				
+				gui.einlagernErgebnisDialog(eingabebezeichnung, eingabeteilenummer, ergebnis);
 				break;
 			case 3:
-				
+				gui.einlagernErgebnisDialog(eingabebezeichnung, eingabeteilenummer, ergebnis);
 				break;
-				
-			case 4:
-				
-				break;
+			
 			default:
 				JOptionPane.showMessageDialog(null, "Es ist ein unerwarteter Fehler aufgetreten.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
