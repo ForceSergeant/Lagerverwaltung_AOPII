@@ -92,6 +92,7 @@ public class LagerverwaltungDaten {
                 System.out.println("LDATEN: Ich bin jetzt in For-Schleife 2");
                 if(teilenummer == -1) {	//keine TN eingegeben
             		teilenummer = generiereTN();
+            		System.out.println("TN generiert");
             	}
                 else {	//TN eingegeben
                 	for(ArrayList<String> arr : item_table) {
@@ -125,7 +126,7 @@ public class LagerverwaltungDaten {
                         item_table.add(temp_arr);
                         x = 2 + (i.getRegalnummer()-1) * 4;
                         y = (statusEinfügen[1]) * 2;
-                        z = (statusEinfügen[2]) * 2;
+                        z = (statusEinfügen[2]-1) * 2;
                         coord_arr[0] = 3;	//3 = Neues Einfügen erfolgreich
                         coord_arr[1] = x;
                         coord_arr[2] = y;
@@ -137,7 +138,7 @@ public class LagerverwaltungDaten {
             if (statusEinfügen[0]==0) {
                 System.out.println("Das Lager hat keine Kapazität mehr!");
                 coord_arr[0] = 1;	//1 = Einfügen nicht erfolgreich, da Lager voll
-                for (int i = 1; i <= coord_arr.length; i++) {
+                for (int i = 1; i < coord_arr.length; i++) {
                 	coord_arr[i] = 0;
                 }
             }
@@ -157,13 +158,17 @@ public class LagerverwaltungDaten {
     	boolean check = false;
     	while(!check) {
     		tn = random.nextInt(999999999) + 1;
-    		for(ArrayList<String> arr : item_table) {
-                if(arr.get(1).equals(Integer.toString(tn))) {
-                	check = false;
-                    break;
-                }
-                else check = true;
-        	}
+    		if(item_table.isEmpty()) check = true;
+    		else {
+	    		for(ArrayList<String> arr : item_table) {
+	                if(arr.get(1).equals(Integer.toString(tn))) {
+	                	check = false;
+	                    break;
+	                }
+	                
+	                else check = true;
+	        	}
+    		}
     	}
     	return tn;
 	}
