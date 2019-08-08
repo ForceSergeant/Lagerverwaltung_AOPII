@@ -412,6 +412,13 @@ public class Actionlistener {
 			case 2:
 				
 				break;
+			case 3:
+				
+				break;
+				
+			case 4:
+				
+				break;
 			default:
 				JOptionPane.showMessageDialog(null, "Es ist ein unerwarteter Fehler aufgetreten.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
