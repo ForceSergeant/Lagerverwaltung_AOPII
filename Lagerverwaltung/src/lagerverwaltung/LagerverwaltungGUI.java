@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 public class LagerverwaltungGUI extends JFrame{
@@ -47,6 +48,12 @@ public class LagerverwaltungGUI extends JFrame{
 	CustomProgressBar freieFaecher;
 	
 	public LagerverwaltungGUI() {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+			
+		}
+		
 		//Eigenschaften
 		this.setLocation(0, 0);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -105,6 +112,8 @@ public class LagerverwaltungGUI extends JFrame{
 		this.add(middlepanel);
 		this.add(rightpanel);
 		
+		
+		//TODO NIMBUS LAF für Progressbar schöner, schauen ob nur setzen dafür geht
 		//Progressbar
 		freierPlatz = new CustomProgressBar(8000);
 		freieFaecher = new CustomProgressBar(800);

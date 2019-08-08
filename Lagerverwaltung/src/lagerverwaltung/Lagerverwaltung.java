@@ -7,17 +7,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Lagerverwaltung {
 	
 	private LagerverwaltungGUI gui;
-	private LagerverwaltungDaten daten;
 
 	//Konstruktor
 	public Lagerverwaltung() {
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception e) {
-			
-		}
 		gui = new LagerverwaltungGUI();
-		daten = new LagerverwaltungDaten();
 	}
 	
 	public static void main(String[] args) {
