@@ -1,13 +1,11 @@
 package lagerverwaltung;
 
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -18,15 +16,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 public class LagerverwaltungGUI extends JFrame{
-	
-	private LagerverwaltungDaten daten;
+
 	private Actionlistener actionlistener = new Actionlistener();
 	
 	//Menübar
@@ -148,10 +143,6 @@ public class LagerverwaltungGUI extends JFrame{
 		einlagernitem.addActionListener(e -> actionlistener.einlagern(this, null, null));
 		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, middlepanel));
 		
-	}
-
-	public void setDaten(LagerverwaltungDaten daten) {
-		this.daten = daten;	
 	}
 	
 	public void einlagernErgebnisDialog(JTextField eingabebezeichnung, JTextField eingabeteilenummer, int[] ergebnis) {

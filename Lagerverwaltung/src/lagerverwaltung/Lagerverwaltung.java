@@ -18,7 +18,6 @@ public class Lagerverwaltung {
 		}
 		gui = new LagerverwaltungGUI();
 		daten = new LagerverwaltungDaten();
-		gui.setDaten(daten);
 	}
 	
 	public static void main(String[] args) {
