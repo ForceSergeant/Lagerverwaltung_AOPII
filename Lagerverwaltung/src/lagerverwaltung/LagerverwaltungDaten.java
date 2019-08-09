@@ -191,7 +191,7 @@ public class LagerverwaltungDaten {
                     if (statusSuche) {
                         statusEntnehmen = i.entfernen(name, teilenummer);
                             x = 2 + (i.getRegalnummer()-1) * 4;
-                            y = (statusEntnehmen[1]-1) * 2;
+                            y = (statusEntnehmen[1]) * 2;
                             z = (statusEntnehmen[2]-1) * 2;
                             System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
                             coord_arr[0] = 1;
@@ -229,7 +229,7 @@ public class LagerverwaltungDaten {
                 if (statusSuche) {
                     statusEntnehmen = i.entfernen(name, teilenummer);
                         x = 2 + (i.getRegalnummer()-1) * 4;
-                        y = (statusEntnehmen[1]-1) * 2;
+                        y = (statusEntnehmen[1]) * 2;
                         z = (statusEntnehmen[2]-1) * 2;
                         System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
                         coord_arr[0] = 1;
