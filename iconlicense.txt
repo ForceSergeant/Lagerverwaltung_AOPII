@@ -1,0 +1,10 @@
+save icon https://www.flaticon.com/authors/smashicons
+open icon https://www.flaticon.com/authors/smashicons
+close icon https://www.flaticon.com/authors/freepik
+warehouse icon https://www.flaticon.com/authors/freepik
+stock icon https://www.flaticon.com/authors/good-ware
+remove icon https://www.flaticon.com/authors/smashicons
+box icon https://www.flaticon.com/authors/smashicons
+pallet take icon https://www.flaticon.com/authors/freepik
+pallet store icon https://www.flaticon.com/authors/freepik
+house icon https://www.flaticon.com/authors/freepik
