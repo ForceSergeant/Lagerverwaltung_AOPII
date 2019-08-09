@@ -204,7 +204,7 @@ public class LagerverwaltungDaten {
                     coord_arr[3] = z;
                     anzahl = Integer.parseInt(temp_arr.get(3));
             		if(anzahl-1 == 0) {
-            			System.out.println("(TN) Hat removen funktioniert:" + item_table.remove(temp_arr));
+            			System.out.println("(TN) Hat removen funktioniert: " + item_table.remove(temp_arr));
             		}
             		else {
             			temp_arr_2 = temp_arr;
@@ -253,7 +253,7 @@ public class LagerverwaltungDaten {
                         coord_arr[3] = z;
                         anzahl = Integer.parseInt(temp_arr.get(3));
                 		if(anzahl-1 == 0) {
-                			System.out.println("(BZ) Hat removen funktioniert:" + item_table.remove(temp_arr));
+                			System.out.println("(BZ) Hat removen funktioniert: " + item_table.remove(temp_arr));
                 		}
                 		else {
                 			temp_arr_2 = temp_arr;
