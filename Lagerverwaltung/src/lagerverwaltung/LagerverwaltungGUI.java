@@ -33,6 +33,7 @@ import javax.swing.border.EmptyBorder;
 public class LagerverwaltungGUI extends JFrame{
 
 	private Actionlistener actionlistener = new Actionlistener();
+	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
 	
 	//Menübar
 	private JMenuBar menubar;
@@ -157,7 +158,7 @@ public class LagerverwaltungGUI extends JFrame{
 	
 	private void startpanelsErzeugen() {
 		CustomColor = new Color(80, 80, 80);
-		hilfslabel = new JLabel(new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/img/lager.jpg").getImage().getScaledInstance( 600, 400,  java.awt.Image.SCALE_SMOOTH )));
+		hilfslabel = new JLabel(new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/img/lager2.jpg").getImage().getScaledInstance( 600, 400,  java.awt.Image.SCALE_SMOOTH )));
 		menupanel = new JPanel();
 		leftpanel = new JPanel();
 		rightpanel = new JPanel();
@@ -167,9 +168,6 @@ public class LagerverwaltungGUI extends JFrame{
 		rightpanel.setLayout(new BorderLayout());
 		leftpanel.setBorder(BorderFactory.createCompoundBorder((BorderFactory.createLineBorder(Color.BLACK)), new EmptyBorder(0, 20, 0, 20)));
 		leftpanel.setBackground(CustomColor);
-		
-		this.pack();
-		System.out.println(this.getBounds());
 
 		//TODO Image immer auf größe des JPanels rightpanel
 		rightpanel.add(hilfslabel);
@@ -266,7 +264,9 @@ public class LagerverwaltungGUI extends JFrame{
 		freieFaecherLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));
 		freierPlatzLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		freieFaecherLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-		freieFaecherBar.setValue(500);
+		
+		//TODO Funktion schreiben, wie ich an die jeweiligen Daten komme
+		freieFaecherBar.setValue(daten.freieRegalfaecher());
 		freierPlatzBar.setValue(5000);
 		
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
