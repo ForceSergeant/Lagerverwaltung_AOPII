@@ -165,7 +165,6 @@ public class LagerverwaltungDaten {
 	                	check = false;
 	                    break;
 	                }
-	                
 	                else check = true;
 	        	}
     		}
@@ -177,51 +176,67 @@ public class LagerverwaltungDaten {
         boolean statusSuche = false;
         int[] statusEntnehmen = new int[3];
         int[] coord_arr = new int[4];
+        ArrayList<String> temp_arr = new ArrayList<String>();
+        ArrayList<String> temp_arr_2 = new ArrayList<String>();
 
         //falls Teilenummer gegeben
         if (teilenummer >= 0) {
             String temp= "";
             temp = Integer.toString(teilenummer);
             for(ArrayList<String> arr : item_table) {
-                if(arr.contains(temp)) {
+                if(arr.get(1).equals(temp)) {
                     name = arr.get(0);
+                    temp_arr = arr;
+                    break;
                 }
-                for (Regal i: lager) {
-                    statusSuche = i.sucheViaNummer(teilenummer);
-                    if (statusSuche) {
-                        statusEntnehmen = i.entfernen(name, teilenummer);
-                            x = 2 + (i.getRegalnummer()-1) * 4;
-                            y = (statusEntnehmen[1]) * 2;
-                            z = (statusEntnehmen[2]-1) * 2;
-                            System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
-                            coord_arr[0] = 1;
-                            coord_arr[1] = x;
-                            coord_arr[2] = y;
-                            coord_arr[3] = z;
-                            System.out.println("Item erfolgreich entnommen!");
-                            return coord_arr;
-                    }
-
-                }
-                if (!statusSuche || (statusEntnehmen[0] == 0)) {
-                    for(int i = 0; i < coord_arr.length; i++) {
-                        coord_arr[i] = 0;
-                    }
-                    System.out.println("Item nicht gefunden!");
+            }
+            for (Regal i: lager) {
+                statusSuche = i.sucheViaNummer(teilenummer);
+                if (statusSuche) {
+                    statusEntnehmen = i.entfernen(name, teilenummer);
+                    x = 2 + (i.getRegalnummer()-1) * 4;
+                    y = (statusEntnehmen[1]) * 2;
+                    z = (statusEntnehmen[2]-1) * 2;
+                    System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
+                    coord_arr[0] = 1;
+                    coord_arr[1] = x;
+                    coord_arr[2] = y;
+                    coord_arr[3] = z;
+                    anzahl = Integer.parseInt(temp_arr.get(3));
+            		if(anzahl-1 == 0) {
+            			System.out.println("(TN) Hat removen funktioniert: " + item_table.remove(temp_arr));
+            		}
+            		else {
+            			temp_arr_2 = temp_arr;
+            			temp_arr.set(3, Integer.toString(anzahl-1));
+            			item_table.set(item_table.indexOf(temp_arr_2), temp_arr);
+            		}
+                    System.out.println("Item erfolgreich entnommen!");
                     return coord_arr;
                 }
+
+            }
+            if (!statusSuche || (statusEntnehmen[0] == 0)) {
                 for(int i = 0; i < coord_arr.length; i++) {
                     coord_arr[i] = 0;
-                } 
-                System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
+                }
+                System.out.println("Item nicht gefunden!");
                 return coord_arr;
             }
+            for(int i = 0; i < coord_arr.length; i++) {
+                coord_arr[i] = 0;
+            } 
+            System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
+            return coord_arr;
+            
         }
         //falls Bezeichnung gegeben
         else if (teilenummer == -1) {
             for(ArrayList<String> arr : item_table) {
-                if(arr.contains(name)) {
+                if(arr.get(0).equals(name)) {
                     teilenummer = Integer.parseInt(arr.get(1));
+                    temp_arr = arr;
+                    break;
                 }
             }
             for (Regal i: lager) {
@@ -236,6 +251,15 @@ public class LagerverwaltungDaten {
                         coord_arr[1] = x;
                         coord_arr[2] = y;
                         coord_arr[3] = z;
+                        anzahl = Integer.parseInt(temp_arr.get(3));
+                		if(anzahl-1 == 0) {
+                			System.out.println("(BZ) Hat removen funktioniert: " + item_table.remove(temp_arr));
+                		}
+                		else {
+                			temp_arr_2 = temp_arr;
+                			temp_arr.set(3, Integer.toString(anzahl-1));
+                			item_table.set(item_table.indexOf(temp_arr_2), temp_arr);
+                		}
                         System.out.println("Item erfolgreich entnommen!");
                         return coord_arr;
                 }
