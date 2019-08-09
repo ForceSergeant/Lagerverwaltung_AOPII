@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -58,17 +60,17 @@ public class Actionlistener {
 		}
 	}
 	
-	public void beenden(LagerverwaltungGUI gui) {
+	public void beenden(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
 			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Programm wirklich beenden?", "Programm schließen?",
 					 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
 							 {"Ja", "Nein"}, "Ja");
 			if(i == JOptionPane.YES_OPTION) {
-				 speichern();
+				 speichern(gui, leftpanel, rightpanel, menupanel);
 				 System.exit(0);
 			 }
 		}
 
-	public void speichern() {
+	public void speichern(LagerverwaltungGUI lagerverwaltungGUI, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Speichern unter");
@@ -87,12 +89,15 @@ public class Actionlistener {
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Speichern Sie nur in Textdateien (txt).");
-				speichern();
+				speichern(gui, leftpanel, rightpanel, menupanel);
 			}
+		}
+		else {
+			startseite(gui, leftpanel, rightpanel, menupanel);
 		}
 	}
 
-	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
+	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel) {
 		//Entfernt die Panels der Startübersicht
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
@@ -100,16 +105,25 @@ public class Actionlistener {
 		JPanel lagerpanel = new JPanel();
 		lagerpanel.setLayout(new BorderLayout());
 		lagerpanel.setBackground(Color.DARK_GRAY);
+		gui.setLayout(new BorderLayout());
 		gui.add(lagerpanel, BorderLayout.CENTER);
 		gui.pack();
 		gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		tabelleErzeugen(gui,lagerpanel, leftpanel, rightpanel, middlepanel);	
+		tabelleErzeugen(gui,lagerpanel, leftpanel, rightpanel);	
 	}
 
-	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {		
+	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel) {		
 		JTable tabelle = null;
-		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Lagerort", "Anzahl"};
-		String[][] inhalt = new String[50][5];
+		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Anzahl", "Regalnummer", "Fachspalte", "Fachreihe" };
+		ArrayList<ArrayList<String>> inhaltdaten = new ArrayList<ArrayList<String>>();
+		inhaltdaten = daten.getItemTable();
+		String[][] inhalt = new String[inhaltdaten.size()][7];
+		
+		for(int i = 0; i < inhaltdaten.size(); i++) {
+			for(int j = 0; j < inhaltdaten.get(i).size(); j++) {
+				inhalt[i][j] = inhaltdaten.get(i).get(j); 
+			}
+		}
 		
 		//erzeugt nicht editierbare Tabelle
 		tabelle = new JTable(new DefaultTableModel(inhalt,theader)) {
@@ -123,10 +137,10 @@ public class Actionlistener {
 		lagerpanel.add(new JScrollPane(tabelle), BorderLayout.CENTER);
 		lagerpanel.repaint();
 		
-		sorting(tabelle, gui, lagerpanel, leftpanel, rightpanel, middlepanel);	
+		sorting(tabelle, gui, lagerpanel, leftpanel, rightpanel);	
 	}
 
-	private void sorting(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
+	private void sorting(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel) {
 		int i = JOptionPane.showOptionDialog(null,
 				"Wonach möchten Sie sortieren?", "Lagerinhalt anzeigen",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
@@ -139,7 +153,6 @@ public class Actionlistener {
 		}
 		else if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
 			gui.add(leftpanel);
-			gui.add(middlepanel);
 			gui.add(rightpanel);
 			gui.remove(lagerpanel);
 			gui.repaint();
@@ -443,12 +456,12 @@ public class Actionlistener {
 		einlagerndialog.dispose();
 	}
 
-	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel middlepanel) {
+	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
 		}
+		gui.add(menupanel);
 		gui.add(leftpanel);
-		gui.add(middlepanel);
 		gui.add(rightpanel);
 		gui.repaint();
 	}

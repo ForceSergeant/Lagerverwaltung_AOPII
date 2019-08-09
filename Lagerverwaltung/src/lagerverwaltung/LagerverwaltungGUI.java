@@ -1,12 +1,24 @@
 package lagerverwaltung;
 
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -15,11 +27,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 public class LagerverwaltungGUI extends JFrame{
@@ -38,30 +52,56 @@ public class LagerverwaltungGUI extends JFrame{
 	private JMenuItem einlagernitem;
 	private JMenuItem startseiteitem;
 	
+	//IconMenu
+	private JButton oeffnenbtn;
+	private JButton beendenbtn;
+	private JButton speichernbtn;
+	private JButton anzeigenLagerinhaltbtn;
+	private JButton entnehmenbtn;
+	private JButton einlagernbtn;
+	private JButton startseitebtn;
+	
+	//Icon
+	private ImageIcon close;
+	private ImageIcon house;
+	private ImageIcon open;
+	private ImageIcon pallettake;
+	private ImageIcon palletstore;
+	private ImageIcon save;
+	private ImageIcon stock;
+	
 	//Startoberfläche
-	private JButton btnDateioeffnen;
-	private JButton btnAnzeigenLagerinhalt;
-	private JButton btnEntnehmen;
-	private JButton btnEinlagern;
+	private Box hilfsbox;
+	private JPanel menupanel;
+	private JPanel leftpanel;
+	private JPanel rightpanel;
 	
 	//ProgressBar
-	CustomProgressBar freierPlatz;
-	CustomProgressBar freieFaecher;
+	private CustomProgressBar freierPlatzBar;
+	private CustomProgressBar freieFaecherBar;
+	private JLabel freierPlatzLabel;
+	private JLabel freieFaecherLabel;
+	private JLabel hilfslabel;
 	
-	public LagerverwaltungGUI() {
+	//Farbe
+	private Color CustomColor;
+	
+	public LagerverwaltungGUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			UIManager.put("ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI");
 		} catch (Exception e) {
-			System.out.println("Fehler");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			JOptionPane.showMessageDialog(null, "Wir konnten leider das gewünschte Look and Feel nicht verwenden und mussten auf das Look and Feel des Systems umsteigen.",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		//Eigenschaften
+		//Eigenschaften		
 		this.setLocation(0, 0);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setTitle("Lagerverwaltung");
-		this.setMinimumSize(new Dimension(500, 300));
-		this.setLayout(new GridLayout(1,3));
+		this.setMinimumSize(new Dimension(600, 400));
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setLayout(new GridBagLayout());
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//Eigentliche Close Operation
@@ -79,6 +119,72 @@ public class LagerverwaltungGUI extends JFrame{
 //		});
 		
 		//Menü
+		menueErzeugen();
+				
+		//Startpanels
+		startpanelsErzeugen();
+		
+		//Button für Menupanel
+		btnerzeugen();
+		
+		//Style
+		stylebtn(oeffnenbtn);
+		stylebtn(beendenbtn);
+		stylebtn(speichernbtn);
+		stylebtn(anzeigenLagerinhaltbtn);
+		stylebtn(entnehmenbtn);
+		stylebtn(einlagernbtn);
+		stylebtn(startseitebtn);
+		
+		//Hilfsbox
+		hilfsboxerzeugen();
+		
+		//ProgressBar
+		progressbarErzeugen();
+	
+		//Actionlistener
+		oeffnenitem.addActionListener(e -> actionlistener.oeffnen());
+		beendenitem.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
+		speichernitem.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
+		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel));
+		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
+		einlagernitem.addActionListener(e -> actionlistener.einlagern(this, null, null));
+		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
+		
+		oeffnenbtn.addActionListener(e -> actionlistener.oeffnen());
+		speichernbtn.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
+		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel));
+		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
+		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null));
+		startseitebtn.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
+		beendenbtn.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
+	}
+	
+	
+	private void startpanelsErzeugen() {
+		CustomColor = new Color(80, 80, 80);
+		hilfslabel = new JLabel(new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/img/lager.jpg").getImage().getScaledInstance( 600, 400,  java.awt.Image.SCALE_SMOOTH )));
+		menupanel = new JPanel();
+		leftpanel = new JPanel();
+		rightpanel = new JPanel();
+		
+		menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.LINE_AXIS));
+		leftpanel.setLayout(new GridBagLayout());
+		rightpanel.setLayout(new BorderLayout());
+		leftpanel.setBorder(BorderFactory.createCompoundBorder((BorderFactory.createLineBorder(Color.BLACK)), new EmptyBorder(0, 20, 0, 20)));
+		leftpanel.setBackground(CustomColor);
+		
+		this.pack();
+		System.out.println(this.getBounds());
+
+		rightpanel.add(hilfslabel);
+		
+		this.add(menupanel,gbcErzeugen(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.BOTH));
+		this.add(leftpanel, gbcErzeugen(0, 1, 1, 1, 0.25, 0.0, GridBagConstraints.BOTH));
+		this.add(rightpanel,gbcErzeugen(1, 1, 1, 1, 0.75, 1.0, GridBagConstraints.BOTH));
+	}
+
+	private void menueErzeugen() {
 		menubar = new JMenuBar();
 		menuDatei = new JMenu("Datei");
 		menuZurueck = new JMenu("Zurück");
@@ -100,63 +206,92 @@ public class LagerverwaltungGUI extends JFrame{
 		menubar.add(menuDatei);
 		menubar.add(menuZurueck);		
 		this.setJMenuBar(menubar);
-		
-		//Startpanels
-		JPanel leftpanel = new JPanel();
-		
-		JPanel middlepanel = new JPanel();
-		middlepanel.setLayout(new GridLayout(2,1));
-		
-		JPanel rightpanel = new JPanel();
-		rightpanel.setLayout(new GridLayout(2,1));
-		
-		this.add(leftpanel);
-		this.add(middlepanel);
-		this.add(rightpanel);
-		
-		
-		//TODO NIMBUS LAF für Progressbar schöner, schauen ob nur setzen dafür geht
-		//Progressbar
-		
-		freierPlatz = new CustomProgressBar(8000);
-		freieFaecher = new CustomProgressBar(800);
-		
-		freierPlatz.setModel(new DefaultBoundedRangeModel(0, 0 , 0, 8000));
-		freieFaecher.setModel(new DefaultBoundedRangeModel(0, 0, 0, 800));
-		
-//		freierPlatz.setUI(new CustomProgressBarUI() );
-		
-		freierPlatz.setValue(7500);
-		freieFaecher.setValue(0);
-		freierPlatz.setStringPainted(true);
-		freieFaecher.setStringPainted(true);
-		
-		leftpanel.add(freierPlatz);
-		leftpanel.add(freieFaecher);
-		
-		//Button auf Panels hinzufügen
-		btnDateioeffnen = new JButton("Datei laden");
-		btnAnzeigenLagerinhalt = new JButton("Lagerinhalt anzeigen");
-		btnEntnehmen = new JButton("Entnahme eines Teils");
-		btnEinlagern = new JButton("Einlagern eines Teils");
-		
-		
-		middlepanel.add(btnDateioeffnen);
-		rightpanel.add(btnAnzeigenLagerinhalt);
-		middlepanel.add(btnEntnehmen);
-		rightpanel.add(btnEinlagern);
-		
-		//Actionlistener
-		oeffnenitem.addActionListener(e -> actionlistener.oeffnen());
-		beendenitem.addActionListener(e -> actionlistener.beenden(this));
-		speichernitem.addActionListener(e -> actionlistener.speichern());
-		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel, middlepanel));
-		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
-		einlagernitem.addActionListener(e -> actionlistener.einlagern(this, null, null));
-		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, middlepanel));
-		
+	}
+
+	private void btnerzeugen() {
+		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		house = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/house.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));
+		palletstore = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/palletstore2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));	
+		pallettake = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/pallettake2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		save = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/diskette.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		stock = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/stock2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+				
+		oeffnenbtn = new JButton("Datei öffnen", open);
+		beendenbtn = new JButton("Beenden", close);
+		startseitebtn = new JButton("Startseite", house);
+		speichernbtn = new JButton("Speichern", save);
+		anzeigenLagerinhaltbtn = new JButton("Lagerinhalt anzeigen", stock);
+		entnehmenbtn = new JButton("Entnehmen", pallettake);
+		einlagernbtn = new JButton("Einlagern", palletstore);	
 	}
 	
+	private void hilfsboxerzeugen() {
+		hilfsbox = Box.createHorizontalBox();
+		hilfsbox.setBorder(new EmptyBorder(10, 0, 5, 0));
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(oeffnenbtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(speichernbtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(anzeigenLagerinhaltbtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(entnehmenbtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(einlagernbtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(startseitebtn);
+		hilfsbox.add(Box.createGlue());
+		hilfsbox.add(beendenbtn);
+		hilfsbox.add(Box.createGlue());
+		menupanel.add(hilfsbox);
+	}
+
+	private void progressbarErzeugen() {
+		freierPlatzBar = new CustomProgressBar(8000);
+		freieFaecherBar = new CustomProgressBar(800);
+		freierPlatzLabel = new JLabel();
+		freieFaecherLabel = new JLabel();
+		hilfslabel = new JLabel();
+		
+		freierPlatzBar.setModel(new DefaultBoundedRangeModel(0, 0 , 0, 8000));
+		freieFaecherBar.setModel(new DefaultBoundedRangeModel(0, 0, 0, 800));
+		freierPlatzBar.setUI(new CustomProgressBarUI());
+		freieFaecherBar.setUI(new CustomProgressBarUI());
+		freierPlatzBar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		freieFaecherBar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));		
+		freierPlatzBar.setStringPainted(true);
+		freieFaecherBar.setStringPainted(true);		
+		freierPlatzBar.setBorder(new EmptyBorder(8,0,8,0));
+		freieFaecherBar.setBorder(new EmptyBorder(8,0,8,0));
+		
+		freierPlatzLabel.setBorder(new EmptyBorder(0, 5, 10, 0));
+		freieFaecherLabel.setBorder(new EmptyBorder(10, 5, 10, 0));
+		freierPlatzLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));
+		freieFaecherLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));
+		freierPlatzLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		freieFaecherLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		freieFaecherBar.setValue(500);
+		freierPlatzBar.setValue(5000);
+		
+		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
+		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
+		
+		leftpanel.add(freierPlatzLabel, gbcErzeugen(0, 0, 1, 1, 1.0, 0.46, GridBagConstraints.BOTH));
+		leftpanel.add(freierPlatzBar, gbcErzeugen(0, 1, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
+		leftpanel.add(freieFaecherLabel, gbcErzeugen(0, 2, 1, 1, 0.0, 0.05, GridBagConstraints.BOTH));
+		leftpanel.add(freieFaecherBar, gbcErzeugen(0, 3, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
+		leftpanel.add(hilfslabel, gbcErzeugen(0, 4, 1, 1, 0.0, 0.47, GridBagConstraints.BOTH));
+	}
+	
+	private void stylebtn(JButton component) {
+		component.setSize(75, 75);
+		component.setMargin(new Insets(0,0,0,0));
+		component.setBorder(null);
+		component.setVerticalTextPosition(SwingConstants.BOTTOM);
+		component.setHorizontalTextPosition(SwingConstants.CENTER);
+	}
+
 	public void einlagernErgebnisDialog(JTextField eingabebezeichnung, JTextField eingabeteilenummer, int[] ergebnis) {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width, height;
@@ -356,9 +491,21 @@ public class LagerverwaltungGUI extends JFrame{
 		   }
 		   return testbestanden;
 	}
-	
+
 	public void schliesseErgebnisDialog(JDialog ergebnisdialog) {
 		ergebnisdialog.dispose();
 	}
-	
+
+	public GridBagConstraints gbcErzeugen(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int fill) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = gridx;
+		gbc.gridy = gridy;
+		gbc.gridwidth = gridwidth;
+		gbc.gridheight = gridheight;
+		gbc.weightx = weightx;
+		gbc.weighty = weighty;
+		gbc.fill = fill;
+		return gbc;
+	}
+
 }

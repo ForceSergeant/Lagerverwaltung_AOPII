@@ -1,5 +1,6 @@
 package lagerverwaltung;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -9,16 +10,13 @@ import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class CustomProgressBarUI extends BasicProgressBarUI{
-	
-	  Rectangle r = new Rectangle();
-	  @Override
-	  protected void paintIndeterminate(Graphics g, JComponent c) {
-	    Graphics2D g2d = (Graphics2D) g;
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	        RenderingHints.VALUE_ANTIALIAS_ON);
-	    r = getBox(r);
-	    g.setColor(progressBar.getForeground());
-	    g.fillOval(r.x, r.y, r.width, r.height);
-	  }
 
+	protected Color getSelectionBackground() {
+		return Color.BLACK;
+	}
+	
+	protected Color getSelectionForeground() {
+		return Color.BLACK;
+	}
+	  
 }
