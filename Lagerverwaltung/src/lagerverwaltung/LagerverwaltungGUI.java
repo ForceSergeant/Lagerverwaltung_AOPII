@@ -171,6 +171,7 @@ public class LagerverwaltungGUI extends JFrame{
 		this.pack();
 		System.out.println(this.getBounds());
 
+		//TODO Image immer auf größe des JPanels rightpanel
 		rightpanel.add(hilfslabel);
 		
 		this.add(menupanel,gbcErzeugen(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.BOTH));
