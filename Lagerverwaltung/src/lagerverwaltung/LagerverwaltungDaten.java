@@ -270,6 +270,10 @@ public class LagerverwaltungDaten {
     	}
     }
     
+    public ArrayList<ArrayList<String>> getItemTable() {
+    	return item_table;
+    }
+    
     public int freieRegalfaecher() {
     	int zaehleFreieFaecher=0;
     	for (Regal i: lager) {
