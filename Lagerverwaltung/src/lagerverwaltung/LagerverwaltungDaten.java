@@ -272,6 +272,7 @@ public class LagerverwaltungDaten {
     
     public ArrayList<ArrayList<String>> getItemTable() {
     	return item_table;
+    	//...
     }
     
     public int freieRegalfaecher() {
