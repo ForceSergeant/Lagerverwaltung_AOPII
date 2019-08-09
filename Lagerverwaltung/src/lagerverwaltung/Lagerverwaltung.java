@@ -19,7 +19,6 @@ public class Lagerverwaltung {
 
 	private void activate() {
 		gui.setVisible(true);
-		System.out.println(gui.getContentPane().getSize());
 	}
 	
 
