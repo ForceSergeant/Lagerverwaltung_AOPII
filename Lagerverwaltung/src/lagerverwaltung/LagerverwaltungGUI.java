@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +43,7 @@ public class LagerverwaltungGUI extends JFrame{
 
 	private Actionlistener actionlistener = new Actionlistener();
 	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
+	private LagerverwaltungGUI gui;
 	
 	//Menübar
 	private JMenuBar menubar;
@@ -83,6 +86,7 @@ public class LagerverwaltungGUI extends JFrame{
 	private CustomProgressBar freieFaecherBar;
 	private JLabel freierPlatzLabel;
 	private JLabel freieFaecherLabel;
+	private JLabel ueberschriftLabel;
 	private JLabel hilfslabel;
 	
 	//Farbe
@@ -93,7 +97,9 @@ public class LagerverwaltungGUI extends JFrame{
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			UIManager.put("ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI");
 		} catch (Exception e) {
-			
+			java.awt.Toolkit.getDefaultToolkit().beep();
+			JOptionPane.showMessageDialog(null, "Das Windows Look and Feel konnte leider nicht gesetzt werden.",
+				    "Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		//Eigenschaften		
@@ -103,20 +109,18 @@ public class LagerverwaltungGUI extends JFrame{
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new GridBagLayout());
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Eigentliche Close Operation
-//		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//		this.addWindowListener(new WindowAdapter(){
-//			public void windowClosing(WindowEvent e) {		
-//				int i = JOptionPane.showOptionDialog(null, "<html><p style=\"color:red\">Wollen Sie das Porgramm wirklich beenden?</p></html>", "Programm schließen?",
-//						 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] 
-//								 {"Ja", "Nein"}, "Ja");
-//				if(i == JOptionPane.YES_OPTION) {
-//					 //Hier kommt der Speicheralgorithmus
-//					 System.exit(0);
-//				 }
-//			}
-//		});
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) {		
+				int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?",
+						"Programm schließen?", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, new String[] {"Ja", "Nein"}, "Ja");
+				if(i == JOptionPane.YES_OPTION) {
+					 actionlistener.speichern(gui, menupanel, leftpanel, rightpanel);
+					 System.exit(0);
+				 }
+			}
+		});
 		
 		//Menü
 		menueErzeugen();
@@ -175,10 +179,9 @@ public class LagerverwaltungGUI extends JFrame{
 		leftpanel.setBorder(BorderFactory.createCompoundBorder((BorderFactory.createLineBorder(Color.BLACK)), new EmptyBorder(0, 20, 0, 20)));
 		leftpanel.setBackground(CustomColor);
 
-		//TODO Image immer auf größe des JPanels rightpanel
 		Image image = null;
 		try {
-			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
+			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -257,6 +260,7 @@ public class LagerverwaltungGUI extends JFrame{
 		freieFaecherBar = new CustomProgressBar(800);
 		freierPlatzLabel = new JLabel();
 		freieFaecherLabel = new JLabel();
+		ueberschriftLabel = new JLabel("Aktueller Stand des Lagers:");
 		hilfslabel = new JLabel();
 		
 		freierPlatzBar.setModel(new DefaultBoundedRangeModel(0, 0 , 0, 8000));
@@ -282,12 +286,18 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
+
+		ueberschriftLabel.setBorder(new EmptyBorder(0, 5, 10, 0));
+		ueberschriftLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));
+		ueberschriftLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		ueberschriftLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		
-		leftpanel.add(freierPlatzLabel, gbcErzeugen(0, 0, 1, 1, 1.0, 0.46, GridBagConstraints.BOTH));
-		leftpanel.add(freierPlatzBar, gbcErzeugen(0, 1, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
-		leftpanel.add(freieFaecherLabel, gbcErzeugen(0, 2, 1, 1, 0.0, 0.05, GridBagConstraints.BOTH));
-		leftpanel.add(freieFaecherBar, gbcErzeugen(0, 3, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
-		leftpanel.add(hilfslabel, gbcErzeugen(0, 4, 1, 1, 0.0, 0.47, GridBagConstraints.BOTH));
+		leftpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1 ,1, 1.0, 0.46, GridBagConstraints.BOTH));
+		leftpanel.add(freierPlatzLabel, gbcErzeugen(0, 1, 1, 1, 1.0, 0.01, GridBagConstraints.BOTH));
+		leftpanel.add(freierPlatzBar, gbcErzeugen(0, 2, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
+		leftpanel.add(freieFaecherLabel, gbcErzeugen(0, 3, 1, 1, 0.0, 0.05, GridBagConstraints.BOTH));
+		leftpanel.add(freieFaecherBar, gbcErzeugen(0, 4, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
+		leftpanel.add(hilfslabel, gbcErzeugen(0, 5, 1, 1, 0.0, 0.46, GridBagConstraints.BOTH));
 	}
 
 	//TODO funktioniert nicht
@@ -523,7 +533,4 @@ public class LagerverwaltungGUI extends JFrame{
 		return gbc;
 	}
 
-	public Dimension getRightpanelSize() {
-		return rightpanel.getSize();
-	}
 }
