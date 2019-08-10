@@ -7,9 +7,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -31,10 +33,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.Document;
-
+ 
 public class Actionlistener {
 	
-	private LagerverwaltungGUI gui;
 	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
 	
 	public void oeffnen() {
@@ -50,14 +51,17 @@ public class Actionlistener {
 		
 		if(result == JFileChooser.APPROVE_OPTION) {
 			String dateipfad = chooser.getSelectedFile().toString();
-			if(chooser.getFileFilter().accept(new File(dateipfad))) {
-				//Öffnenalgorithmus			
+			if(chooser.getSelectedFile().toString().endsWith(".txt")) {
+				//TODO Öffnenalgorithmus			
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen, versuchen Sie es erneut");
+				java.awt.Toolkit.getDefaultToolkit().beep();
+				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 				oeffnen();
 			}
 		}
+		
 	}
 	
 	public void beenden(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
@@ -70,12 +74,13 @@ public class Actionlistener {
 			 }
 		}
 
-	public void speichern(LagerverwaltungGUI lagerverwaltungGUI, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
+	public void speichern(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
+		BufferedWriter writer = null;
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Speichern unter");
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setSelectedFile(new File("Lagerverwaltung.txt"));
+		chooser.setSelectedFile(new File("test.txt"));
 		chooser.setFileFilter(filter);
 		chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+ "\\Save"));
 		chooser.setVisible(true);
@@ -84,35 +89,60 @@ public class Actionlistener {
 	
 		if(result == JFileChooser.APPROVE_OPTION) {
 			String dateipfad = chooser.getSelectedFile().toString();
-			if(chooser.getFileFilter().accept(new File(dateipfad))) {
-				//Speicheralgorithmus
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Falscher Datentyp!\n Speichern Sie nur in Textdateien (txt).");
+			if(chooser.getSelectedFile().toString().endsWith(".txt")) {
+				ArrayList<ArrayList<String>> inhaltdaten = new ArrayList<ArrayList<String>>();	
+				inhaltdaten = daten.getItemTable();
+				try {
+					writer = new BufferedWriter(new FileWriter(dateipfad, false));
+					for(int i = 0; i < inhaltdaten.size(); i++) {
+						for(int j = 0; j < inhaltdaten.get(i).size(); j++) {
+							writer.write(inhaltdaten.get(i).get(j)); 
+							writer.write(" ");
+						}
+						writer.write("\n");
+					} 
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				finally {
+		            if (writer != null) {
+		                try {
+							writer.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+		            }
+				}
+		            
+			} else {
+				java.awt.Toolkit.getDefaultToolkit().beep();
+				JOptionPane.showMessageDialog(null, "Sie können nur in Textdateien (.txt) speichern.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 				speichern(gui, leftpanel, rightpanel, menupanel);
 			}
 		}
 		else {
-			startseite(gui, leftpanel, rightpanel, menupanel);
+			//TODO schließt automatisch das Programm, ändern?
 		}
 	}
 
-	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel) {
+	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
 		//Entfernt die Panels der Startübersicht
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
 		}
 		JPanel lagerpanel = new JPanel();
 		lagerpanel.setLayout(new BorderLayout());
+		lagerpanel.setBorder(new EmptyBorder(0, 5, 0, 5));
 		lagerpanel.setBackground(Color.DARK_GRAY);
 		gui.setLayout(new BorderLayout());
 		gui.add(lagerpanel, BorderLayout.CENTER);
 		gui.pack();
 		gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		tabelleErzeugen(gui,lagerpanel, leftpanel, rightpanel);	
+		tabelleErzeugen(gui,lagerpanel, menupanel, leftpanel, rightpanel);	
 	}
 
-	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel) {		
+	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {		
 		JTable tabelle = null;
 		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Anzahl", "Regalnummer", "Fachspalte", "Fachreihe" };
 		ArrayList<ArrayList<String>> inhaltdaten = new ArrayList<ArrayList<String>>();
@@ -133,14 +163,13 @@ public class Actionlistener {
 		};
 		
 		tabelle.setDefaultRenderer(Object.class, new TableCellRenderer());
-
 		lagerpanel.add(new JScrollPane(tabelle), BorderLayout.CENTER);
 		lagerpanel.repaint();
 		
-		sorting(tabelle, gui, lagerpanel, leftpanel, rightpanel);	
+		sorting(tabelle, gui, lagerpanel, menupanel, leftpanel, rightpanel);	
 	}
 
-	private void sorting(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel leftpanel, JPanel rightpanel) {
+	private void sorting(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
 		int i = JOptionPane.showOptionDialog(null,
 				"Wonach möchten Sie sortieren?", "Lagerinhalt anzeigen",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
@@ -152,6 +181,7 @@ public class Actionlistener {
 			sortierenTeilenummer(tabelle);
 		}
 		else if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
+			gui.add(menupanel);
 			gui.add(leftpanel);
 			gui.add(rightpanel);
 			gui.remove(lagerpanel);
@@ -206,7 +236,7 @@ public class Actionlistener {
 		btnbezeichnung.setSelected(true);
 		
 		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(entnehmendialog) );
+		btnok.getActionMap().put("beenden", new EscAction(entnehmendialog));
 	    
 	    //Ermöglicht nur eine Auswahl
 		btngroup.add(btnteilenummer);
@@ -303,6 +333,7 @@ public class Actionlistener {
 				}
 			}
 			else  {
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Das angegebene Teil konnte leider nicht gefunden werden."
 						+ "\n Suchen Sie nach einem anderen Teil.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -310,6 +341,7 @@ public class Actionlistener {
 			}
 		}
 		else {
+			java.awt.Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Sie müssen etwas in das Textfeld eingeben",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 			entnehmen(gui);
@@ -356,7 +388,7 @@ public class Actionlistener {
 		einlagerndialog.setLayout(new GridBagLayout());
 		
 		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(einlagerndialog) );
+		btnok.getActionMap().put("beenden", new EscAction(einlagerndialog));
 		
 		gbc.gridx = 0; //Spalte
 		gbc.gridy = 0; //Zeile
@@ -410,16 +442,14 @@ public class Actionlistener {
 			int groesse = Integer.parseInt(eingabegroesse.getText());
 			ergebnis = daten.einlagern(eingabebezeichnung.getText(), teilenummer, groesse);
 			
-			for(int i = 0; i < ergebnis.length; i++) {
-				System.out.println(ergebnis[i]);
-			}
-			
 			switch(ergebnis[0]) {
 			case 0:
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Das Teil kann nicht eingelagert werden, da das Fach bereits voll ist.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 				break;
 			case 1: 
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Das Teil kann nicht eingelagert werden, da das Lager voll ist.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 				break;
@@ -431,6 +461,7 @@ public class Actionlistener {
 				break;
 			
 			default:
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Es ist ein unerwarteter Fehler aufgetreten.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 			}
@@ -438,16 +469,19 @@ public class Actionlistener {
 		}
 		else {		
 			if(eingabebezeichnung.getText().length() > 0 && eingabegroesse.getText().length() == 0) {
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Größe des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 				einlagern(gui, eingabebezeichnung.getText(), null);
 			}
 			else if(eingabegroesse.getText().length() > 0 && eingabebezeichnung.getText().length() == 0) {
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 				einlagern(gui, null, eingabegroesse.getText());
 			}
 			else if(eingabebezeichnung.getText().length() == 0 && eingabegroesse.getText().length() == 0) {
+				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils und die Größe des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
 				einlagern(gui, null, null);

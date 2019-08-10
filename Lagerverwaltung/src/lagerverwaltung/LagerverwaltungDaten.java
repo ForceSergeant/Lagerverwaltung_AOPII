@@ -7,6 +7,7 @@ public class LagerverwaltungDaten {
     private ArrayList<Regal> lager = new ArrayList<Regal>();
     private int anzahl = 0;
     private int x,y,z,xk,yk,zk;
+
     private ArrayList<ArrayList<String>> item_table = new ArrayList<ArrayList<String>>();
 
     public LagerverwaltungDaten() {
@@ -151,8 +152,8 @@ public class LagerverwaltungDaten {
         }
         return coord_arr;
     }
-    
-    private int generiereTN() {
+
+	private int generiereTN() {
     	Random random = new Random();
     	int tn = 0;
     	boolean check = false;
@@ -280,7 +281,8 @@ public class LagerverwaltungDaten {
         }
         for(int i = 0; i < coord_arr.length; i++) {
             coord_arr[i] = 0;
-        } 
+        }
+        
         return coord_arr;
 
     }
@@ -298,11 +300,15 @@ public class LagerverwaltungDaten {
     	return item_table;
     }
     
-    public int freieRegalfaecher() {
+    public int getfreieRegalfaecher() {
     	int zaehleFreieFaecher=0;
     	for (Regal i: lager) {
     		zaehleFreieFaecher += i.freieFaecher();
     	}
     	return zaehleFreieFaecher;
+    }
+    
+    public int getTableSize() {
+    	return item_table.size();
     }
 }

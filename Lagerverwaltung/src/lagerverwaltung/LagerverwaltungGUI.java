@@ -6,8 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,6 +29,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -69,7 +76,7 @@ public class LagerverwaltungGUI extends JFrame{
 	private Box hilfsbox;
 	private JPanel menupanel;
 	private JPanel leftpanel;
-	private JPanel rightpanel;
+	private CustomPanel rightpanel;
 	
 	//ProgressBar
 	private CustomProgressBar freierPlatzBar;
@@ -81,14 +88,12 @@ public class LagerverwaltungGUI extends JFrame{
 	//Farbe
 	private Color CustomColor;
 	
-	public LagerverwaltungGUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public LagerverwaltungGUI() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			UIManager.put("ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI");
 		} catch (Exception e) {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			JOptionPane.showMessageDialog(null, "Wir konnten leider das gewünschte Look and Feel nicht verwenden und mussten auf das Look and Feel des Systems umsteigen.",
-					"Fehler", JOptionPane.ERROR_MESSAGE);
+			
 		}
 		
 		//Eigenschaften		
@@ -136,32 +141,33 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		//ProgressBar
 		progressbarErzeugen();
-	
+		
+		
 		//Actionlistener
 		oeffnenitem.addActionListener(e -> actionlistener.oeffnen());
 		beendenitem.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
 		speichernitem.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
-		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel));
+		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernitem.addActionListener(e -> actionlistener.einlagern(this, null, null));
 		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
 		
 		oeffnenbtn.addActionListener(e -> actionlistener.oeffnen());
 		speichernbtn.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
-		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, leftpanel, rightpanel));
+		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null));
 		startseitebtn.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
 		beendenbtn.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
-	}
+	
+		}
 	
 	
 	private void startpanelsErzeugen() {
 		CustomColor = new Color(80, 80, 80);
-		hilfslabel = new JLabel(new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/img/lager2.jpg").getImage().getScaledInstance( 600, 400,  java.awt.Image.SCALE_SMOOTH )));
 		menupanel = new JPanel();
 		leftpanel = new JPanel();
-		rightpanel = new JPanel();
+		rightpanel = new CustomPanel();
 		
 		menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.LINE_AXIS));
 		leftpanel.setLayout(new GridBagLayout());
@@ -170,7 +176,13 @@ public class LagerverwaltungGUI extends JFrame{
 		leftpanel.setBackground(CustomColor);
 
 		//TODO Image immer auf größe des JPanels rightpanel
-		rightpanel.add(hilfslabel);
+		Image image = null;
+		try {
+			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		rightpanel.setImage(image);
 		
 		this.add(menupanel,gbcErzeugen(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.BOTH));
 		this.add(leftpanel, gbcErzeugen(0, 1, 1, 1, 0.25, 0.0, GridBagConstraints.BOTH));
@@ -266,8 +278,7 @@ public class LagerverwaltungGUI extends JFrame{
 		freieFaecherLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		
 		//TODO Funktion schreiben, wie ich an die jeweiligen Daten komme
-		freieFaecherBar.setValue(daten.freieRegalfaecher());
-		freierPlatzBar.setValue(5000);
+		aktualisierenProgressbar();
 		
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
@@ -278,7 +289,15 @@ public class LagerverwaltungGUI extends JFrame{
 		leftpanel.add(freieFaecherBar, gbcErzeugen(0, 3, 1, 1, 0.0, 0.01, GridBagConstraints.BOTH));
 		leftpanel.add(hilfslabel, gbcErzeugen(0, 4, 1, 1, 0.0, 0.47, GridBagConstraints.BOTH));
 	}
-	
+
+	//TODO funktioniert nicht
+	public void aktualisierenProgressbar() {
+		freieFaecherBar.setValue(800 - daten.getfreieRegalfaecher());
+		freierPlatzBar.setValue(daten.getTableSize());
+		freieFaecherLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
+		freierPlatzLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
+	}
+
 	private void stylebtn(JButton component) {
 		component.setSize(75, 75);
 		component.setMargin(new Insets(0,0,0,0));
@@ -489,6 +508,7 @@ public class LagerverwaltungGUI extends JFrame{
 
 	public void schliesseErgebnisDialog(JDialog ergebnisdialog) {
 		ergebnisdialog.dispose();
+		aktualisierenProgressbar();
 	}
 
 	public GridBagConstraints gbcErzeugen(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int fill) {
@@ -503,4 +523,7 @@ public class LagerverwaltungGUI extends JFrame{
 		return gbc;
 	}
 
+	public Dimension getRightpanelSize() {
+		return rightpanel.getSize();
+	}
 }

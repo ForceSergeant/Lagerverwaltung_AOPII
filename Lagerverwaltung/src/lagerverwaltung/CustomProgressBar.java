@@ -25,7 +25,7 @@ public class CustomProgressBar extends JProgressBar {
 		{
 			this.setForeground(Color.YELLOW);
 		}
-		else if (n < maxvalue*90) {
+		else if (n < maxvalue*0.9) {
 			this.setForeground(Color.ORANGE);
 		}
 		else {
