@@ -88,14 +88,10 @@ public class Fach {
      * 					false, wenn das Entfernen nicht erfolgreich war
      */
     public boolean removeItem(String name, int teilenummer) {
-        System.out.println("FACH: Bis hierhin komme ich. Vor der For-Schleife.");
         for (Item i: itemliste) {
-            System.out.println("FACH: Bis hierhin komme ich. In die For-Schleife.");
             if (i.getName().equals(name) || (i.getTeilenummer() == teilenummer)) {
-                System.out.println("FACH: Bis hierhin komme ich. In die If-Bedingung.");
                 grundeinheit += i.getGröße();
                 itemliste.remove(i);
-                System.out.println(itemliste.size());
                 return true;
             }
         }
