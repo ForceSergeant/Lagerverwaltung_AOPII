@@ -6,6 +6,13 @@ public class Regal {
     private ArrayList<ArrayList<Fach>> regal = new ArrayList<ArrayList<Fach>>();
     private int regalnummer;
 
+    /**
+     * Konstruktor zur Erzeugung eines neuen Objekts der Klasse Regal, zwei verschachtelte Schleifen, um die zweidimensionale
+     * ArrayList regal mit erzeugten Objekten der Klasse Fach zu füllen, Übergeben von i und j, um Koordinaten des Fachs 
+     * festzulegen
+     * 
+     * @param regalnummer: die Regalnummer des Regals
+     */
     public Regal(int regalnummer) {
         this.regalnummer = regalnummer;
         for (int i = 0; i<10; i++) {
@@ -18,10 +25,11 @@ public class Regal {
         }
     }
 
-    public Fach getFach(int zeile, int spalte) {
-        return regal.get(spalte).get(zeile);
-    }
-
+    /**
+     * Getter-Methode, um die Regalnummer des Regals zurückzugeben
+     * 
+     * @return int: gibt Regalnummer des Regals zurück
+     */
     public int getRegalnummer() {
         return regalnummer;
     }
