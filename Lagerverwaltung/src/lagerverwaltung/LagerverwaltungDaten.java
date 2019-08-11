@@ -18,6 +18,15 @@ public class LagerverwaltungDaten {
     }
     
     public void laden(String name, int tn, int gr, int anz, int x, int y, int z) {
+    	ArrayList<String> arr = new ArrayList<String>();
+    	arr.add(name);
+    	arr.add(Integer.toString(tn));
+    	arr.add(Integer.toString(gr));
+    	arr.add(Integer.toString(anz));
+    	arr.add(Integer.toString(x));
+    	arr.add(Integer.toString(y));
+    	arr.add(Integer.toString(z));
+    	item_table.add(arr);
     	for(Regal regal : lager) {
     		if(regal.getRegalnummer() == x) {
 		    	for(int i = 1; i <= anz; i++) {
