@@ -7,6 +7,12 @@ public class Fach {
     private int zeile, spalte;
     private ArrayList<Item> itemliste = new ArrayList<Item>();
 
+    /**
+     * Konstruktor zur Erzeugung eines neuen Objekts der Klasse Fach, setzt Grundeinheit bei jedem Fach auf 10
+     * 
+     * @param zeile: die Zeile des Fachs
+     * @param spalte: die Spalte des Fachs
+     */
     public Fach(int zeile, int spalte) {
         grundeinheit = 10;
         this.zeile = zeile+1;
