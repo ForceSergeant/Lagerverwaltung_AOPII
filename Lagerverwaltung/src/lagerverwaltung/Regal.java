@@ -30,12 +30,10 @@ public class Regal {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.itemVorhandenViaNamen(name)) {
-                    System.out.println("REGAL: Item vorhanden!");
                     return true;
                 }
             }
         }
-        System.out.println("REGAL: Item nicht vorhanden!");
         return false;
 
     }
@@ -44,12 +42,10 @@ public class Regal {
         for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
                 if(j.itemVorhandenViaNummer(teilenummer)) {
-                    System.out.println("REGAL: Item vorhanden!");
                     return true;
                 }
             }
         }
-        System.out.println("REGAL: Item nicht vorhanden!");
         return false;
     }
     
@@ -60,7 +56,6 @@ public class Regal {
             for (Fach j: i) {
                 if(j.itemVorhandenViaNamen(name) && j.getGrundeinheit() >= größe) {
                     j.addItem(name, teilenummer, größe);
-                    System.out.println("REGAL EinfügenVorhanden: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
                     y = j.getSpalte();
                     z = j.getZeile();
                     arr[0] = 1;
@@ -70,7 +65,6 @@ public class Regal {
                 }
             }
         }
-        System.out.println("REGAL: EinfügenVorhanden nicht erfolgreich!");
         arr[0] = 0;
         arr[1] = 0;
         arr[2] = 0;
@@ -85,7 +79,6 @@ public class Regal {
             for (Fach j: i) {
                 if(j.istLeer() && (j.getGrundeinheit() >= größe)) {
                     j.addItem(name, teilenummer, größe);
-                    System.out.println("REGAL EinfügenNeu: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
                     y = j.getSpalte();
                     z = j.getZeile();
                     arr[0] = 1;
@@ -95,7 +88,6 @@ public class Regal {
                 }
             }
         }
-        System.out.println("REGAL: EinfügenNeu nicht erfolgreich!");
         arr[0] = 0;
         arr[1] = 0;
         arr[2] = 0;
@@ -108,7 +100,6 @@ public class Regal {
             for (Fach j: i) {
                 if(j.getSpalte() == y && j.getZeile() == z) {
                     j.addItem(name, tn, gr);
-                    System.out.println("REGAL einfügenLaden: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
                     return;
                 }
             }
