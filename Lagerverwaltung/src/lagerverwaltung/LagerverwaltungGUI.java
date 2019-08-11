@@ -164,7 +164,6 @@ public class LagerverwaltungGUI extends JFrame{
 			try {
 				actionlistener.oeffnen(this);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
@@ -352,7 +351,7 @@ public class LagerverwaltungGUI extends JFrame{
 		leftpanel.add(hilfslabel, gbcErzeugen(0, 5, 1, 1, 0.0, 0.46, GridBagConstraints.BOTH));
 	}
 
-	//TODO funktioniert nicht
+	//TODO Dokumentation
 	public void aktualisierenProgressbar(int freierPlatz, int freieFaecher) {
 		freieFaecherBar.setValue(800 - freieFaecher);
 		freierPlatzBar.setValue(freierPlatz);

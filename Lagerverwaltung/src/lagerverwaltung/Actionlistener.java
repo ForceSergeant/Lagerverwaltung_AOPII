@@ -69,7 +69,6 @@ public class Actionlistener {
 				String zeile = "";
 
 				while( (zeile = br.readLine()) != null ) {
-				   	
 					if(zeile != null && zeile.length() >0 && zeile != "") {
 						String[] string = zeile.substring(0, zeile.length()-1).split(" ");
 						for(int i = 0; i < string.length; i++ ) {
