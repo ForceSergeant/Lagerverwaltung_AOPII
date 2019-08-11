@@ -10,6 +10,10 @@ public class LagerverwaltungDaten {
 
     private ArrayList<ArrayList<String>> item_table = new ArrayList<ArrayList<String>>();
 
+    /**
+     * Konstruktor zur Erzeugung eines neuen Objekts der Klasse LagerverwaltungDaten, 8x Erzeugen eines neuen Objekts der
+     * Klasse Regal mit Übergabe von i+1, um die Regalzahl des Regals festzulegen, hinzufügen des erzeugten Objekts zu lager
+     */
     public LagerverwaltungDaten() {
         for (int i=0; i<8; i++) {
             Regal regal = new Regal(i+1);
@@ -45,6 +49,7 @@ public class LagerverwaltungDaten {
         int test_size = 0;
         boolean check = false;
         for (Regal i: lager) {
+            System.out.println("LDATEN: Ich bin jetzt in For-Schleife 1");
             statusSuche = i.sucheViaNamen(name);
             if (statusSuche) {	//Vorhandener Name
             	if(teilenummer == -1) {	//keine TN eingegeben
@@ -82,10 +87,13 @@ public class LagerverwaltungDaten {
                 	}
                 }
             	if(größe != test_size) {
+            		System.out.println("Die eingegebene Größe (" + größe + ") stimmt nicht mit der Größe des bereits vorhandenen Items überein (" + test_size + ").");
+            		System.out.println("Ihre Eingabe wird von der richtigen Größe überschrieben.");
             	}
             	größe = test_size;
             	statusEinfügen = i.einfuegenVorhanden(name, teilenummer, größe);
 	            if(statusEinfügen[0]==1) {	//Einfügen erfolgreich
+	                System.out.println("LDATEN: Erfolgreich eingefügt!");
 	                for(ArrayList<String> arr : item_table) {
 	                	if(arr.get(0).equals(name)) {
 	                		anzahl = Integer.parseInt(arr.get(3));
@@ -106,23 +114,29 @@ public class LagerverwaltungDaten {
         }
         if (!statusSuche) {	//Neuer Name
             for (Regal i: lager) {
+                System.out.println("LDATEN: Ich bin jetzt in For-Schleife 2");
                 if(teilenummer == -1) {	//keine TN eingegeben
             		teilenummer = generiereTN();
+            		System.out.println("TN generiert");
             	}
                 else {	//TN eingegeben
                 	for(ArrayList<String> arr : item_table) {
 	                	if(arr.get(1).equals(Integer.toString(teilenummer))) {	//Vorhandene TN
+	                		System.out.println("Die eingegebene Teilenummer existiert bereits für das Item '" + arr.get(0) + "'.");
 	                		teilenummer = generiereTN();
+	                		System.out.println("Für das Item '" + name + "' wurde eine neue Teilenummer erzeugt: " + teilenummer + ".");
 	                		check = false;
 	                		break;
 	                	}
 	                	else check = true;	//Neue TN
 	                }
                 	if(check == true) {
+                		System.out.println("Das Item '" + name + "' erhält die Teilenummer: " + teilenummer + ".");
             		}
                 }
                 statusEinfügen = i.einfuegenNeu(name, teilenummer, größe);
                     if (statusEinfügen[0]==1) {	//Einfügen erfolgreich
+                        System.out.println("LDATEN: Erfolgreich eingefügt!");
                         ArrayList<String> temp_arr = new ArrayList<String>();
                         temp_arr.add(name);
                         temp_arr.add(Integer.toString(teilenummer));
@@ -147,6 +161,7 @@ public class LagerverwaltungDaten {
                     
             }
             if (statusEinfügen[0]==0) {
+                System.out.println("Das Lager hat keine Kapazität mehr!");
                 coord_arr[0] = 1;	//1 = Einfügen nicht erfolgreich, da Lager voll
                 for (int i = 1; i < coord_arr.length; i++) {
                 	coord_arr[i] = 0;
@@ -154,6 +169,7 @@ public class LagerverwaltungDaten {
             }
         }
         else if (statusSuche && (statusEinfügen[0]==0)) {
+            System.out.println("Das Fach hat keine freie Kapazität mehr!");
             for (int i = 0; i < coord_arr.length; i++) {
             	coord_arr[i] = 0;	//0 = Einfügen nicht erfolgreich, da Fach voll
             }
@@ -180,24 +196,24 @@ public class LagerverwaltungDaten {
     	}
     	return tn;
 	}
-
+	
 	/**
-     * Name oder Teilenummer, welches vom Nutzer eingegeben wird, wird auf Existens geprüft und falls vorhanden aus dem 
-     * Lager entfernt, wobei unterschieden wird, ob vom Nutzer Bezeichnung oder Teilenummer eingegeben wurden, weiterhin
-     * wird der Weg in x-, y- und z-Richtung berechnet und anschließend zurückgegeben
-     * 
-     * @see sucheViaNamen
-     * @see sucheViaNummer
-     * @see entfernen
-     * 
-     * @param name: die Bezeichnung des Gegenstands, der entnommen werden soll, entweder "" oder Eingabe des Nutzers
-     * @param teilenummer:     die Teilenummer des Gegenstands, der entnommen werden soll, entweder -1 oder die Eingabe des 
-     *                         Nutzers
-     * 
-     * @return int[4]:     gibt ein Feld der Länge 4 zurück, welches übergibt, ob das Entnehmen erfolgreich war und falls ja, 
-     *                     den zurückgelegten Weg in x-, y- und z-Richtung ebenfalls übergibt, falls nicht erfolgreich, wird 
-     *                     für x, y und z jeweils 0 zurückgegeben
-     */
+	 * Name oder Teilenummer, welches vom Nutzer eingegeben wird, wird auf Existens geprüft und falls vorhanden aus dem 
+	 * Lager entfernt, wobei unterschieden wird, ob vom Nutzer Bezeichnung oder Teilenummer eingegeben wurden, weiterhin
+	 * wird der Weg in x-, y- und z-Richtung berechnet und anschließend zurückgegeben
+	 * 
+	 * @see sucheViaNamen
+	 * @see sucheViaNummer
+	 * @see entfernen
+	 * 
+	 * @param name: die Bezeichnung des Gegenstands, der entnommen werden soll, entweder "" oder Eingabe des Nutzers
+	 * @param teilenummer: 	die Teilenummer des Gegenstands, der entnommen werden soll, entweder -1 oder die Eingabe des 
+	 * 						Nutzers
+	 * 
+	 * @return int[4]: 	gibt ein Feld der Länge 4 zurück, welches übergibt, ob das Entnehmen erfolgreich war und falls ja, 
+	 * 					den zurückgelegten Weg in x-, y- und z-Richtung ebenfalls übergibt, falls nicht erfolgreich, wird 
+	 * 					für x, y und z jeweils 0 zurückgegeben
+	 */
     public int[] entnehmen(String name, int teilenummer) {
         boolean statusSuche = false;
         int[] statusEntnehmen = new int[3];
@@ -223,18 +239,21 @@ public class LagerverwaltungDaten {
                     x = 2 + (i.getRegalnummer()-1) * 4;
                     y = (statusEntnehmen[1]) * 2;
                     z = (statusEntnehmen[2]-1) * 2;
+                    System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
                     coord_arr[0] = 1;
                     coord_arr[1] = x;
                     coord_arr[2] = y;
                     coord_arr[3] = z;
                     anzahl = Integer.parseInt(temp_arr.get(3));
             		if(anzahl-1 == 0) {
+            			System.out.println("(TN) Hat removen funktioniert: " + item_table.remove(temp_arr));
             		}
             		else {
             			temp_arr_2 = temp_arr;
             			temp_arr.set(3, Integer.toString(anzahl-1));
             			item_table.set(item_table.indexOf(temp_arr_2), temp_arr);
             		}
+                    System.out.println("Item erfolgreich entnommen!");
                     return coord_arr;
                 }
 
@@ -243,11 +262,13 @@ public class LagerverwaltungDaten {
                 for(int i = 0; i < coord_arr.length; i++) {
                     coord_arr[i] = 0;
                 }
+                System.out.println("Item nicht gefunden!");
                 return coord_arr;
             }
             for(int i = 0; i < coord_arr.length; i++) {
                 coord_arr[i] = 0;
             } 
+            System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
             return coord_arr;
             
         }
@@ -267,18 +288,21 @@ public class LagerverwaltungDaten {
                         x = 2 + (i.getRegalnummer()-1) * 4;
                         y = (statusEntnehmen[1]) * 2;
                         z = (statusEntnehmen[2]-1) * 2;
+                        System.out.println("x: "+x+"\ty: "+y+"\tz: "+z);
                         coord_arr[0] = 1;
                         coord_arr[1] = x;
                         coord_arr[2] = y;
                         coord_arr[3] = z;
                         anzahl = Integer.parseInt(temp_arr.get(3));
                 		if(anzahl-1 == 0) {
+                			System.out.println("(BZ) Hat removen funktioniert: " + item_table.remove(temp_arr));
                 		}
                 		else {
                 			temp_arr_2 = temp_arr;
                 			temp_arr.set(3, Integer.toString(anzahl-1));
                 			item_table.set(item_table.indexOf(temp_arr_2), temp_arr);
                 		}
+                        System.out.println("Item erfolgreich entnommen!");
                         return coord_arr;
                 }
 
@@ -287,11 +311,13 @@ public class LagerverwaltungDaten {
                 for(int i = 0; i < coord_arr.length; i++) {
                     coord_arr[i] = 0;
                 }
+                System.out.println("Item nicht gefunden!");
                 return coord_arr;
             }
             for(int i = 0; i < coord_arr.length; i++) {
                 coord_arr[i] = 0;
             } 
+            System.out.println("ERROR @ 'public int[] entnehmen' (LagerverwaltungDaten.java)");
             return coord_arr;
         }
         for(int i = 0; i < coord_arr.length; i++) {
@@ -312,7 +338,7 @@ public class LagerverwaltungDaten {
      * @see freieFaecher
      * 
      * @return int: übergibt die Anzahl der freien Fächer
-     */
+     */ 
     public int getfreieRegalfaecher() {
     	int zaehleFreieFaecher=0;
     	for (Regal i: lager) {
@@ -327,40 +353,6 @@ public class LagerverwaltungDaten {
     		occupied += Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3));         
     	}
     	return occupied;
-    }
-    
-    public int getFreierPlatz(String name, int tn) {
-    	boolean statusSuche = false;
-    	int remaining = -1;
-    	Suche: {
-	    	if(tn == -1) {
-	    		for (Regal i: lager) {
-	                statusSuche = i.sucheViaNamen(name);
-	                if (statusSuche) {
-						for(ArrayList<String> arr : item_table) {
-			            	if(arr.get(0).equals(name)) {
-			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
-			            		break Suche;
-			            	}
-			            }
-	                }
-	    		}
-			}
-	    	else {
-	    		for (Regal i: lager) {
-	                statusSuche = i.sucheViaNummer(tn);
-	                if (statusSuche) {
-			    		for(ArrayList<String> arr : item_table) {
-			            	if(arr.get(1).equals(Integer.toString(tn))) {
-			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
-			            		break Suche;
-			            	}
-			            }
-	                }
-	    		}
-	    	}
-    	}
-    	return remaining;
     }
     
 }
