@@ -190,6 +190,10 @@ public class Actionlistener {
 		lagerPanel.setLayout(new BorderLayout());
 		lagerPanel.setBorder(new EmptyBorder(0, 5, 0, 5));
 		lagerPanel.setBackground(Color.DARK_GRAY);
+		
+		lagerPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		lagerPanel.getActionMap().put("beenden", new EscActionForLagerinhaltAnzeigen(gui, leftpanel, rightpanel, menupanel) );
+		
 		gui.setLayout(new BorderLayout());
 		gui.add(lagerPanel, BorderLayout.CENTER);
 		gui.pack();
@@ -604,9 +608,9 @@ public class Actionlistener {
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
 		}
-		gui.add(menupanel);
 		gui.add(leftpanel);
 		gui.add(rightpanel);
+		gui.add(menupanel);
 		gui.repaint();
 	}
 
