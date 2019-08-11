@@ -14,8 +14,13 @@ public class CustomProgressBar extends JProgressBar {
 	
 	private int maxvalue;
 	
-	public CustomProgressBar(int maxlength) {
-		this.maxvalue = maxlength;
+	/**
+	 * Konstruktor zur Erzeugung eines Objektes der Klasse CustomProgressBar
+	 * 
+	 * @param maxvalue die maximale Anzahl der JProgressBar -> 100%
+	 */
+	public CustomProgressBar(int maxvalue) {
+		this.maxvalue = maxvalue;
 	}
 	
 	/**

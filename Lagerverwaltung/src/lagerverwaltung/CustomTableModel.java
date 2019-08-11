@@ -10,6 +10,13 @@ import javax.swing.table.DefaultTableModel;
 public class CustomTableModel extends DefaultTableModel {
 
 	
+	/**
+	 * Konstruktor für die Erzeugung des Objekts der Klasse CustomTableModel
+	 * der Konstruktor der Oberklasse -> DefaultTableModel
+	 * 
+	 * @param data daten der Tabelle
+	 * @param headers Zeilenkopf der Tabelle
+	 */
 	public CustomTableModel(Object[][] data, Object[] headers) {
 		super(data, headers);
 	}

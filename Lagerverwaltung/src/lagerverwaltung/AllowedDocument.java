@@ -15,6 +15,11 @@ import javax.swing.text.PlainDocument;
 public class AllowedDocument extends PlainDocument  {
 	private int maxlenght;
 	
+	/**
+	 * Konstruktor der ein Objekt der Klasse AllowedDocument erstellt
+	 * 
+	 * @param maxlenght enthält die maximale Länge an Zeichen die der Benutzer in das Feld eingeben darf
+	 */
 	public AllowedDocument(int maxlenght) {
 		this.maxlenght = maxlenght;
 	}

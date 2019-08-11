@@ -14,7 +14,11 @@ public class EscAction extends AbstractAction {
 
 	private JDialog dialog = new JDialog();
 
-	
+	/**
+	 * Konstruktor zur Erzeugung eines neuen Objektes der Klasse EscAction
+	 * 
+	 * @param dialog der JDialog, der geschlossen (disposed) werden soll
+	 */
 	public EscAction(JDialog dialog) {
 		this.dialog = dialog;
 
