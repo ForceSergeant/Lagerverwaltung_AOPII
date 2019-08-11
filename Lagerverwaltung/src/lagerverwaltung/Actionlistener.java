@@ -84,11 +84,10 @@ public class Actionlistener {
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, "Hierbei handelt es sich um eine ungültige Datei und kann nicht geladen werden.",
 									"Fehler", JOptionPane.ERROR_MESSAGE);
-						}
-				   				
+						}		
 				   	}
-				br.close();
 				}
+				br.close();
 			} else {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen.",
@@ -781,7 +780,11 @@ public class Actionlistener {
 		rightpanel.setImage(null);
 		
 		//ActionListener
-//		btnschliessen.addActionListener(e -> );
+		//btnschliessen.addActionListener(e -> fachauswahlDialogschliessen(rightpanel));
+	}
+
+	private void fachauswahlDialogschliessen() {
+		
 	}
 }
 
