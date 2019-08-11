@@ -122,20 +122,19 @@ public class LagerverwaltungGUI extends JFrame{
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new GridBagLayout());
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
-//		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//		this.addWindowListener(new WindowAdapter(){
-//			public void windowClosing(WindowEvent e) {		
-//				int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?",
-//						"Programm schließen?", JOptionPane.YES_NO_OPTION,
-//						JOptionPane.WARNING_MESSAGE, null, new String[] {"Ja", "Nein"}, "Ja");
-//				if(i == JOptionPane.YES_OPTION) {
-//					 actionlistener.speichern(gui, menupanel, leftpanel, rightpanel);
-//					 System.exit(0);
-//				 }
-//			}
-//		});
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) {		
+				int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?",
+						"Programm schließen?", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, new String[] {"Ja", "Nein"}, "Ja");
+				if(i == JOptionPane.YES_OPTION) {
+					 actionlistener.speichern();
+					 System.exit(0);
+				 }
+			}
+		});
 		
 		//Menü
 		menueErzeugen();
