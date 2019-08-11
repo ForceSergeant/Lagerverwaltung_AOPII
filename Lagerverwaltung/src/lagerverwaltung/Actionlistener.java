@@ -60,6 +60,7 @@ public class Actionlistener {
 	public void oeffnen(LagerverwaltungGUI gui) throws IOException {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
 		JFileChooser chooser = new JFileChooser();
+		boolean erfolgreichgeladen = true;
 		chooser.setFileFilter(filter);
 		chooser.setDialogTitle("Datei laden");
 		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -84,7 +85,8 @@ public class Actionlistener {
 						try {
 							daten.laden(string[0], Integer.parseInt(string[1]), Integer.parseInt(string[2]), Integer.parseInt(string[3]),Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
 						} catch (Exception e) {
-							e.printStackTrace();
+							erfolgreichgeladen = false;
+							break;
 						}		
 				   	}
 				}
@@ -95,12 +97,16 @@ public class Actionlistener {
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 				oeffnen(gui);
 			}
+			if(!erfolgreichgeladen) {
+				JOptionPane.showMessageDialog(null, "Die Textdatei ist ungültig und kann nicht geladen werden",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+			}
 			gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 		}
 	}
 	
 	/**
-	 * Öfnnet einen FileChooser, mit dessen Hilfe man die Datei auswählen kann in die gespeichert werden soll
+	 * Öffnet einen FileChooser, mit dessen Hilfe man die Datei auswählen kann in die gespeichert werden soll
 	 * Überschreibt die jeweilige Datei mit den Daten
 	 *
 	 * @return void
@@ -653,6 +659,17 @@ public class Actionlistener {
 		gbc.gridwidth = gridwidth;
 		return gbc;
 	}
+	
+	private GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwith, int fill) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = gridx;
+		gbc.gridy = gridy;
+		gbc.weightx = weightx;
+		gbc.weighty = weighty;
+		gbc.gridwidth = gridwith;
+		gbc.fill = fill;
+		return gbc;
+	}
 
 	/**
 	 * Holt sich die Größe des Monitors vom System und erstellt dann eine neue Dimenstion
@@ -674,6 +691,17 @@ public class Actionlistener {
 		return new Dimension(width, height);
 	}
 
+	/**
+	 * Erzeugt ein Dialogfenster, in dem man die Bezeichnung oder die Teilenummer eines Teils eingeben kann
+	 * Ruft bei Bestätigung die Methode fachauslastungErgebnis auf
+	 * 
+	 * @see fachauslastungErgebnis
+	 * 
+	 * @param gui wird zur Übergabe für die Methode fachauslastungErgebnis benötigt
+	 * @param rightpanel wird zur Übergabe für die Methode fachauslastungErgebnis benötigt
+	 * 
+	 * @return void
+	 */
 	public void fachauslastungDialog(LagerverwaltungGUI gui, CustomPanel rightpanel) {
 		Dimension screensize = getScreensize();
 		JDialog fachauslastungDialog = new JDialog();
@@ -736,7 +764,23 @@ public class Actionlistener {
 		eingabeTextfield.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
 	}
 
+	/**
+	 * Erzeugt die Ausschrift auf dem Panel der Startseite, welches vorher das Bild besitz
+	 * Setzt dafür die benötigten Eigenschaften der Progressbar, der Labels und des Buttons
+	 * Der Button Schließen ruft die Methode fachauswahlDialogschliessen auf
+	 * 
+	 * @see fachauswahlDialogschliessen
+	 * @see pruefeString
+	 * 
+	 * @param gui wird zum Aufruf der Funktion pruefeString benötigt
+	 * @param fachauslastungDialog wird zum Schließen des Dialogfensters benötig
+	 * @param rightpanel wird zur Übergabe an die Methode fachauswahlDialogschliessen benötigt
+	 * @param eingabeTextfield bringt Informationen über die Nutzereingabe
+	 * 
+	 * @return void
+	 */
 	private void fachauslastungErgebnis(LagerverwaltungGUI gui, JDialog fachauslastungDialog, CustomPanel rightpanel, JTextField eingabeTextfield) {
+		int ergebnis = 0;
 		Color CustomColor = new Color(80, 80, 80);
 		Font font = new Font(Font.SANS_SERIF, Font.BOLD,  15);
 		CustomProgressBar fachauslastungBar = new CustomProgressBar(10);
@@ -744,27 +788,35 @@ public class Actionlistener {
 		JLabel fachauslastungLabel = new JLabel();
 		JButton btnschliessen = new JButton("Schließen");
 		
+		for (Component c : rightpanel.getComponents()) {
+			rightpanel.remove(c);
+		}
+		
 		fachauslastungDialog.dispose();
 				
 		fachauslastungBar.setModel(new DefaultBoundedRangeModel(0, 0, 0, 10));
 		fachauslastungBar.setUI(new CustomProgressBarUI());
 		fachauslastungBar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		fachauslastungBar.setStringPainted(true);
-		fachauslastungBar.setBorder(new EmptyBorder(8, 0, 8, 0));
-		fachauslastungBar.setValue(5);
-
+		fachauslastungBar.setBorder(new EmptyBorder(8, 20, 8, 20));
+		
 		ueberschriftLabel.setFont(font);
 		ueberschriftLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		ueberschriftLabel.setBorder(new EmptyBorder(0, 0, 15, 0));
 		if(gui.pruefeString(eingabeTextfield.getText())) {
 			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Teilenummer "
 					+ eingabeTextfield.getText() +":");
+			ergebnis = daten.getFreierPlatz("", Integer.parseInt(eingabeTextfield.getText()));	
 		}
 		else {
 			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Bezeichnung "
 					+ eingabeTextfield.getText() +":");
+			ergebnis = daten.getFreierPlatz(eingabeTextfield.getText(), -1);
 		}
 		
+		if(ergebnis > 0) {
+			fachauslastungBar.setValue(ergebnis);
+		}
 		
 		fachauslastungLabel.setText("Belegter Platz: \t"+ fachauslastungBar.getValue() + "/" + fachauslastungBar.getMaximum());
 		fachauslastungLabel.setFont(font);
@@ -773,10 +825,10 @@ public class Actionlistener {
 		
 		rightpanel.setLayout(new GridBagLayout());
 		rightpanel.setBackground(CustomColor);
-		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1.0, 0.0, 1));
-		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 1.0, 0.0 , 1));
-		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.0, 1));
-		rightpanel.add(btnschliessen, gbcErzeugen(0, 4, 1.0, 0.0, 1));
+		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 0.0, 0.35, 2));
+		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 0.0, 0.0 , 2));
+		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 0.0, 0.0, 2, GridBagConstraints.BOTH));
+		rightpanel.add(btnschliessen, gbcErzeugen(0, 4, 0.0, 0.65, 2));
 		
 		rightpanel.setImage(null);
 		
@@ -784,6 +836,13 @@ public class Actionlistener {
 		btnschliessen.addActionListener(e -> fachauswahlDialogschliessen(rightpanel));
 	}
 
+	/**
+	 * Entfernt alle Komponenten des Rightpanel und fügt das Bild wieder hinzu
+	 * 
+	 * @param rightpanel wird zum Hinzufügen des Bildes zum rightpanel benötigt
+	 * 
+	 * @return void
+	 */
 	private void fachauswahlDialogschliessen(CustomPanel rightpanel) {
 		for (Component c : rightpanel.getComponents()) {
 			rightpanel.remove(c);
