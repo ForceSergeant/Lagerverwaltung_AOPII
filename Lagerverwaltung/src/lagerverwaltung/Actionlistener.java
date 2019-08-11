@@ -14,7 +14,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -69,25 +72,21 @@ public class Actionlistener {
 				String zeile = "";
 
 				while( (zeile = br.readLine()) != null ) {
-					if(zeile != null && zeile.length() >0 && zeile != "") {
+					if(zeile != null && zeile.length() >0) {
 						String[] string = zeile.substring(0, zeile.length()-1).split(" ");
-						for(int i = 0; i < string.length; i++ ) {
-				   			System.out.println(string[i]);
-				   			//TODO weiterverarbeitung
 				   		}
 				   				
 				   	}
-				}
 				br.close();
+				}
 			} else {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen.",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 				oeffnen(gui);
 			}
+			gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 		}
-		gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
-	}
 	
 	/**
 	 * Öfnnet einen FileChooser, mit dessen Hilfe man die Datei auswählen kann in die gespeichert werden soll
@@ -662,6 +661,101 @@ public class Actionlistener {
 			height = (int) Math.round(screensize.getHeight()/3);
 		}
 		return new Dimension(width, height);
+	}
+
+	public void fachauslastungDialog(LagerverwaltungGUI gui, CustomPanelForBackgroundImage rightpanel) {
+		Dimension screensize = getScreensize();
+		JDialog fachauslastungDialog = new JDialog();
+		JPanel radioPanel = new JPanel();
+		JLabel beschreibungLabel = new JLabel("Geben Sie die Bezeichnung oder die Teilenummer des Items an,"
+				+ "\nfür dessen Fach sie die Auslastung sehen möchten.");
+		JLabel wahlLabel = new JLabel("Wählen Sie aus, ob sie die Bezeichnung oder die Teilenummer angeben wollen:");
+		JLabel artLabel = new JLabel("Bezeichnung des Teils:");
+		JTextField eingabeTextfield = new JTextField(15);
+		ButtonGroup btngroup = new ButtonGroup();
+		JRadioButton btnbezeichnung = new JRadioButton("Bezeichnung");
+		JRadioButton btnteilenummer = new JRadioButton("Teilenummer");
+		JButton btnok = new JButton("Anzeigen");
+		
+		//bekommt das Standarddokument eines JTextfield
+		Document standarddocument = eingabeTextfield.getDocument();
+		
+		//Ermöglicht nur eine Auswahl
+		btngroup.add(btnteilenummer);
+		btngroup.add(btnbezeichnung);
+				
+		//Hinzufügen der Componenten
+		radioPanel.add(btnbezeichnung);
+		radioPanel.add(btnteilenummer);	
+				
+		//Setzt den Focus in das Textfeld
+		SwingUtilities.invokeLater( new Runnable() { 
+			public void run() { 
+		        eingabeTextfield.requestFocus(); 
+		    } 
+		} );
+				
+		fachauslastungDialog.setTitle("Fachauslastung anzeigen");
+		fachauslastungDialog.setLayout(new GridBagLayout());
+		
+		//Hinzufügen der Komponenten
+		fachauslastungDialog.add(beschreibungLabel, gbcErzeugen(0, 0, 1.0, 1.0, 2));
+		
+		fachauslastungDialog.add(wahlLabel, gbcErzeugen(0, 1, 1.0, 1.0, 1));
+				
+		fachauslastungDialog.add(radioPanel, gbcErzeugen(1, 1, 1.0, 1.0, 1));
+				
+		fachauslastungDialog.add(artLabel, gbcErzeugen(0, 2, 1.0, 1.0, 1));
+				
+		fachauslastungDialog.add(eingabeTextfield, gbcErzeugen(1, 2, 1.0, 1.0, 1));
+				
+		fachauslastungDialog.add(btnok, gbcErzeugen(1, 3, 1.0, 1.0, 1));
+				
+		//Legt Größe und Position des Frames fest
+		fachauslastungDialog.setSize(screensize.width, screensize.height);
+		fachauslastungDialog.setLocationRelativeTo(null);
+		fachauslastungDialog.setVisible(true);
+		
+		btnbezeichnung.setSelected(true);
+		
+		//ActionListener
+		btnbezeichnung.addActionListener(e -> radiobuttonAuswahlBezeichnung(artLabel, eingabeTextfield, standarddocument));
+		btnteilenummer.addActionListener(e -> radiobuttonAuswahlTeilenummer(artLabel, eingabeTextfield));
+		btnok.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
+		eingabeTextfield.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
+	}
+
+	private void fachauslastungErgebnis(LagerverwaltungGUI gui, JDialog fachauslastungDialog, CustomPanelForBackgroundImage rightpanel, JTextField eingabeTextfield) {
+		Color CustomColor = new Color(80, 80, 80);
+		CustomProgressBar fachauslastungBar = new CustomProgressBar(10);
+		JLabel ueberschriftLabel = new JLabel();
+		JLabel fachauslastungLabel = new JLabel();
+		fachauslastungBar.setModel(new DefaultBoundedRangeModel(0, 0, 0, 10));
+		fachauslastungBar.setUI(new CustomProgressBarUI());
+		fachauslastungBar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		fachauslastungBar.setStringPainted(true);
+		fachauslastungBar.setBorder(new EmptyBorder(8, 0, 8, 0));
+		
+		fachauslastungDialog.dispose();
+		
+		if(gui.pruefeString(eingabeTextfield.getText())) {
+			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Teilenummer "
+					+ eingabeTextfield.getText() +":");
+		}
+		else {
+			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Bezeichnung "
+					+ eingabeTextfield.getText() +":");
+		}
+		
+		fachauslastungLabel.setText("Belegter Platz: \t"+ fachauslastungBar.getValue() + "/" + fachauslastungBar.getMaximum());
+		
+		rightpanel.setLayout(new GridBagLayout());
+		rightpanel.setBackground(CustomColor);
+		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1.0, 0.2, 1));
+		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 1.0, 0.2 , 1));
+		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.6, 1));
+		
+		rightpanel.setImage(null);
 	}
 }
 

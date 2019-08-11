@@ -10,12 +10,11 @@ import javax.swing.JPanel;
  * Abgeleitet von JPanel und überschreibt die Methode paintComponent
  *
  */
-public class CustomPanel extends JPanel{
+public class CustomPanelForBackgroundImage extends JPanel{
 
 	   private Image image;
-	   private boolean fitImage;
 
-	   CustomPanel() {
+	  public CustomPanelForBackgroundImage() {
 	      super();
 	   }
 
@@ -26,7 +25,6 @@ public class CustomPanel extends JPanel{
 	    */
 	   void setImage(Image image) {
 	      this.image = image;
-	      this.fitImage = true;
 	      validate();
 	      repaint();
 	   }
@@ -34,14 +32,10 @@ public class CustomPanel extends JPanel{
 	   
 	   @Override
 	   protected void paintComponent(Graphics g) {
-	      super.paintComponent(g);
-	      if(image != null) {
-	         if(fitImage) {
+		   super.paintComponent(g);
+		   if(image != null) {
 	            Dimension size = this.getSize();
 	            g.drawImage(image, 0, 0, size.width, size.height, this);
-	         } else {
-	            g.drawImage(image, 0, 0, this);
-	         }
-	      }
-	   }
-}
+         }
+      }
+	}
