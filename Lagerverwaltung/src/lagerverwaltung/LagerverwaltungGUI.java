@@ -337,7 +337,7 @@ public class LagerverwaltungGUI extends JFrame{
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 
-		aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
+		aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 		
 		ueberschriftLabel.setBorder(new EmptyBorder(0, 5, 10, 0));
 		ueberschriftLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));

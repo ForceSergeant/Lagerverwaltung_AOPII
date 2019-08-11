@@ -87,7 +87,7 @@ public class Actionlistener {
 				oeffnen(gui);
 			}
 		}
-		gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
+		gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 	}
 	
 	/**
@@ -433,7 +433,7 @@ public class Actionlistener {
 
 			ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
 			
-			gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
+			gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 			
 			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
@@ -555,7 +555,7 @@ public class Actionlistener {
 			ergebnis = daten.einlagern(eingabebezeichnung.getText(), teilenummer, groesse);
 			
 			
-			gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
+			gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 			
 			switch(ergebnis[0]) {
 			case 0:
