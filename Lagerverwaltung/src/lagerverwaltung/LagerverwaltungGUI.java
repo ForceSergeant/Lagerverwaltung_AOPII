@@ -38,7 +38,6 @@ import javax.swing.border.EmptyBorder;
 public class LagerverwaltungGUI extends JFrame{
 
 	private Actionlistener actionlistener = new Actionlistener();
-	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
 	
 	//Menübar
 	private JMenuBar menubar;
