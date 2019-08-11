@@ -76,7 +76,7 @@ public class LagerverwaltungGUI extends JFrame{
 	private Box hilfsbox;
 	private JPanel menupanel;
 	private JPanel leftpanel;
-	private CustomPanelForBackgroundImage rightpanel;
+	private CustomPanel rightpanel;
 	
 	//ProgressBar
 	private CustomProgressBar freierPlatzBar;
@@ -203,7 +203,7 @@ public class LagerverwaltungGUI extends JFrame{
 		CustomColor = new Color(80, 80, 80);
 		menupanel = new JPanel();
 		leftpanel = new JPanel();
-		rightpanel = new CustomPanelForBackgroundImage();
+		rightpanel = new CustomPanel();
 		
 		menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.LINE_AXIS));
 		leftpanel.setLayout(new GridBagLayout());
