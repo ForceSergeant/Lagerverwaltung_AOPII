@@ -7,13 +7,25 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+/**
+ * Klasse die ein Document für ein Textfeld erzeugt und die insertString-Methode überschreibt
+ * abgeleitet von der Klasse PlainDocument
+ *
+ */
 public class AllowedDocument extends PlainDocument  {
 	private int maxlenght;
 	
 	public AllowedDocument(int maxlenght) {
 		this.maxlenght = maxlenght;
 	}
-	//TODO nur 10 bei grosse für fach
+	
+	/**
+	 * Versucht String in einen Integer umzuwandeln und falls es nicht klappt wird ein Fehler erzeugt
+	 * Außerdem wird die Länge der Eingabe in Abhängigkeit von maxlenght, welches beim Aufruf der Klasse
+	 * übergeben wird
+	 * 
+	 * @return void
+	 */
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		try{
@@ -30,6 +42,7 @@ public class AllowedDocument extends PlainDocument  {
 		if(str == null) {
 			return;
 		}
+		
 		int actualLength = this.getLength();
 		if(actualLength + str.length() <= maxlenght) {
 			super.insertString(offs, str, a);
@@ -39,7 +52,5 @@ public class AllowedDocument extends PlainDocument  {
 			JOptionPane.showMessageDialog(null, "Sie dürfen nicht mehr als " + maxlenght + " Zahlen eingeben!",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	
+	}	
 }

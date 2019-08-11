@@ -5,6 +5,11 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JProgressBar;
 
+/**
+ * Klasse die eine eigene Progressbar darstellt
+ * Abgeleitet von JProgressBar und überschreibt die Methode setValue
+ *
+ */
 public class CustomProgressBar extends JProgressBar {
 	
 	private int maxvalue;
@@ -13,6 +18,11 @@ public class CustomProgressBar extends JProgressBar {
 		this.maxvalue = maxlength;
 	}
 	
+	/**
+	 * Setzt in Abhängigkeit vom Verhältnis des jeweiligen Wertes, welcher gesetzt werden soll
+	 * zum maximal Möglichen Wert die Farbe des Balkens
+	 * 
+	 */
 	@Override
 	public void setValue(int n)
 	{

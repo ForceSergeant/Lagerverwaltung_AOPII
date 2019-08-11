@@ -5,6 +5,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JPanel;
 
+/**
+ * Klasse für ein eigenes JPanel
+ * Abgeleitet von JPanel und überschreibt die Methode paintComponent
+ *
+ */
 public class CustomPanel extends JPanel{
 
 	   private Image image;
