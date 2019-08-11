@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -355,7 +354,14 @@ public class LagerverwaltungGUI extends JFrame{
 		leftpanel.add(hilfslabel, gbcErzeugen(0, 5, 1, 1, 0.0, 0.46, GridBagConstraints.BOTH));
 	}
 
-	//TODO Dokumentation
+	/**
+	 * Setzt die Value der Bars und ändert den Text der Labels entsprechend der Werte
+	 * 
+	 * @param freierPlatz die Zahl, wie viele Platz frei sind
+	 * @param freieFaecher die Zahl, wie viele Fächer frei sind
+	 * 
+	 * @return void
+	 */
 	public void aktualisierenProgressbar(int freierPlatz, int freieFaecher) {
 		freieFaecherBar.setValue(800 - freieFaecher);
 		freierPlatzBar.setValue(freierPlatz);
