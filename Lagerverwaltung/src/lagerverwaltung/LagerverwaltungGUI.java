@@ -60,11 +60,9 @@ public class LagerverwaltungGUI extends JFrame{
 	private JButton anzeigenLagerinhaltbtn;
 	private JButton entnehmenbtn;
 	private JButton einlagernbtn;
-	private JButton startseitebtn;
 	
 	//Icon
 	private ImageIcon close;
-	private ImageIcon house;
 	private ImageIcon open;
 	private ImageIcon pallettake;
 	private ImageIcon palletstore;
@@ -151,7 +149,6 @@ public class LagerverwaltungGUI extends JFrame{
 		stylebtn(anzeigenLagerinhaltbtn);
 		stylebtn(entnehmenbtn);
 		stylebtn(einlagernbtn);
-		stylebtn(startseitebtn);
 		
 		//Hilfsbox
 		hilfsboxErzeugen();
@@ -187,7 +184,6 @@ public class LagerverwaltungGUI extends JFrame{
 		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null));
-		startseitebtn.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
 		beendenbtn.addActionListener(e -> actionlistener.beenden());
 	
 	}
@@ -259,7 +255,6 @@ public class LagerverwaltungGUI extends JFrame{
 	private void iconmenuErzeugen() {
 		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
-		house = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/house.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));
 		palletstore = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/palletstore.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));	
 		pallettake = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/pallettake.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		save = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/diskette.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
@@ -267,7 +262,6 @@ public class LagerverwaltungGUI extends JFrame{
 				
 		oeffnenbtn = new JButton("Datei öffnen", open);
 		beendenbtn = new JButton("Beenden", close);
-		startseitebtn = new JButton("Startseite", house);
 		speichernbtn = new JButton("Speichern", save);
 		anzeigenLagerinhaltbtn = new JButton("Lagerinhalt anzeigen", stock);
 		entnehmenbtn = new JButton("Entnehmen", pallettake);
@@ -291,8 +285,6 @@ public class LagerverwaltungGUI extends JFrame{
 		hilfsbox.add(entnehmenbtn);
 		hilfsbox.add(Box.createGlue());
 		hilfsbox.add(einlagernbtn);
-		hilfsbox.add(Box.createGlue());
-		hilfsbox.add(startseitebtn);
 		hilfsbox.add(Box.createGlue());
 		hilfsbox.add(beendenbtn);
 		hilfsbox.add(Box.createGlue());
