@@ -50,7 +50,7 @@ public class Actionlistener {
 	 * 
 	 * @return void
 	 */
-	public void oeffnen() throws IOException {
+	public void oeffnen(LagerverwaltungGUI gui) throws IOException {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileFilter(filter);
@@ -84,9 +84,10 @@ public class Actionlistener {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie können nur Textdateien (.txt) öffnen.",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
-				oeffnen();
+				oeffnen(gui);
 			}
 		}
+		gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
 	}
 	
 	/**
@@ -399,9 +400,11 @@ public class Actionlistener {
 	/**
 	 * Übergibt die eingegebenen Daten (Bezeichnung, Teilenummer und Größe) and LagerverwaltungDaten
 	 * Ruft die Ergebnisdialoge auf durch die Methoden in LagerverwaltungGUI
+	 * Ruft die Methode aktualiserenProgressbar auf
 	 * 
 	 * @see LagerverwaltungDaten
 	 * @see LagerverwaltungGUI
+	 * @see aktualisierenProgressbar
 	 * 
 	 * @param btnbezeichnung Radiobutton für die Bezeichnung
 	 * @param btnteilenummer Radiobutton für die Teilenummer
@@ -429,6 +432,8 @@ public class Actionlistener {
 			}
 
 			ergebnis = daten.entnehmen(bezeichnung, teilenummerint);
+			
+			gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
 			
 			if(ergebnis[0] == 1) {
 				if(btnbezeichnung.isSelected()) {
@@ -524,8 +529,10 @@ public class Actionlistener {
 	/**
 	 * Übergibt die Eingaben des Nutzers an LagerverwaltungDaten und gibt Auskunft darüber, ob das Einlagern erfolgreich war oder nicht
 	 * Fängt zusätzlich Fehler bei der Eingabe ab
+	 * Ruft die Methode aktualisierenProgressbar auf
 	 * 
 	 * @see LagerverwaltungDaten
+	 * @see LagerverwaltungGUI @see aktualisierenProgressbar
 	 * 
 	 * @param einlagerndialog
 	 * @param eingabebezeichnung
@@ -546,6 +553,9 @@ public class Actionlistener {
 			}
 			int groesse = Integer.parseInt(eingabegroesse.getText());
 			ergebnis = daten.einlagern(eingabebezeichnung.getText(), teilenummer, groesse);
+			
+			
+			gui.aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
 			
 			switch(ergebnis[0]) {
 			case 0:
@@ -599,6 +609,7 @@ public class Actionlistener {
 
 	/**
 	 * Löscht alle Komponenten des Frames und erzeugt die Startoberfläche
+	 * 
 	 * @param gui JFrame, auf diesem werden Komponenten entfertn/hinzugefügt
 	 * @param leftpanel Panel mit Auslastung des Lagers
 	 * @param rightpanel Panel mit Bild
