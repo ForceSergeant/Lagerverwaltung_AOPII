@@ -158,9 +158,6 @@ public class Actionlistener {
 				speichern();
 			}
 		}
-		else {
-			//TODO schlieﬂt automatisch das Programm, ‰ndern?
-		}
 	}
 
 	/**
