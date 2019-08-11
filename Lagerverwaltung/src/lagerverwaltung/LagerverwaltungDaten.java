@@ -312,4 +312,12 @@ public class LagerverwaltungDaten {
     	return item_table.size();
     }
     
+    public int getOccupied() {
+    	int occupied = 0;
+    	for(ArrayList<String> arr : item_table) {             
+    		occupied = Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3));         
+    	}
+    	return occupied;
+    }
+    
 }
