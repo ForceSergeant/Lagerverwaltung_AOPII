@@ -118,11 +118,12 @@ public class LagerverwaltungGUI extends JFrame{
 		//Eigenschaften		
 		this.setLocation(0, 0);
 		this.setTitle("Lagerverwaltung");
-		this.setMinimumSize(new Dimension(600, 400));
+		this.setMinimumSize(new Dimension(800, 600));
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new GridBagLayout());
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
 //		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 //		this.addWindowListener(new WindowAdapter(){
 //			public void windowClosing(WindowEvent e) {		

@@ -1,36 +1,33 @@
-Gemälde 477006491 2 1 1 1 1 
-Stofftiere 760295231 1 1 1 2 1 
-Reifen 542028767 3 1 1 3 1 
-Bücher 316130056 1 6 1 4 1 
-Schnapsflaschen 273864165 1 2 1 5 1 
-Möbel 429268551 10 1 1 7 1 
-Rasenmäher 942737909 8 1 1 8 1 
-Werkzeugkoffer 521115334 4 1 1 9 1 
-Lampen 852755653 3 1 1 10 1 
-Tisch 762242475 7 1 1 1 2 
-Computer 812970234 6 1 1 2 2 
-Fernseher 357794430 5 2 1 6 1 
-Anlage 240787911 4 1 1 3 2 
-Hanteln 177672886 3 2 1 4 2 
-Töpfe 124615970 2 4 1 5 2 
-Spiegel 857565814 3 1 1 6 2 
-Laptops 483665413 1 3 1 7 2 
-Motorsense 611526039 6 1 1 8 2 
-Schubkarre 786243202 4 2 1 9 2 
-Wasserpumpe 429463336 3 1 1 10 2 
-Stühle 354892507 4 2 1 1 3 
-Aktenvernichter 833538381 3 2 1 2 3 
-Bobby Car 529794839 3 1 1 3 3 
-HP DeskJet 2630 925030770 2 2 1 4 3 
-Bacardi 3L 29080395 2 2 1 5 3 
-Smirnoff 3L 38170356 2 1 1 6 3 
-Berliner Luft 3L 720371101 2 4 1 7 3 
-Berliner Luft 540616957 3 1 1 8 3 
-IPhone X 723450148 1 3 1 9 3 
-Huawei P30 583797198 1 6 1 10 3 
-Samsung S10 43069923 1 2 1 1 4 
-Logitech Z906 678370907 2 2 1 2 4 
-Trust Vigor 496483423 3 1 1 3 4 
-Trust Tytan 336959325 2 2 1 4 4 
-Mülleimer 853092166 2 2 1 5 4 
-Paletten 628232849 4 2 1 6 4 
+Aktenvernichter~59600553~2~2~1~1~1~
+Anlage~678111376~4~1~1~2~1~
+Bacardi 3L~849769593~2~2~1~3~1~
+Berliner Luft 3L~987397647~2~4~1~4~1~
+Bobby Car~932151114~3~1~1~5~1~
+Bücher~266673772~1~6~1~6~1~
+Computer~502950757~6~1~1~7~1~
+Fernseher~569503981~5~2~1~8~1~
+Gemälde~792763559~2~1~1~9~1~
+Hanteln~280296194~3~1~1~10~1~
+HP DeskJet 2630~22~2~2~1~1~2~
+Huawei P30~693164788~1~3~1~2~2~
+IPhone X~654461953~1~3~1~3~2~
+Lampen~538461109~3~1~1~4~2~
+Laptops~207908285~1~3~1~5~2~
+Logitech Z906~536398192~3~2~1~6~2~
+Möbel~729587383~10~1~1~7~2~
+Motorsense~607426284~7~1~1~8~2~
+Mülleimer~47400513~2~2~1~9~2~
+Paletten~718217409~4~2~1~10~2~
+Rasenmäher~488798051~8~1~1~1~3~
+Reifen~59596561~3~1~1~2~3~
+Samsung Galaxy S10~570480749~1~2~1~3~3~
+Schubkarre~360257483~4~2~1~4~3~
+Smirnoff 3L~744695767~1~3~1~5~3~
+Spiegel~831723706~3~2~1~6~3~
+Stofftiere~500080868~2~5~1~7~3~
+Stühle~677974913~2~2~1~8~3~
+Tisch~927009966~7~1~1~9~3~
+Töpfe~465003267~2~4~1~10~3~
+Trust Tytan~503249631~2~2~1~1~4~
+Wasserpumpe~993503161~3~3~1~2~4~
+Werkzeugkoffer~863827893~4~1~1~3~4~
