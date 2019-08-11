@@ -683,8 +683,6 @@ public class Actionlistener {
 	 * 
 	 * @param gui wird zur Übergabe für die Methode fachauslastungErgebnis benötigt
 	 * @param rightpanel wird zur Übergabe für die Methode fachauslastungErgebnis benötigt
-	 * 
-	 * @return void
 	 */
 	public void fachauslastungDialog(LagerverwaltungGUI gui, CustomPanel rightpanel) {
 		Dimension screensize = getScreensize();
@@ -824,8 +822,6 @@ public class Actionlistener {
 	 * Entfernt alle Komponenten des Rightpanel und fügt das Bild wieder hinzu
 	 * 
 	 * @param rightpanel wird zum Hinzufügen des Bildes zum rightpanel benötigt
-	 * 
-	 * @return void
 	 */
 	private void fachauswahlDialogschliessen(CustomPanel rightpanel) {
 		for (Component c : rightpanel.getComponents()) {
