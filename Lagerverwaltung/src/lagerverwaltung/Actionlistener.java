@@ -630,47 +630,6 @@ public class Actionlistener {
 		return gbc;
 	}
 	
-	/**
-	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
-	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
-	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
-	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
-	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
-	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
-	 * @param fill	setzt fill von gbc auf den jewiligen Wert
-	 * 
-	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
-	 */
-	private GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwith, int fill) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = gridx;
-		gbc.gridy = gridy;
-		gbc.weightx = weightx;
-		gbc.weighty = weighty;
-		gbc.gridwidth = gridwith;
-		gbc.fill = fill;
-		return gbc;
-	}
-
-	/**
-	 * Holt sich die Größe des Monitors vom System und erstellt dann eine neue Dimenstion
-	 * 
-	 * @return new Dimension:	Informationen über benötigte Breite und Höhe in Abhängigkeit
-	 * 							von der Größe des Monitors
-	 */
-	public Dimension getScreensize() {
-		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width, height;
-		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
-			width = (int) Math.round(screensize.getWidth()/2);
-			height = (int) Math.round(screensize.getHeight()/2);
-		}
-		else {
-			width = (int) Math.round(screensize.getWidth()/3);
-			height = (int) Math.round(screensize.getHeight()/3);
-		}
-		return new Dimension(width, height);
-	}
 
 	/**
 	 * Erzeugt ein Dialogfenster, in dem man die Bezeichnung oder die Teilenummer eines Teils eingeben kann
@@ -833,5 +792,48 @@ public class Actionlistener {
 		}
 		rightpanel.setImage(image);
 	}
+
+	/**
+	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
+	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
+	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
+	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
+	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
+	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
+	 * @param fill	setzt fill von gbc auf den jewiligen Wert
+	 * 
+	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
+	 */
+	private GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwith, int fill) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = gridx;
+		gbc.gridy = gridy;
+		gbc.weightx = weightx;
+		gbc.weighty = weighty;
+		gbc.gridwidth = gridwith;
+		gbc.fill = fill;
+		return gbc;
+	}
+
+	/**
+	 * Holt sich die Größe des Monitors vom System und erstellt dann eine neue Dimenstion
+	 * 
+	 * @return new Dimension:	Informationen über benötigte Breite und Höhe in Abhängigkeit
+	 * 							von der Größe des Monitors
+	 */
+	public Dimension getScreensize() {
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width, height;
+		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
+			width = (int) Math.round(screensize.getWidth()/2);
+			height = (int) Math.round(screensize.getHeight()/2);
+		}
+		else {
+			width = (int) Math.round(screensize.getWidth()/3);
+			height = (int) Math.round(screensize.getHeight()/3);
+		}
+		return new Dimension(width, height);
+	}
+
 }
 
