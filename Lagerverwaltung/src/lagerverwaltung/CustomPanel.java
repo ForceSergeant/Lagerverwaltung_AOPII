@@ -10,11 +10,11 @@ import javax.swing.JPanel;
  * Abgeleitet von JPanel und überschreibt die Methode paintComponent
  *
  */
-public class CustomPanelForBackgroundImage extends JPanel{
+public class CustomPanel extends JPanel{
 
 	   private Image image;
 
-	  public CustomPanelForBackgroundImage() {
+	  public CustomPanel() {
 	      super();
 	   }
 

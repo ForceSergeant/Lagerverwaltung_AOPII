@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
@@ -31,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -663,7 +665,7 @@ public class Actionlistener {
 		return new Dimension(width, height);
 	}
 
-	public void fachauslastungDialog(LagerverwaltungGUI gui, CustomPanelForBackgroundImage rightpanel) {
+	public void fachauslastungDialog(LagerverwaltungGUI gui, CustomPanel rightpanel) {
 		Dimension screensize = getScreensize();
 		JDialog fachauslastungDialog = new JDialog();
 		JPanel radioPanel = new JPanel();
@@ -725,19 +727,25 @@ public class Actionlistener {
 		eingabeTextfield.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
 	}
 
-	private void fachauslastungErgebnis(LagerverwaltungGUI gui, JDialog fachauslastungDialog, CustomPanelForBackgroundImage rightpanel, JTextField eingabeTextfield) {
+	private void fachauslastungErgebnis(LagerverwaltungGUI gui, JDialog fachauslastungDialog, CustomPanel rightpanel, JTextField eingabeTextfield) {
 		Color CustomColor = new Color(80, 80, 80);
+		Font font = new Font(Font.SANS_SERIF, Font.BOLD,  15);
 		CustomProgressBar fachauslastungBar = new CustomProgressBar(10);
 		JLabel ueberschriftLabel = new JLabel();
 		JLabel fachauslastungLabel = new JLabel();
+		
+		fachauslastungDialog.dispose();
+				
 		fachauslastungBar.setModel(new DefaultBoundedRangeModel(0, 0, 0, 10));
 		fachauslastungBar.setUI(new CustomProgressBarUI());
 		fachauslastungBar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		fachauslastungBar.setStringPainted(true);
 		fachauslastungBar.setBorder(new EmptyBorder(8, 0, 8, 0));
-		
-		fachauslastungDialog.dispose();
-		
+		fachauslastungBar.setValue(5);
+
+		ueberschriftLabel.setFont(font);
+		ueberschriftLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		ueberschriftLabel.setBorder(new EmptyBorder(0, 0, 15, 0));
 		if(gui.pruefeString(eingabeTextfield.getText())) {
 			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Teilenummer "
 					+ eingabeTextfield.getText() +":");
@@ -747,13 +755,17 @@ public class Actionlistener {
 					+ eingabeTextfield.getText() +":");
 		}
 		
+		
 		fachauslastungLabel.setText("Belegter Platz: \t"+ fachauslastungBar.getValue() + "/" + fachauslastungBar.getMaximum());
+		fachauslastungLabel.setFont(font);
+		fachauslastungLabel.setVerticalAlignment(SwingConstants.TOP);
+		fachauslastungLabel.setBorder(new EmptyBorder(10, 0, 15, 0));
 		
 		rightpanel.setLayout(new GridBagLayout());
 		rightpanel.setBackground(CustomColor);
-		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1.0, 0.2, 1));
-		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 1.0, 0.2 , 1));
-		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.6, 1));
+		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 0.0, 0.0, 1));
+		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 0.0, 0.0 , 1));
+		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.0, 1));
 		
 		rightpanel.setImage(null);
 	}
