@@ -76,7 +76,12 @@ public class Actionlistener {
 				while( (zeile = br.readLine()) != null ) {
 					if(zeile != null && zeile.length() >0) {
 						String[] string = zeile.substring(0, zeile.length()-1).split(" ");
-				   		}
+						try {
+							daten.laden(string[0], Integer.parseInt(string[1]), Integer.parseInt(string[2]), Integer.parseInt(string[3]),Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Hiebi handelt es sich um eine ungültige Datei und kann nicht geladen werden.",
+									"Fehler", JOptionPane.ERROR_MESSAGE);
+						}
 				   				
 				   	}
 				br.close();
@@ -89,6 +94,7 @@ public class Actionlistener {
 			}
 			gui.aktualisierenProgressbar(daten.getOccupied(), daten.getfreieRegalfaecher());
 		}
+	}
 	
 	/**
 	 * Öfnnet einen FileChooser, mit dessen Hilfe man die Datei auswählen kann in die gespeichert werden soll
