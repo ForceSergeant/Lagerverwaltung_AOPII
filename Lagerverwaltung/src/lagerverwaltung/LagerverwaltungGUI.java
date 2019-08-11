@@ -169,7 +169,7 @@ public class LagerverwaltungGUI extends JFrame{
 		speichernItem.addActionListener(e -> actionlistener.speichern());
 		anzeigenLagerinhaltItem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenItem.addActionListener(e -> actionlistener.entnehmen(this));
-		einlagernItem.addActionListener(e -> actionlistener.einlagern(this, null, null));
+		einlagernItem.addActionListener(e -> actionlistener.einlagern(this, null, null, null));
 		startseiteItem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
 		fachauslastungItem.addActionListener(e -> actionlistener.fachauslastungDialog(this, rightpanel));
 		
@@ -183,7 +183,7 @@ public class LagerverwaltungGUI extends JFrame{
 		speichernbtn.addActionListener(e -> actionlistener.speichern());
 		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
-		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null));
+		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null, null));
 		beendenbtn.addActionListener(e -> actionlistener.beenden());
 	
 	}

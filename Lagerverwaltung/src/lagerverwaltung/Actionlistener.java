@@ -459,15 +459,15 @@ public class Actionlistener {
 	 * @param bezeichnung wird für den Wiederaufruf bei falscher Eingabe benötigt, damit die Bezeichnung nicht erneut eingegeben werden muss
 	 * @param groesse wird für den Wiederaufruf bei falscher Eingabe benötigt, damit die Größe nicht erneut eingebene werden muss
 	 */
-	public void einlagern(LagerverwaltungGUI gui, String bezeichnung, String groesse) {
+	public void einlagern(LagerverwaltungGUI gui, String bezeichnung, String teilenummer, String groesse) {
 		Dimension screensize = getScreensize();
 		JDialog einlagernDialog = new JDialog();
 		JLabel bezeichnungLabel = new JLabel("Bezeichnung:");
 		JLabel teilenummerLabel  = new JLabel("Teilenummer:");
 		JLabel groessLabel = new JLabel("Größe des Teils in Grundeinheiten:");
 		JTextField eingabebezeichnung = new JTextField(bezeichnung, 20);
-		JTextField eingabeteilenummer = new JTextField(20);
-		JTextField eingabegroesse = new JTextField(2);
+		JTextField eingabeteilenummer = new JTextField(teilenummer, 20);
+		JTextField eingabegroesse = new JTextField(groesse, 2);
 		JButton btnok = new JButton("Ok");
 		
 		//Setzt den Focus in das Textfeld
@@ -552,7 +552,7 @@ public class Actionlistener {
 				JOptionPane.showMessageDialog(null, "Ein Fach hat die Größe von 10 Grundeinheiten, "
 						+ "daher ist 10 die maximale Zahl die Sie hier eintragen können.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
-				einlagern(gui, eingabebezeichnung.getText(), null);
+				einlagern(gui, eingabebezeichnung.getText(), eingabeteilenummer.getText(), null);
 				break;
 			case 2:
 				gui.einlagernErgebnisDialog(eingabebezeichnung, eingabeteilenummer, ergebnis);
@@ -573,19 +573,19 @@ public class Actionlistener {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Größe des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
-				einlagern(gui, eingabebezeichnung.getText(), null);
+				einlagern(gui, eingabebezeichnung.getText(), eingabeteilenummer.getText(), null);
 			}
 			else if(eingabegroesse.getText().length() > 0 && eingabebezeichnung.getText().length() == 0) {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
-				einlagern(gui, null, eingabegroesse.getText());
+				einlagern(gui, null, eingabeteilenummer.getText(), eingabegroesse.getText());
 			}
 			else if(eingabebezeichnung.getText().length() == 0 && eingabegroesse.getText().length() == 0) {
 				java.awt.Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(null, "Sie müssen die Bezeichnung des Teils und die Größe des Teils angeben.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
-				einlagern(gui, null, null);
+				einlagern(gui, null, eingabeteilenummer.getText(), null);
 			}
 		}
 		einlagerndialog.dispose();
