@@ -380,9 +380,6 @@ public class LagerverwaltungGUI extends JFrame{
 		ausschriftLabel = new JLabel[3];
 		btnok = new JButton("OK");
 		eborder = new EmptyBorder(0, 20, 0, 0);
-
-		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );
 		
 		
 		if(eingabeteilenummer.getText().length() > 0) {
@@ -436,6 +433,8 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		//ActionListener
 		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisDialog));
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );
 	}
 
 	/**
@@ -478,8 +477,6 @@ public class LagerverwaltungGUI extends JFrame{
 		ergebnisDialog.setLayout(new GridBagLayout());
 		
 		btnok.setBorder(new EmptyBorder(7, 25, 7, 25));
-		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );
 
 		ergebnisDialog.add(ausschriftLabel[0], gbcErzeugen(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
 
@@ -503,7 +500,8 @@ public class LagerverwaltungGUI extends JFrame{
 
 		//Actionlistener
 		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisDialog));
-		
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );		
 	}
 
 	

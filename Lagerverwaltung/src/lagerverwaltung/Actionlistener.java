@@ -343,10 +343,6 @@ public class Actionlistener {
 		Document standarddocument = eingabeTextfield.getDocument();
 		
 		btnbezeichnung.setSelected(true);
-		
-		//Ermöglicht schließen durch drücken der Escape Tastste
-		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "schließen");
-		btnok.getActionMap().put("schließen", new EscAction(entnehmenDialog));
 	    
 	    //Ermöglicht nur eine Auswahl
 		btngroup.add(btnteilenummer);
@@ -388,6 +384,8 @@ public class Actionlistener {
 		btnteilenummer.addActionListener(e -> radiobuttonAuswahlTeilenummer(artLabel, eingabeTextfield));
 		eingabeTextfield.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabeTextfield, entnehmenDialog, gui));
 		btnok.addActionListener(e -> entnehmenDatenuebergabe(btnbezeichnung, btnteilenummer, eingabeTextfield, entnehmenDialog, gui));
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "schließen");
+		btnok.getActionMap().put("schließen", new EscAction(entnehmenDialog));
 	}
 
 	/**
@@ -485,11 +483,7 @@ public class Actionlistener {
 		eingabegroesse.setText(groesse);
 		
 		einlagernDialog.setTitle("Teil einlagern");
-		einlagernDialog.setLayout(new GridBagLayout());
-		
-		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(einlagernDialog));
-		
+		einlagernDialog.setLayout(new GridBagLayout());		
 
 		einlagernDialog.add(bezeichnungLabel, gbcErzeugen(0, 0, 1.0, 1.0, 1));
 		
@@ -510,9 +504,10 @@ public class Actionlistener {
 		einlagernDialog.setVisible(true);
 		
 		//ActionListener
-		btnok.addActionListener(e -> einlagernDatenuebergabe(einlagernDialog, eingabebezeichnung, eingabeteilenummer, eingabegroesse, gui));
 		eingabegroesse.addActionListener(e -> einlagernDatenuebergabe(einlagernDialog, eingabebezeichnung, eingabeteilenummer, eingabegroesse, gui));
-		
+		btnok.addActionListener(e -> einlagernDatenuebergabe(einlagernDialog, eingabebezeichnung, eingabeteilenummer, eingabegroesse, gui));
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(einlagernDialog));		
 	}
 
 	/**
@@ -681,8 +676,10 @@ public class Actionlistener {
 		//ActionListener
 		btnbezeichnung.addActionListener(e -> radiobuttonAuswahlBezeichnung(artLabel, eingabeTextfield, standarddocument));
 		btnteilenummer.addActionListener(e -> radiobuttonAuswahlTeilenummer(artLabel, eingabeTextfield));
-		btnok.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
 		eingabeTextfield.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
+		btnok.addActionListener(e -> fachauslastungErgebnis(gui, fachauslastungDialog, rightpanel, eingabeTextfield));
+		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
+		btnok.getActionMap().put("beenden", new EscAction(fachauslastungDialog) );
 	}
 
 	/**
