@@ -10,6 +10,8 @@ public class LagerverwaltungDaten {
 
     private ArrayList<ArrayList<String>> item_table = new ArrayList<ArrayList<String>>();
 
+    //Weil Johanna zu dumm!
+    
     /**
      * Konstruktor zur Erzeugung eines neuen Objekts der Klasse LagerverwaltungDaten, 8x Erzeugen eines neuen Objekts der
      * Klasse Regal mit Übergabe von i+1, um die Regalzahl des Regals festzulegen, hinzufügen des erzeugten Objekts zu lager
@@ -355,4 +357,37 @@ public class LagerverwaltungDaten {
     	return occupied;
     }
     
+    public int getFreierPlatz(String name, int tn) {
+    	boolean statusSuche = false;
+    	int remaining = -1;
+    	Suche: {
+	    	if(tn == -1) {
+	    		for (Regal i: lager) {
+	                statusSuche = i.sucheViaNamen(name);
+	                if (statusSuche) {
+						for(ArrayList<String> arr : item_table) {
+			            	if(arr.get(0).equals(name)) {
+			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		break Suche;
+			            	}
+			            }
+	                }
+	    		}
+			}
+	    	else {
+	    		for (Regal i: lager) {
+	                statusSuche = i.sucheViaNummer(tn);
+	                if (statusSuche) {
+			    		for(ArrayList<String> arr : item_table) {
+			            	if(arr.get(1).equals(Integer.toString(tn))) {
+			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		break Suche;
+			            	}
+			            }
+	                }
+	    		}
+	    	}
+    	}
+    	return remaining;
+    }
 }
