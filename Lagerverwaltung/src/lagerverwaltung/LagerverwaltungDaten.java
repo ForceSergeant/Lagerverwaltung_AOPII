@@ -327,4 +327,38 @@ public class LagerverwaltungDaten {
     	return occupied;
     }
     
+    public int getFreierPlatzInEinemFachLolKrassOderFindIchAuchMalAustestenObEsEinLimitFuerFunktionsnamenGibtIstSchonGanzSchoenLangGewordenJetztHabIchAberKeinenBockMehr(String name, int tn) {
+    	boolean statusSuche = false;
+    	int remaining = -1;
+    	Suche: {
+	    	if(tn == -1) {
+	    		for (Regal i: lager) {
+	                statusSuche = i.sucheViaNamen(name);
+	                if (statusSuche) {
+						for(ArrayList<String> arr : item_table) {
+			            	if(arr.get(0).equals(name)) {
+			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		break Suche;
+			            	}
+			            }
+	                }
+	    		}
+			}
+	    	else {
+	    		for (Regal i: lager) {
+	                statusSuche = i.sucheViaNummer(tn);
+	                if (statusSuche) {
+			    		for(ArrayList<String> arr : item_table) {
+			            	if(arr.get(1).equals(Integer.toString(tn))) {
+			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		break Suche;
+			            	}
+			            }
+	                }
+	    		}
+	    	}
+    	}
+    	return remaining;
+    }
+    
 }
