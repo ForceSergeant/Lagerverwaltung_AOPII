@@ -212,7 +212,7 @@ public class LagerverwaltungGUI extends JFrame{
 
 		Image image = null;
 		try {
-			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager2.jpg"));
+			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -266,10 +266,10 @@ public class LagerverwaltungGUI extends JFrame{
 		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		house = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/house.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));
-		palletstore = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/palletstore2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));	
-		pallettake = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/pallettake2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		palletstore = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/palletstore.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));	
+		pallettake = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/pallettake.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		save = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/diskette.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
-		stock = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/stock2.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		stock = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/stock.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 				
 		oeffnenbtn = new JButton("Datei öffnen", open);
 		beendenbtn = new JButton("Beenden", close);
