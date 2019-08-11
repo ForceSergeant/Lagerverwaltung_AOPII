@@ -195,8 +195,6 @@ public class LagerverwaltungGUI extends JFrame{
 	/**
 	 * Erzeugt die Panels für die Startübersicht bestehend aus dem Iconmenü, Auslastung des Lagers und ein Bild
 	 * Zusätzlich werden Eigenschaften dieser Panels gesetzt
-	 * 
-	 * @return void
 	 */
 	private void startpanelsErzeugen() {
 		CustomColor = new Color(80, 80, 80);
@@ -226,8 +224,6 @@ public class LagerverwaltungGUI extends JFrame{
 	/**
 	 * Erzeugt das Menü am oberen linken Rand des Programms: Dabei gibt es als die zwei Hauptmenüs Datei und Zurück
 	 * Die Hauptmenüs haben dabei noch einzelne Menüunterpunkte
-	 * 
-	 * @retrun void
 	 */
 	private void menueErzeugen() {
 		menubar = new JMenuBar();
@@ -259,8 +255,6 @@ public class LagerverwaltungGUI extends JFrame{
 
 	/**
 	 * Erzeugt das Iconmenü, welches sich auf dem menupanel befindet. Es werden die Icons geladen und die Buttons erzeugt
-	 * 
-	 * @return void
 	 */
 	private void iconmenuErzeugen() {
 		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
@@ -283,8 +277,6 @@ public class LagerverwaltungGUI extends JFrame{
 	/**
 	 * Dient zur Ausrichtung der jeweiligen Iconmenübuttons, sodass diese immer den gleichen Abstand zueiander haben
 	 * Geschieht mit Hilfe einer Box und deren createGlue methode
-	 * 
-	 * @retrun void
 	 */
 	private void hilfsboxErzeugen() {
 		hilfsbox = Box.createHorizontalBox();
@@ -310,8 +302,6 @@ public class LagerverwaltungGUI extends JFrame{
 	/**
 	 * Erzeugt die Progressbars und die Label für die Veranschaulichung der Auslastung des Lagers
 	 * Die Progressbar und die Labels werden erzeugt und gewisse Eigenschaften gesetzt
-	 * 
-	 * @return void
 	 */
 	private void progressbarErzeugen() {
 		freierPlatzBar = new CustomProgressBar(8000);
@@ -359,8 +349,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * 
 	 * @param freierPlatz die Zahl, wie viele Platz frei sind
 	 * @param freieFaecher die Zahl, wie viele Fächer frei sind
-	 * 
-	 * @return void
 	 */
 	public void aktualisierenProgressbar(int freierPlatz, int freieFaecher) {
 		freieFaecherBar.setValue(800 - freieFaecher);
@@ -376,8 +364,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * @see iconmenuErzeugen
 	 * 
 	 * @param component der Button, welcher diese Eigenschaften erhalten soll
-	 * 
-	 * @return void
 	 */
 	private void stylebtn(JButton component) {
 		component.setSize(75, 75);
@@ -393,8 +379,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * @param eingabebezeichnung dient zur Ausgabe des Bezeichnung, welche das Teil beim Einlagern erhielt
 	 * @param eingabeteilenummer dient zur Ausgabe der Teilenummer, welche das Teil beim Einlagern erhielt
 	 * @param ergebnis enthält Informationen über die Wege, welche das Transportsystem zurück gelegt hat
-	 * 
-	 * @return void
 	 */
 	public void einlagernErgebnisDialog(JTextField eingabebezeichnung, JTextField eingabeteilenummer, int[] ergebnis) {
 		screensize = actionlistener.getScreensize();
@@ -467,8 +451,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * 
 	 * @param teilenamen enthält die Information entweder über die Bezeichnung des Teils oder die Teilenummer
 	 * @param ergebnis enthält Informationen über die Wege, welche das Transportsystem zurück gelegt hat
-	 * 
-	 * @return void
 	 */
 	public void entnehmenErgebnisDialog(String teilenamen, int[] ergebnis) {
 		screensize = actionlistener.getScreensize();
@@ -537,8 +519,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * Versucht den String in eine Zahl umzuwandenl und je nachdem ob dies klappt wird true oder false zurück gegeben
 	 * 
 	 * @param teilenamen enthält die Information entweder über die Bezeichnung des Teils oder die Teilenummer
-	 * 
-	 * @return boolean true, wenn es sich um eine Zahl handelt
 	 */
 	public boolean pruefeString(String teilenamen) {
 		boolean testbestanden;
@@ -555,8 +535,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 * Schließt das Fenster des Ergebnisdialogs, abhängig von dem übergebenem Parameter
 	 * 
 	 * @param ergebnisdialog erhält Informationen darüber, welches Fenster(JDialog) geschlossen werden soll
-	 * 
-	 * @return void
 	 */
 	public void schliesseErgebnisDialog(JDialog ergebnisdialog) {
 		ergebnisdialog.dispose();

@@ -54,8 +54,6 @@ public class Actionlistener {
 	 * @see LagerverwaltungDaten
 	 * 
 	 * @throws IOException fängt die Exception beim Öffnen der Datei ab
-	 * 
-	 * @return void
 	 */
 	public void oeffnen(LagerverwaltungGUI gui) throws IOException {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Textdatei", "txt");
@@ -164,8 +162,6 @@ public class Actionlistener {
 	 * Beendet die Anwendung nachdem gefragt wurde, ob gespeichert werden soll
 	 * 
 	 * @see speichern
-	 * 
-	 * @return void
 	 */
 	public void beenden() {
 			int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Programm wirklich beenden?", "Programm schließen?",
@@ -187,8 +183,6 @@ public class Actionlistener {
 	 * @param menupanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
-	 * 
-	 * @return void
 	 */
 	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
 		//Entfernt die Panels der Startübersicht
@@ -218,8 +212,6 @@ public class Actionlistener {
 	 * @param menupanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
-	 * 
-	 * @return void
 	 */
 	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {		
 		JTable tabelle = null;
@@ -256,8 +248,6 @@ public class Actionlistener {
 	 * @param menupanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
-	 * 
-	 * @return void
 	 */
 	private void sortieren(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
 		int i = JOptionPane.showOptionDialog(null,
@@ -279,8 +269,6 @@ public class Actionlistener {
 	 * Sortiert die Zeilen der Tabelle nach der Bezeichnung, also der ersten Spalte
 	 * 
 	 * @param tabelle, die Tabelle, die sortiert werden soll
-	 * 
-	 * @return void
 	 */
 	private void sortierenBezeichnung(JTable tabelle) {
 		DefaultTableModel model = (DefaultTableModel) tabelle.getModel();
@@ -294,8 +282,6 @@ public class Actionlistener {
 	 * Sortiert die Zeilen der Tabelle nach der Teilenummer, also der zweiten Spalte
 	 * 
 	 * @param tabelle, die Tabelle, die sortiert werden soll
-	 * 
-	 * @return void
 	 */
 	private void sortierenTeilenummer(JTable tabelle) {
 		DefaultTableModel model = (DefaultTableModel) tabelle.getModel();
@@ -312,8 +298,6 @@ public class Actionlistener {
 	 * @param artlabel das Label, welches den neuen Text erhalten soll
 	 * @param eingabetxtfield Textfeld, welches das neue Dokument und den Fokus erhalten soll
 	 * @param standarddocument das Doukment
-	 * 
-	 * @return void
 	 */
 	private void radiobuttonAuswahlBezeichnung(JLabel artlabel, JTextField eingabetxtfield, Document standarddocument) {
 			artlabel.setText("Bezeichnung des Teils:");
@@ -327,8 +311,6 @@ public class Actionlistener {
 	 * 
 	 * @param artlabel das Label, welches den neuen Text erhalten soll
 	 * @param eingabetxtfield Textfeld, welches das neue Dokument und den Fokus erhalten soll
-	 *
-	 * @return void
 	 */
 	private void radiobuttonAuswahlTeilenummer(JLabel artlabel, JTextField eingabetxtfield) {
 			eingabetxtfield.setDocument(new AllowedDocument(9));
@@ -343,8 +325,6 @@ public class Actionlistener {
 	 * @see entnehmenDatenuebergabe
 	 * 
 	 * @param gui wird für die Methode entnehmenDatenuebergabe benötigt
-	 * 
-	 * @return void
 	 */
 	public void entnehmen(LagerverwaltungGUI gui) {
 		Dimension screensize = getScreensize();
@@ -423,8 +403,6 @@ public class Actionlistener {
 	 * @param eingabetxtfield Eingabefeld mit Informationen über Bezeichnung/Teilenummer
 	 * @param entnehmenDialog Dialogfenster welches sich öffnet
 	 * @param gui Instanzt der Klasse LagerverwaltungGUI
-	 * 
-	 * @return void
 	 */
 	private void entnehmenDatenuebergabe(JRadioButton btnbezeichnung, JRadioButton btnteilenummer, JTextField eingabetxtfield, JDialog entnehmenDialog, LagerverwaltungGUI gui) {
 		String bezeichnung = "";
@@ -481,8 +459,6 @@ public class Actionlistener {
 	 * @param gui wird für die Methode einlagernDatenuebergabe benötigt
 	 * @param bezeichnung wird für den Wiederaufruf bei falscher Eingabe benötigt, damit die Bezeichnung nicht erneut eingegeben werden muss
 	 * @param groesse wird für den Wiederaufruf bei falscher Eingabe benötigt, damit die Größe nicht erneut eingebene werden muss
-	 * 
-	 * @return void
 	 */
 	public void einlagern(LagerverwaltungGUI gui, String bezeichnung, String groesse) {
 		Dimension screensize = getScreensize();
@@ -657,6 +633,17 @@ public class Actionlistener {
 		return gbc;
 	}
 	
+	/**
+	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
+	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
+	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
+	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
+	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
+	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
+	 * @param fill	setzt fill von gbc auf den jewiligen Wert
+	 * 
+	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
+	 */
 	private GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwith, int fill) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = gridx;
