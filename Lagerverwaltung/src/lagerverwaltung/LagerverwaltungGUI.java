@@ -38,6 +38,7 @@ import javax.swing.border.EmptyBorder;
 public class LagerverwaltungGUI extends JFrame{
 
 	private Actionlistener actionlistener = new Actionlistener();
+	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
 	
 	//Menübar
 	private JMenuBar menubar;
@@ -336,6 +337,8 @@ public class LagerverwaltungGUI extends JFrame{
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 
+		aktualisierenProgressbar(daten.getTableSize(), daten.getfreieRegalfaecher());
+		
 		ueberschriftLabel.setBorder(new EmptyBorder(0, 5, 10, 0));
 		ueberschriftLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD,  15));
 		ueberschriftLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -353,8 +356,8 @@ public class LagerverwaltungGUI extends JFrame{
 	public void aktualisierenProgressbar(int freierPlatz, int freieFaecher) {
 		freieFaecherBar.setValue(800 - freieFaecher);
 		freierPlatzBar.setValue(freierPlatz);
-		freieFaecherLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
-		freierPlatzLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
+		freierPlatzLabel.setText("Belegter Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
+		freieFaecherLabel.setText("Belegte Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 	}
 
 	
