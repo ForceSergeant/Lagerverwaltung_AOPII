@@ -77,15 +77,14 @@ public class Actionlistener {
 
 				while( (zeile = br.readLine()) != null ) {
 					if(zeile != null && zeile.length() >0) {
-						String[] string = zeile.substring(0, zeile.length()-1).split(" ");
+						String[] string = zeile.substring(0, zeile.length()-1).split("~");
 						for(int i = 0; i < string.length; i++) {
 							System.out.println(string[i]);
 						}
 						try {
 							daten.laden(string[0], Integer.parseInt(string[1]), Integer.parseInt(string[2]), Integer.parseInt(string[3]),Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Hierbei handelt es sich um eine ungültige Datei und kann nicht geladen werden.",
-									"Fehler", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
 						}		
 				   	}
 				}
@@ -130,7 +129,7 @@ public class Actionlistener {
 					for(int i = 0; i < inhaltdaten.size(); i++) {
 						for(int j = 0; j < inhaltdaten.get(i).size(); j++) {
 							writer.write(inhaltdaten.get(i).get(j)); 
-							writer.write(" ");
+							writer.write("~");
 						}
 						writer.write("\n");
 					} 
