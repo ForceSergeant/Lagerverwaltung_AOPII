@@ -359,6 +359,6 @@ public class LagerverwaltungDaten {
 	    	}
     	}
     	return remaining;
-    }
+    }//
     
 }
