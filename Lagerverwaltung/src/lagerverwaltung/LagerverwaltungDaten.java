@@ -370,7 +370,7 @@ public class LagerverwaltungDaten {
 	                if (statusSuche) {
 			    		for(ArrayList<String> arr : item_table) {
 			            	if(arr.get(1).equals(Integer.toString(tn))) {
-			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		remaining = (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
 			            		break Suche;
 			            	}
 			            }

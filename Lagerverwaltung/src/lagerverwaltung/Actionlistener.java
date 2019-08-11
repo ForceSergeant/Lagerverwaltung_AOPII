@@ -766,7 +766,7 @@ public class Actionlistener {
 		
 		Image image = null;
 		try {
-			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager2.jpg"));
+			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
