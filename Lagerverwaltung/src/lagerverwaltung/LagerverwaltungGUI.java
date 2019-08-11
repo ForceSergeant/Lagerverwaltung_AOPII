@@ -334,9 +334,6 @@ public class LagerverwaltungGUI extends JFrame{
 		freierPlatzLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		freieFaecherLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		
-		//TODO Funktion schreiben, wie ich an die jeweiligen Daten komme
-		aktualisierenProgressbar();
-		
 		freierPlatzLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freieFaecherLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 
@@ -354,9 +351,9 @@ public class LagerverwaltungGUI extends JFrame{
 	}
 
 	//TODO funktioniert nicht
-	public void aktualisierenProgressbar() {
-		freieFaecherBar.setValue(800 - daten.getfreieRegalfaecher());
-		freierPlatzBar.setValue(daten.getTableSize());
+	public void aktualisierenProgressbar(int freierPlatz, int freieFaecher) {
+		freieFaecherBar.setValue(800 - freieFaecher);
+		freierPlatzBar.setValue(freierPlatz);
 		freieFaecherLabel.setText("Freier Platz: \t"+ freierPlatzBar.getValue() +"/" + freierPlatzBar.getMaximum());
 		freierPlatzLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 	}
@@ -552,7 +549,6 @@ public class LagerverwaltungGUI extends JFrame{
 	 */
 	public void schliesseErgebnisDialog(JDialog ergebnisdialog) {
 		ergebnisdialog.dispose();
-		aktualisierenProgressbar();
 	}
 	
 	/**
