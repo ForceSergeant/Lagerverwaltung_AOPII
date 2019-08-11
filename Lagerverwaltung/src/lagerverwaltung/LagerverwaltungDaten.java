@@ -307,15 +307,6 @@ public class LagerverwaltungDaten {
 
     }
     
-    public void inhaltAnzeigen() {
-    	for(ArrayList<String> arr : item_table) {
-    		System.out.println();
-    		for(int i = 0; i < arr.size(); i++) {
-    			System.out.print(arr.get(i) + " , ");
-    		}
-    	}
-    }
-    
     public ArrayList<ArrayList<String>> getItemTable() {
     	return item_table;
     }
@@ -326,10 +317,6 @@ public class LagerverwaltungDaten {
     		zaehleFreieFaecher += i.freieFaecher();
     	}
     	return zaehleFreieFaecher;
-    }
-    
-    public int getTableSize() {
-    	return item_table.size();
     }
     
     public int getOccupied() {
