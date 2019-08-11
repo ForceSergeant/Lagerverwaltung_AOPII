@@ -611,27 +611,6 @@ public class Actionlistener {
 	}
 
 	/**
-	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
-	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
-	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
-	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
-	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
-	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
-	 * 
-	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
-	 */
-	public GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwidth) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = gridx;
-		gbc.gridy = gridy;
-		gbc.weightx = weightx;
-		gbc.weighty = weighty;
-		gbc.gridwidth = gridwidth;
-		return gbc;
-	}
-	
-
-	/**
 	 * Erzeugt ein Dialogfenster, in dem man die Bezeichnung oder die Teilenummer eines Teils eingeben kann
 	 * Ruft bei Bestätigung die Methode fachauslastungErgebnis auf
 	 * 
@@ -793,6 +772,27 @@ public class Actionlistener {
 		rightpanel.setImage(image);
 	}
 
+	/**
+	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
+	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
+	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
+	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
+	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
+	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
+	 * 
+	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
+	 */
+	public GridBagConstraints gbcErzeugen(int gridx, int gridy, double weightx, double weighty, int gridwidth) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = gridx;
+		gbc.gridy = gridy;
+		gbc.weightx = weightx;
+		gbc.weighty = weighty;
+		gbc.gridwidth = gridwidth;
+		return gbc;
+	}
+	
+	
 	/**
 	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
 	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
