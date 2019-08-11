@@ -76,10 +76,13 @@ public class Actionlistener {
 				while( (zeile = br.readLine()) != null ) {
 					if(zeile != null && zeile.length() >0) {
 						String[] string = zeile.substring(0, zeile.length()-1).split(" ");
+						for(int i = 0; i < string.length; i++) {
+							System.out.println(string[i]);
+						}
 						try {
 							daten.laden(string[0], Integer.parseInt(string[1]), Integer.parseInt(string[2]), Integer.parseInt(string[3]),Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Hiebi handelt es sich um eine ungültige Datei und kann nicht geladen werden.",
+							JOptionPane.showMessageDialog(null, "Hierbei handelt es sich um eine ungültige Datei und kann nicht geladen werden.",
 									"Fehler", JOptionPane.ERROR_MESSAGE);
 						}
 				   				
@@ -773,8 +776,12 @@ public class Actionlistener {
 		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1.0, 0.0, 1));
 		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 1.0, 0.0 , 1));
 		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.0, 1));
+		rightpanel.add(btnschliessen, gbcErzeugen(0, 4, 1.0, 0.0, 1));
 		
 		rightpanel.setImage(null);
+		
+		//ActionListener
+//		btnschliessen.addActionListener(e -> );
 	}
 }
 
