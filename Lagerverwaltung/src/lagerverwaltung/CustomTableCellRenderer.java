@@ -36,6 +36,7 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		tabelle.setRowHeight(25);
 		tabelle.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+		setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		return this; 
 		
 	}
