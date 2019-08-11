@@ -17,6 +17,17 @@ public class LagerverwaltungDaten {
         }
     }
     
+    public void laden(String name, int tn, int gr, int anz, int x, int y, int z) {
+    	for(Regal regal : lager) {
+    		if(regal.getRegalnummer() == x) {
+		    	for(int i = 1; i <= anz; i++) {
+		    		regal.einfuegenLaden(name, tn, gr, y, z);
+		    	}
+		    	return;
+    		}
+    	}
+    }
+    
     public int[] einlagern(String name, int teilenummer, int größe) {
     	int[] coord_arr = new int[4];
         int[] statusEinfügen = new int[3];

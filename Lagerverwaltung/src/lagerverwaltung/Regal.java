@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Regal {
     private ArrayList<ArrayList<Fach>> regal = new ArrayList<ArrayList<Fach>>();
-    private int zeile,spalte;
     private int regalnummer;
 
     public Regal(int regalnummer) {
@@ -104,6 +103,18 @@ public class Regal {
 
     }
 
+    public void einfuegenLaden(String name, int tn, int gr, int y, int z) {
+    	for (ArrayList<Fach> i: regal) {
+            for (Fach j: i) {
+                if(j.getSpalte() == y && j.getZeile() == z) {
+                    j.addItem(name, tn, gr);
+                    System.out.println("REGAL einfügenLaden: "+j.getSpalte()+" "+j.getZeile()+" "+j.getItem().getName());
+                    return;
+                }
+            }
+        }
+    }
+    
     public int[] entfernen(String name, int teilenummer) {
         int y=0, z=0;
         int [] arr = new int[3];
