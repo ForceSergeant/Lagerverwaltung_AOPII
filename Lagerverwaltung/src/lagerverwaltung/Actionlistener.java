@@ -733,6 +733,7 @@ public class Actionlistener {
 		CustomProgressBar fachauslastungBar = new CustomProgressBar(10);
 		JLabel ueberschriftLabel = new JLabel();
 		JLabel fachauslastungLabel = new JLabel();
+		JButton btnschliessen = new JButton("Schlieﬂen");
 		
 		fachauslastungDialog.dispose();
 				
@@ -763,8 +764,8 @@ public class Actionlistener {
 		
 		rightpanel.setLayout(new GridBagLayout());
 		rightpanel.setBackground(CustomColor);
-		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 0.0, 0.0, 1));
-		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 0.0, 0.0 , 1));
+		rightpanel.add(ueberschriftLabel, gbcErzeugen(0, 0, 1.0, 0.0, 1));
+		rightpanel.add(fachauslastungLabel, gbcErzeugen(0, 1, 1.0, 0.0 , 1));
 		rightpanel.add(fachauslastungBar, gbcErzeugen(0, 3, 1.0, 0.0, 1));
 		
 		rightpanel.setImage(null);

@@ -36,6 +36,6 @@ public class CustomPanel extends JPanel{
 		   if(image != null) {
 	            Dimension size = this.getSize();
 	            g.drawImage(image, 0, 0, size.width, size.height, this);
-         }
+		   }
       }
 	}
