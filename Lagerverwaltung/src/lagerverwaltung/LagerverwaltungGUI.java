@@ -11,10 +11,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -31,19 +29,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 public class LagerverwaltungGUI extends JFrame{
 
 	private Actionlistener actionlistener = new Actionlistener();
 	private LagerverwaltungDaten daten = new LagerverwaltungDaten();
-	private LagerverwaltungGUI gui;
 	
 	//Menübar
 	private JMenuBar menubar;
@@ -92,6 +87,22 @@ public class LagerverwaltungGUI extends JFrame{
 	//Farbe
 	private Color CustomColor;
 	
+	//Ergebnisdialog
+	private JDialog ergebnisDialog;
+	private JLabel teilLabel;
+	private JLabel[] ergebnisLabel;
+	private JLabel[] ausschriftLabel;
+	private JButton btnok;
+	private EmptyBorder eborder;
+	private Dimension screensize;
+	
+	
+	
+	/**
+	 * Konstruktor: erzeugt die Graphikoberfläche bestehend aus Menü, Iconmenü, Auslastung des Lagers und ein Bild
+	 * Zusätzlich werden Eigenschaften des JFrames gesetzt und der ActionListener für Buttons erzeugt
+	 * 
+	 */
 	public LagerverwaltungGUI() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -109,18 +120,19 @@ public class LagerverwaltungGUI extends JFrame{
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new GridBagLayout());
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) {		
-				int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?",
-						"Programm schließen?", JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE, null, new String[] {"Ja", "Nein"}, "Ja");
-				if(i == JOptionPane.YES_OPTION) {
-					 actionlistener.speichern(gui, menupanel, leftpanel, rightpanel);
-					 System.exit(0);
-				 }
-			}
-		});
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+//		this.addWindowListener(new WindowAdapter(){
+//			public void windowClosing(WindowEvent e) {		
+//				int i = JOptionPane.showOptionDialog(null, "Wollen Sie das Porgramm wirklich beenden?",
+//						"Programm schließen?", JOptionPane.YES_NO_OPTION,
+//						JOptionPane.WARNING_MESSAGE, null, new String[] {"Ja", "Nein"}, "Ja");
+//				if(i == JOptionPane.YES_OPTION) {
+//					 actionlistener.speichern(gui, menupanel, leftpanel, rightpanel);
+//					 System.exit(0);
+//				 }
+//			}
+//		});
 		
 		//Menü
 		menueErzeugen();
@@ -129,7 +141,7 @@ public class LagerverwaltungGUI extends JFrame{
 		startpanelsErzeugen();
 		
 		//Button für Menupanel
-		btnerzeugen();
+		iconmenuErzeugen();
 		
 		//Style
 		stylebtn(oeffnenbtn);
@@ -141,32 +153,50 @@ public class LagerverwaltungGUI extends JFrame{
 		stylebtn(startseitebtn);
 		
 		//Hilfsbox
-		hilfsboxerzeugen();
+		hilfsboxErzeugen();
 		
 		//ProgressBar
 		progressbarErzeugen();
 		
 		
 		//Actionlistener
-		oeffnenitem.addActionListener(e -> actionlistener.oeffnen());
-		beendenitem.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
-		speichernitem.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
+		oeffnenitem.addActionListener(e -> {
+			try {
+				actionlistener.oeffnen();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		beendenitem.addActionListener(e -> actionlistener.beenden());
+		speichernitem.addActionListener(e -> actionlistener.speichern());
 		anzeigenLagerinhaltitem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenitem.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernitem.addActionListener(e -> actionlistener.einlagern(this, null, null));
 		startseiteitem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
 		
-		oeffnenbtn.addActionListener(e -> actionlistener.oeffnen());
-		speichernbtn.addActionListener(e -> actionlistener.speichern(this, leftpanel, rightpanel, menupanel));
+		oeffnenbtn.addActionListener(e -> {
+			try {
+				actionlistener.oeffnen();
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			}
+		});
+		speichernbtn.addActionListener(e -> actionlistener.speichern());
 		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
 		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null));
 		startseitebtn.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
-		beendenbtn.addActionListener(e -> actionlistener.beenden(this, leftpanel, rightpanel, menupanel));
+		beendenbtn.addActionListener(e -> actionlistener.beenden());
 	
-		}
+	}
 	
-	
+	/**
+	 * Erzeugt die Panels für die Startübersicht bestehend aus dem Iconmenü, Auslastung des Lagers und ein Bild
+	 * Zusätzlich werden Eigenschaften dieser Panels gesetzt
+	 * 
+	 * @return void
+	 */
 	private void startpanelsErzeugen() {
 		CustomColor = new Color(80, 80, 80);
 		menupanel = new JPanel();
@@ -192,6 +222,12 @@ public class LagerverwaltungGUI extends JFrame{
 		this.add(rightpanel,gbcErzeugen(1, 1, 1, 1, 0.75, 1.0, GridBagConstraints.BOTH));
 	}
 
+	/**
+	 * Erzeugt das Menü am oberen linken Rand des Programms: Dabei gibt es als die zwei Hauptmenüs Datei und Zurück
+	 * Die Hauptmenüs haben dabei noch einzelne Menüunterpunkte
+	 * 
+	 * @retrun void
+	 */
 	private void menueErzeugen() {
 		menubar = new JMenuBar();
 		menuDatei = new JMenu("Datei");
@@ -216,7 +252,12 @@ public class LagerverwaltungGUI extends JFrame{
 		this.setJMenuBar(menubar);
 	}
 
-	private void btnerzeugen() {
+	/**
+	 * Erzeugt das Iconmenü, welches sich auf dem menupanel befindet. Es werden die Icons geladen und die Buttons erzeugt
+	 * 
+	 * @return void
+	 */
+	private void iconmenuErzeugen() {
 		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		house = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/house.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));
@@ -234,7 +275,13 @@ public class LagerverwaltungGUI extends JFrame{
 		einlagernbtn = new JButton("Einlagern", palletstore);	
 	}
 	
-	private void hilfsboxerzeugen() {
+	/**
+	 * Dient zur Ausrichtung der jeweiligen Iconmenübuttons, sodass diese immer den gleichen Abstand zueiander haben
+	 * Geschieht mit Hilfe einer Box und deren createGlue methode
+	 * 
+	 * @retrun void
+	 */
+	private void hilfsboxErzeugen() {
 		hilfsbox = Box.createHorizontalBox();
 		hilfsbox.setBorder(new EmptyBorder(10, 0, 5, 0));
 		hilfsbox.add(Box.createGlue());
@@ -255,6 +302,12 @@ public class LagerverwaltungGUI extends JFrame{
 		menupanel.add(hilfsbox);
 	}
 
+	/**
+	 * Erzeugt die Progressbars und die Label für die Veranschaulichung der Auslastung des Lagers
+	 * Die Progressbar und die Labels werden erzeugt und gewisse Eigenschaften gesetzt
+	 * 
+	 * @return void
+	 */
 	private void progressbarErzeugen() {
 		freierPlatzBar = new CustomProgressBar(8000);
 		freieFaecherBar = new CustomProgressBar(800);
@@ -308,6 +361,16 @@ public class LagerverwaltungGUI extends JFrame{
 		freierPlatzLabel.setText("Freie Fächer: \t"+ freieFaecherBar.getValue() +"/" + freieFaecherBar.getMaximum());
 	}
 
+	
+	/**
+	 * Dient zum "Stylen" des jeweiligen Iconmenübuttons, es werden die benötigten Eigenschaften gesetzt
+	 * 
+	 * @see iconmenuErzeugen
+	 * 
+	 * @param component der Button, welcher diese Eigenschaften erhalten soll
+	 * 
+	 * @return void
+	 */
 	private void stylebtn(JButton component) {
 		component.setSize(75, 75);
 		component.setMargin(new Insets(0,0,0,0));
@@ -316,195 +379,159 @@ public class LagerverwaltungGUI extends JFrame{
 		component.setHorizontalTextPosition(SwingConstants.CENTER);
 	}
 
+	/**
+	 * Erzeugt den Ergebnisdialog, welcher nach dem Einlagern zu sehen ist, abhängig von der Größe des verwendeten Monitors
+	 * 
+	 * @param eingabebezeichnung dient zur Ausgabe des Bezeichnung, welche das Teil beim Einlagern erhielt
+	 * @param eingabeteilenummer dient zur Ausgabe der Teilenummer, welche das Teil beim Einlagern erhielt
+	 * @param ergebnis enthält Informationen über die Wege, welche das Transportsystem zurück gelegt hat
+	 * 
+	 * @return void
+	 */
 	public void einlagernErgebnisDialog(JTextField eingabebezeichnung, JTextField eingabeteilenummer, int[] ergebnis) {
-		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width, height;
-		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
-			width = (int) Math.round(screensize.getWidth()/2);
-			height = (int) Math.round(screensize.getHeight()/2);
-		}
-		else {
-			width = (int) Math.round(screensize.getWidth()/3);
-			height = (int) Math.round(screensize.getHeight()/3);
-		}
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		JDialog ergebnisdialog = new JDialog();
-		JLabel teil = new JLabel();
-		JLabel ergebnisx = new JLabel();
-		JLabel ergebnisy = new JLabel();
-		JLabel ergebnisz = new JLabel();
-		JLabel ausschriftx = new JLabel("Der Fahrtweg in x-Richtung betrug: ");
-		JLabel ausschrifty = new JLabel("Der Fahrtweg in y-Richtung betrug: ");
-		JLabel ausschriftz = new JLabel("Der Fahrtweg in z-Richtung betrug: ");
-		JButton btnok = new JButton("OK");
-		EmptyBorder eborder = new EmptyBorder(0, 20, 0, 0);
+		screensize = actionlistener.getScreensize();
+		ergebnisDialog = new JDialog();
+		teilLabel = new JLabel();
+		ergebnisLabel = new JLabel[3];
+		ausschriftLabel = new JLabel[3];
+		btnok = new JButton("OK");
+		eborder = new EmptyBorder(0, 20, 0, 0);
 
 		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(ergebnisdialog) );
+		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );
 		
 		
 		if(eingabeteilenummer.getText().length() > 0) {
-			teil.setText("Das Teil mit der Bezeichnung " + eingabebezeichnung.getText() + 
+			teilLabel.setText("Das Teil mit der Bezeichnung " + eingabebezeichnung.getText() + 
 				" und der Teilenummer " + eingabeteilenummer.getText() + 
 				" wurde erfolgreich eingelagert");
 		}
 		else {
-			teil.setText("Das Teil mit der Bezeichnung " + eingabebezeichnung.getText() + 
+			teilLabel.setText("Das Teil mit der Bezeichnung " + eingabebezeichnung.getText() + 
 					" wurde erfolgreich eingelagert");
 		}
 		
-		ergebnisx.setText(ergebnis[1] + " Meter");
-		ergebnisy.setText(ergebnis[2] + " Meter");
-		ergebnisz.setText(ergebnis[3] + " Meter");
+		for(int i = 0; i < ergebnisLabel.length; i++) {
+			ergebnisLabel[i] = new JLabel(ergebnis[i+1] + " Meter");
+		}
 		
-		ausschriftx.setBorder(eborder);
-		ausschrifty.setBorder(eborder);
-		ausschriftz.setBorder(eborder);
 		
-		ergebnisdialog.setTitle("Teil wurde in das Lager aufgenommen.");
-		ergebnisdialog.setLayout(new GridBagLayout());
+		for(int i = 0; i < ausschriftLabel.length; i++) {
+			ausschriftLabel[i] = new JLabel();
+			ausschriftLabel[i].setBorder(eborder);
+		}
+		
+		ausschriftLabel[0].setText("Der Fahrtweg in x-Richtung betrug: ");
+		ausschriftLabel[1].setText("Der Fahrtweg in y-Richtung betrug: ");
+		ausschriftLabel[2].setText("Der Fahrtweg in z-Richtung betrug: ");
+		
+		ergebnisDialog.setTitle("Teil wurde in das Lager aufgenommen.");
+		ergebnisDialog.setLayout(new GridBagLayout());
 		
 		btnok.setBorder(new EmptyBorder(7, 25, 7, 25));		
-		
-		gbc.gridx = 0; //Spalte
-		gbc.gridy = 1; //Zeile
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		ergebnisdialog.add(ausschriftx, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		ergebnisdialog.add(ergebnisx, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		ergebnisdialog.add(ausschrifty, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 2;
 
-		ergebnisdialog.add(ergebnisy, gbc);
+		ergebnisDialog.add(ausschriftLabel[0], gbcErzeugen(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+	
+		ergebnisDialog.add(ergebnisLabel[0], gbcErzeugen(1, 1, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ausschriftLabel[1], gbcErzeugen(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ergebnisLabel[1], gbcErzeugen(1, 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ausschriftLabel[2], gbcErzeugen(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ergebnisLabel[2], gbcErzeugen(1, 3, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(btnok, gbcErzeugen(0, 4, 2, 1, 0.0, 0.0, GridBagConstraints.VERTICAL));
 		
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ausschriftz, gbc);
+		ergebnisDialog.add(teilLabel, gbcErzeugen(0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.VERTICAL));
 		
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ergebnisz, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(btnok, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(teil, gbc);
-		
-		ergebnisdialog.setSize(width, height);
-		ergebnisdialog.setLocationRelativeTo(null);
-		ergebnisdialog.setVisible(true);
+		ergebnisDialog.setSize(screensize.width, screensize.height);
+		ergebnisDialog.setLocationRelativeTo(null);
+		ergebnisDialog.setVisible(true);
 		
 		//ActionListener
-		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisdialog));
+		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisDialog));
 	}
 
+	/**
+	 * Erzeugt den Ergebnisdialog, welcher nach dem entnehmen zu sehen ist, abhängig von der Größe des verwendeten Monitors
+	 * 
+	 * @param teilenamen enthält die Information entweder über die Bezeichnung des Teils oder die Teilenummer
+	 * @param ergebnis enthält Informationen über die Wege, welche das Transportsystem zurück gelegt hat
+	 * 
+	 * @return void
+	 */
 	public void entnehmenErgebnisDialog(String teilenamen, int[] ergebnis) {
-		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width, height;
-		if(screensize.getWidth()<= 1280 && screensize.getHeight() <= 720) {
-			width = (int) Math.round(screensize.getWidth()/2);
-			height = (int) Math.round(screensize.getHeight()/2);
-		}
-		else {
-			width = (int) Math.round(screensize.getWidth()/3);
-			height = (int) Math.round(screensize.getHeight()/3);
-		}
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		JDialog ergebnisdialog = new JDialog();
-		JLabel teil = new JLabel();
-		JLabel ergebnisx = new JLabel();
-		JLabel ergebnisy = new JLabel();
-		JLabel ergebnisz = new JLabel();
-		JLabel ausschriftx = new JLabel("Der Fahrtweg in x-Richtung betrug: ");
-		JLabel ausschrifty = new JLabel("Der Fahrtweg in y-Richtung betrug: ");
-		JLabel ausschriftz = new JLabel("Der Fahrtweg in z-Richtung betrug: ");
-		JButton btnok = new JButton("OK");
-		
-		EmptyBorder eborder = new EmptyBorder(0, 20, 0, 0);
+		screensize = actionlistener.getScreensize();
+		ergebnisDialog = new JDialog();
+		teilLabel = new JLabel();
+		ergebnisLabel = new JLabel[3];
+		ausschriftLabel = new JLabel[3];
+		btnok = new JButton("OK");
+		eborder = new EmptyBorder(0, 20, 0, 0);
 		
 		if(pruefeString(teilenamen)) {
-			teil.setText("Das Teil mit der Teilenummer " + teilenamen + " wurde erfolgreich entnommen");	
+			teilLabel.setText("Das Teil mit der Teilenummer " + teilenamen + " wurde erfolgreich entnommen");	
 		}
 		else {
-			teil.setText("Das Teil mit der Bezeichnung " + teilenamen + " wurde erfolgreich entnommen");
+			teilLabel.setText("Das Teil mit der Bezeichnung " + teilenamen + " wurde erfolgreich entnommen");
 		}
 		
-		ergebnisx.setText(ergebnis[1] + " Meter");
-		ergebnisy.setText(ergebnis[2] + " Meter");
-		ergebnisz.setText(ergebnis[3] + " Meter");
+		for(int i = 0; i < ergebnisLabel.length; i++) {
+			ergebnisLabel[i] = new JLabel(ergebnis[i+1] + " Meter");
+		}
 		
-		ausschriftx.setBorder(eborder);
-		ausschrifty.setBorder(eborder);
-		ausschriftz.setBorder(eborder);
 		
-		ergebnisdialog.setTitle("Teil wurde aus dem Lager entnommen.");
-		ergebnisdialog.setLayout(new GridBagLayout());
+		for(int i = 0; i < ausschriftLabel.length; i++) {
+			ausschriftLabel[i] = new JLabel();
+			ausschriftLabel[i].setBorder(eborder);
+		}
+		
+		ausschriftLabel[0].setText("Der Fahrtweg in x-Richtung betrug: ");
+		ausschriftLabel[1].setText("Der Fahrtweg in y-Richtung betrug: ");
+		ausschriftLabel[2].setText("Der Fahrtweg in z-Richtung betrug: ");
+		
+		ergebnisDialog.setTitle("Teil wurde aus dem Lager entnommen.");
+		ergebnisDialog.setLayout(new GridBagLayout());
 		
 		btnok.setBorder(new EmptyBorder(7, 25, 7, 25));
 		btnok.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "beenden");
-		btnok.getActionMap().put("beenden", new EscAction(ergebnisdialog) );
-		
-		gbc.gridx = 0; //Spalte
-		gbc.gridy = 1; //Zeile
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		ergebnisdialog.add(ausschriftx, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		ergebnisdialog.add(ergebnisx, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		ergebnisdialog.add(ausschrifty, gbc);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 2;
+		btnok.getActionMap().put("beenden", new EscAction(ergebnisDialog) );
 
-		ergebnisdialog.add(ergebnisy, gbc);
+		ergebnisDialog.add(ausschriftLabel[0], gbcErzeugen(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ergebnisLabel[0], gbcErzeugen(1, 1, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ausschriftLabel[1], gbcErzeugen(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ergebnisLabel[1], gbcErzeugen(1, 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ausschriftLabel[2], gbcErzeugen(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(ergebnisLabel[2], gbcErzeugen(1, 3, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH));
+
+		ergebnisDialog.add(btnok, gbcErzeugen(0, 4, 2, 1, 0.0, 0.0, GridBagConstraints.VERTICAL));
 		
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ausschriftz, gbc);
+		ergebnisDialog.add(teilLabel, gbcErzeugen(0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.VERTICAL));
 		
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		ergebnisdialog.add(ergebnisz, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(btnok, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 2;
-		ergebnisdialog.add(teil, gbc);
-		
-		ergebnisdialog.setSize(width, height);
-		ergebnisdialog.setLocationRelativeTo(null);
-		ergebnisdialog.setVisible(true);
+		ergebnisDialog.setSize(screensize.width, screensize.height);
+		ergebnisDialog.setLocationRelativeTo(null);
+		ergebnisDialog.setVisible(true);
 
 		//Actionlistener
-		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisdialog));
+		btnok.addActionListener(e -> schliesseErgebnisDialog(ergebnisDialog));
 		
 	}
 
+	
+	/**
+	 * Versucht den String in eine Zahl umzuwandenl und je nachdem ob dies klappt wird true oder false zurück gegeben
+	 * 
+	 * @param teilenamen enthält die Information entweder über die Bezeichnung des Teils oder die Teilenummer
+	 * 
+	 * @return boolean true, wenn es sich um eine Zahl handelt
+	 */
 	public boolean pruefeString(String teilenamen) {
 		boolean testbestanden;
 		try {
@@ -515,12 +542,32 @@ public class LagerverwaltungGUI extends JFrame{
 		   }
 		   return testbestanden;
 	}
-
+	
+	/**
+	 * Schließt das Fenster des Ergebnisdialogs, abhängig von dem übergebenem Parameter
+	 * 
+	 * @param ergebnisdialog erhält Informationen darüber, welches Fenster(JDialog) geschlossen werden soll
+	 * 
+	 * @return void
+	 */
 	public void schliesseErgebnisDialog(JDialog ergebnisdialog) {
 		ergebnisdialog.dispose();
 		aktualisierenProgressbar();
 	}
-
+	
+	/**
+	 * Erzeugt das richtige GridBagConstraints in Abhängigkeit von den übergebenen Parametern
+	 * 
+	 * @param gridx setzt gridx von gbc auf den jeweiligen Wert
+	 * @param gridy setzt gridy von gbc auf den jeweiligen Wert
+	 * @param gridwidth setzt gridwidth von gbc auf den jeweiligen Wert
+	 * @param gridheight setzt gridheight von gbc auf den jeweiligen Wert
+	 * @param weightx setzt weightx von gbc auf den jeweiligen Wert
+	 * @param weighty setzt weighty von gbc auf den jeweiligen Wert
+	 * @param fill setzt fill von gbc auf den jeweiligen Wert
+	 * 
+	 * @return GridBagConstraints gbc: wird zur Positionierung im GridBagLayout benötigt
+	 */
 	public GridBagConstraints gbcErzeugen(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int fill) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = gridx;
