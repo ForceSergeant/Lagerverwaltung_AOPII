@@ -466,7 +466,7 @@ public class Actionlistener {
 		JLabel teilenummerLabel  = new JLabel("Teilenummer:");
 		JLabel groessLabel = new JLabel("Größe des Teils in Grundeinheiten:");
 		JTextField eingabebezeichnung = new JTextField(bezeichnung, 20);
-		JTextField eingabeteilenummer = new JTextField(teilenummer, 20);
+		JTextField eingabeteilenummer = new JTextField(20);
 		JTextField eingabegroesse = new JTextField(groesse, 2);
 		JButton btnok = new JButton("Ok");
 		
@@ -479,6 +479,7 @@ public class Actionlistener {
 		
 		btnok.setBorder(new EmptyBorder(7, 20, 7, 20));
 		eingabeteilenummer.setDocument(new AllowedDocument(9));
+		eingabeteilenummer.setText(teilenummer);
 		eingabegroesse.setDocument(new AllowedDocument(2));
 		eingabegroesse.setText(groesse);
 		
