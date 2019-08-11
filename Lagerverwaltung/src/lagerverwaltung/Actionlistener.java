@@ -77,9 +77,6 @@ public class Actionlistener {
 				while( (zeile = br.readLine()) != null ) {
 					if(zeile != null && zeile.length() >0) {
 						String[] string = zeile.substring(0, zeile.length()-1).split("~");
-						for(int i = 0; i < string.length; i++) {
-							System.out.println(string[i]);
-						}
 						try {
 							daten.laden(string[0], Integer.parseInt(string[1]), Integer.parseInt(string[2]), Integer.parseInt(string[3]),Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
 						} catch (Exception e) {
@@ -788,12 +785,12 @@ public class Actionlistener {
 		if(gui.pruefeString(eingabeTextfield.getText())) {
 			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Teilenummer "
 					+ eingabeTextfield.getText() +":");
-			ergebnis = daten.getFreierPlatz("", Integer.parseInt(eingabeTextfield.getText()));	
+			ergebnis = daten.getBelegterPlatz("", Integer.parseInt(eingabeTextfield.getText()));	
 		}
 		else {
 			ueberschriftLabel.setText("Die Auslastung des Fachs für das Teil mit der Bezeichnung "
 					+ eingabeTextfield.getText() +":");
-			ergebnis = daten.getFreierPlatz(eingabeTextfield.getText(), -1);
+			ergebnis = daten.getBelegterPlatz(eingabeTextfield.getText(), -1);
 		}
 		
 		if(ergebnis > 0) {

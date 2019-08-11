@@ -357,7 +357,7 @@ public class LagerverwaltungDaten {
     	return occupied;
     }
     
-    public int getFreierPlatz(String name, int tn) {
+    public int getBelegterPlatz(String name, int tn) {
     	boolean statusSuche = false;
     	int remaining = -1;
     	Suche: {
@@ -367,7 +367,7 @@ public class LagerverwaltungDaten {
 	                if (statusSuche) {
 						for(ArrayList<String> arr : item_table) {
 			            	if(arr.get(0).equals(name)) {
-			            		remaining = 10 - (Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
+			            		remaining =(Integer.parseInt(arr.get(2)) * Integer.parseInt(arr.get(3)));
 			            		break Suche;
 			            	}
 			            }
