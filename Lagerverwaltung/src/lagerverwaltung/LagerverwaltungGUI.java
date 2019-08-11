@@ -162,7 +162,7 @@ public class LagerverwaltungGUI extends JFrame{
 		//Actionlistener
 		oeffnenitem.addActionListener(e -> {
 			try {
-				actionlistener.oeffnen();
+				actionlistener.oeffnen(this);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -177,7 +177,7 @@ public class LagerverwaltungGUI extends JFrame{
 		
 		oeffnenbtn.addActionListener(e -> {
 			try {
-				actionlistener.oeffnen();
+				actionlistener.oeffnen(this);
 			} catch (IOException e2) {
 				e2.printStackTrace();
 			}

@@ -312,10 +312,4 @@ public class LagerverwaltungDaten {
     	return item_table.size();
     }
     
-//    public static void main(String[] arg ) {
-//    	LagerverwaltungDaten daten = new LagerverwaltungDaten();
-//    	daten.einlagern("Item 1", 1, 1);
-//    	daten.einlagern("Item 2", 2, 2);
-//    	System.out.println("Die Größe von item_table: " + daten.getTableSize());
-//    }
 }
