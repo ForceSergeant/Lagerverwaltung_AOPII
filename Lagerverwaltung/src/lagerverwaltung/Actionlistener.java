@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultBoundedRangeModel;
@@ -780,11 +782,21 @@ public class Actionlistener {
 		rightpanel.setImage(null);
 		
 		//ActionListener
-		//btnschliessen.addActionListener(e -> fachauswahlDialogschliessen(rightpanel));
+		btnschliessen.addActionListener(e -> fachauswahlDialogschliessen(rightpanel));
 	}
 
-	private void fachauswahlDialogschliessen() {
+	private void fachauswahlDialogschliessen(CustomPanel rightpanel) {
+		for (Component c : rightpanel.getComponents()) {
+			rightpanel.remove(c);
+		}
 		
+		Image image = null;
+		try {
+			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager2.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		rightpanel.setImage(image);
 	}
 }
 
