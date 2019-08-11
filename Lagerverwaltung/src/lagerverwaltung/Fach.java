@@ -119,6 +119,8 @@ public class Fach {
      * geht die gesamte Itemliste durch und prüft mittels einer übergebenen Bezeichnung, ob das Item vorhanden ist, gibt
      * true zurück, falls es vorhanden ist, gibt false zurück, wenn es nicht vorhanden ist
      * 
+     * @see getName
+     * 
      * @param name: die Bezeichnung des Gegenstands, der gesucht werden soll
      * 
      * @return boolean:	true, falls Item in Itemliste vorhanden
@@ -136,6 +138,8 @@ public class Fach {
     /**
      * geht die gesamte Itemliste durch und prüft mittels einer übergebenen Teilenummer, ob das Item vorhanden ist, gibt
      * true zurück, falls es vorhanden ist, gibt false zurück, wenn es nicht vorhanden ist
+     * 
+     * @see getTeilenummer
      * 
      * @param teilenummer: die Teilenummer des Gegenstands, der gesucht werden soll
      * 
