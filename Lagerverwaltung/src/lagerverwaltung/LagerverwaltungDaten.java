@@ -349,6 +349,12 @@ public class LagerverwaltungDaten {
     	return zaehleFreieFaecher;
     }
     
+    /**
+     * Ermittelt die belegte Grundeinheiten
+     * maximal 8000, da 800 Fächer * 10 Grundeinheiten
+     * 
+     * @return int: übergibt die ermittelte Zahl
+     */
     public int getOccupied() {
     	int occupied = 0;
     	for(ArrayList<String> arr : item_table) {             
@@ -357,6 +363,15 @@ public class LagerverwaltungDaten {
     	return occupied;
     }
     
+    /**
+     * Ermittelt die belegte Kapazität eines Faches in Grundeinheiten
+     * -> daraus folgt freie Kapazität: 10 - ergebnis
+     * 
+     * @param name enthält die Information über die Bezeichnung des Teils
+     * @param tn enthält die Information über die Teilenummer des Teils
+     * 
+     * @return int: übergibt die Anzahl des Belegten Platzes in einem Fach
+     */
     public int getBelegterPlatz(String name, int tn) {
     	boolean statusSuche = false;
     	int remaining = -1;
