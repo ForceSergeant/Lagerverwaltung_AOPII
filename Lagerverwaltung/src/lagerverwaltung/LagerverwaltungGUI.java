@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -169,10 +170,10 @@ public class LagerverwaltungGUI extends JFrame{
 		});
 		beendenItem.addActionListener(e -> actionlistener.beenden());
 		speichernItem.addActionListener(e -> actionlistener.speichern());
-		anzeigenLagerinhaltItem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
+		anzeigenLagerinhaltItem.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel, fachauslastungItem));
 		entnehmenItem.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernItem.addActionListener(e -> actionlistener.einlagern(this, null, null, null));
-		startseiteItem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel));
+		startseiteItem.addActionListener(e -> actionlistener.startseite(this, leftpanel, rightpanel, menupanel, fachauslastungItem));
 		fachauslastungItem.addActionListener(e -> actionlistener.fachauslastungDialog(this, rightpanel));
 		
 		oeffnenbtn.addActionListener(e -> {
@@ -185,7 +186,7 @@ public class LagerverwaltungGUI extends JFrame{
 			}
 		});
 		speichernbtn.addActionListener(e -> actionlistener.speichern());
-		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel));
+		anzeigenLagerinhaltbtn.addActionListener(e -> actionlistener.anzeigenLagerinhalt(this, menupanel, leftpanel, rightpanel, fachauslastungItem));
 		entnehmenbtn.addActionListener(e -> actionlistener.entnehmen(this));
 		einlagernbtn.addActionListener(e -> actionlistener.einlagern(this, null, null, null));
 		beendenbtn.addActionListener(e -> actionlistener.beenden());
@@ -252,6 +253,16 @@ public class LagerverwaltungGUI extends JFrame{
 		menubar.add(menuDatei);
 		menubar.add(menuZurueck);
 		menubar.add(menuFachauslastung);
+		
+		oeffnenItem.setToolTipText("Ermöglicht Ihnen eine Datei zu laden.");
+		speichernItem.setToolTipText("Ermöglicht Ihnen eine Datei zu speichern.");
+		anzeigenLagerinhaltItem.setToolTipText("Ermöglicht Ihnen den Lagerinhalt anzuzeigen.");
+		entnehmenItem.setToolTipText("Ermöglicht Ihnen das Entnehmen eines Teiles.");
+		einlagernItem.setToolTipText("Ermöglicht Ihnen das Einlagern eines Teiles.");
+		beendenItem.setToolTipText("Ermöglicht Ihnen das Programm zu schließen.");
+		startseiteItem.setToolTipText("Ermöglicht Ihnen auf die Startseite zurückzukehren.");
+		fachauslastungItem.setToolTipText("Ermöglicht Ihnen die Auslastung eines Faches zu sehen.");
+		
 		this.setJMenuBar(menubar);
 	}
 
@@ -260,18 +271,25 @@ public class LagerverwaltungGUI extends JFrame{
 	 */
 	private void iconmenuErzeugen() {
 		open = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/open.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
-		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		palletstore = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/palletstore.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH));	
 		pallettake = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/pallettake.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		save = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/diskette.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
 		stock = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/stock.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
-				
+		close = new ImageIcon(new ImageIcon("../Lagerverwaltung_AOPII/icons/close.png").getImage().getScaledInstance( 55, 55,  java.awt.Image.SCALE_SMOOTH ));
+		
 		oeffnenbtn = new JButton("Datei öffnen", open);
-		beendenbtn = new JButton("Beenden", close);
 		speichernbtn = new JButton("Speichern", save);
 		anzeigenLagerinhaltbtn = new JButton("Lagerinhalt anzeigen", stock);
 		entnehmenbtn = new JButton("Entnehmen", pallettake);
-		einlagernbtn = new JButton("Einlagern", palletstore);	
+		einlagernbtn = new JButton("Einlagern", palletstore);
+		beendenbtn = new JButton("Beenden", close);
+		
+		oeffnenbtn.setToolTipText("Ermöglicht Ihnen eine Datei zu laden.");
+		speichernbtn.setToolTipText("Ermöglicht Ihnen eine Datei zu speichern.");
+		anzeigenLagerinhaltbtn.setToolTipText("Ermöglicht Ihnen den Lagerinhalt anzuzeigen.");
+		entnehmenbtn.setToolTipText("Ermöglicht Ihnen das Entnehmen eines Teiles.");
+		einlagernbtn.setToolTipText("Ermöglicht Ihnen das Einlagern eines Teiles.");
+		beendenbtn.setToolTipText("Ermöglicht Ihnen das Programm zu schließen.");
 	}
 	
 	/**

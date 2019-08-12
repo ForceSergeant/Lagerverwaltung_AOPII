@@ -27,6 +27,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -182,11 +183,14 @@ public class Actionlistener {
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 */
-	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
-		//Entfernt die Panels der Startübersicht
+	public void anzeigenLagerinhalt(LagerverwaltungGUI gui, JPanel menupanel, JPanel leftpanel, JPanel rightpanel, JMenuItem fachauslastungItem) {
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
 		}
+		fachauslastungItem.setEnabled(false);
+		fachauslastungItem.setContentAreaFilled(false);
+		fachauslastungItem.setToolTipText("Dieser Button ist disabled, gehen Sie zurück auf die Startseite.");
+		
 		JPanel lagerPanel = new JPanel();
 		lagerPanel.setLayout(new BorderLayout());
 		lagerPanel.setBorder(new EmptyBorder(0, 5, 0, 5));
@@ -200,7 +204,7 @@ public class Actionlistener {
 		gui.pack();
 		gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		tabelleErzeugen(gui,lagerPanel, menupanel, leftpanel, rightpanel);	
+		tabelleErzeugen(gui,lagerPanel, menupanel, leftpanel, rightpanel, fachauslastungItem);	
 	}
 
 	/**
@@ -215,7 +219,7 @@ public class Actionlistener {
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 */
-	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {		
+	private void tabelleErzeugen(LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel, JMenuItem fachauslastungItem) {		
 		JTable tabelle = null;
 		String[] theader = {"Bezeichnung", "Teilenummer", "Größe", "Anzahl", "Regalnummer", "Fachspalte", "Fachreihe" };
 		ArrayList<ArrayList<String>> inhaltdaten = new ArrayList<ArrayList<String>>();
@@ -234,7 +238,7 @@ public class Actionlistener {
 		lagerpanel.add(new JScrollPane(tabelle), BorderLayout.CENTER);
 		lagerpanel.repaint();
 		
-		sortieren(tabelle, gui, lagerpanel, menupanel, leftpanel, rightpanel);	
+		sortieren(tabelle, gui, lagerpanel, menupanel, leftpanel, rightpanel, fachauslastungItem);	
 	}
 	
 	/**
@@ -251,7 +255,7 @@ public class Actionlistener {
 	 * @param leftpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 * @param rightpanel benötigt Methode startseite zum Zurückkehren auf die Startseite
 	 */
-	private void sortieren(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel) {
+	private void sortieren(JTable tabelle, LagerverwaltungGUI gui, JPanel lagerpanel, JPanel menupanel, JPanel leftpanel, JPanel rightpanel, JMenuItem fachauslastungItem) {
 		int i = JOptionPane.showOptionDialog(null,
 				"Wonach möchten Sie sortieren?", "Lagerinhalt anzeigen",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
@@ -263,7 +267,7 @@ public class Actionlistener {
 			sortierenTeilenummer(tabelle);
 		}
 		else if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
-			startseite(gui, leftpanel, rightpanel, menupanel);
+			startseite(gui, leftpanel, rightpanel, menupanel, fachauslastungItem);
 		}
 	}
 
@@ -601,10 +605,12 @@ public class Actionlistener {
 	 * @param rightpanel Panel mit Bild
 	 * @param menupanel Panel mit Iconmenü
 	 */
-	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel) {
+	public void startseite(LagerverwaltungGUI gui, JPanel leftpanel, JPanel rightpanel, JPanel menupanel, JMenuItem fachauslastungItem) {
 		for (Component c : gui.getContentPane().getComponents()) {
 			gui.remove(c);
 		}
+		fachauslastungItem.setEnabled(true);
+		fachauslastungItem.setToolTipText("Ermöglicht Ihnen die Auslastung eines Faches zu sehen.");
 		gui.add(leftpanel);
 		gui.add(rightpanel);
 		gui.add(menupanel);
