@@ -162,7 +162,9 @@ public class LagerverwaltungGUI extends JFrame{
 			try {
 				actionlistener.oeffnen(this);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Es kam beim Öffnen der Datei zu einem Fehler, "
+						+ "veruschen Sie es erneut oder laden sie eine andere Datei.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		beendenItem.addActionListener(e -> actionlistener.beenden());
@@ -177,7 +179,9 @@ public class LagerverwaltungGUI extends JFrame{
 			try {
 				actionlistener.oeffnen(this);
 			} catch (IOException e2) {
-				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Es kam beim Öffnen der Datei zu einem Fehler, "
+						+ "veruschen Sie es erneut oder laden sie eine andere Datei.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		speichernbtn.addActionListener(e -> actionlistener.speichern());
