@@ -21,6 +21,19 @@ public class LagerverwaltungDaten {
         }
     }
     
+    /**
+	 * Lagert das aus einer Save-Datei ausgelesene Item an die richtige Stelle im Lager ein.
+	 * 
+	 * @see einfuegenLaden
+	 * 
+	 * @param name:	Name des Items
+	 * @param tn:	Teilenummer des Items
+	 * @param gr:	Größe des Items in Grundeinheiten
+	 * @param anz:	Anzahl des Items im Fach
+	 * @param x:	Regalnummer
+	 * @param y:	Fachspalte
+	 * @param z:	Fachreihe
+	 */
     public void laden(String name, int tn, int gr, int anz, int x, int y, int z) {
     	ArrayList<String> arr = new ArrayList<String>();
     	arr.add(name);
@@ -41,13 +54,35 @@ public class LagerverwaltungDaten {
     	}
     }
     
-    public int[] einlagern(String name, int teilenummer, int größe) {
+    /**
+	 * Eingabe des Namens und der Größe ist zur Einlagerung notwendig, Teilenummer optional. Zunächst wird geprüft,
+	 * ob das einzulagernde Item bereits im Lager enthalten ist. Wenn ja, wird geprüft ob in dem entsprechenden Fach
+	 * noch Platz für ein weiteres Item der selben Art ist, je nachdem ob es noch reinpasst oder nicht wird es dann
+	 * auch eingelagert oder abgelehnt.
+	 * Wenn das Item noch nicht enthalten ist, wird geprüft ob es noch ein leeres Fach gibt, dann wird ggf. eine
+	 * Teilenummer generiert (wenn nicht eingegeben) und es wird in das erstbeste freie Fach eingelagert.
+	 * Weiterhin wird dann der Weg in x-, y- und z-Richtung berechnet und anschließend zurückgegeben.
+	 * 
+	 * @see sucheViaNamen
+	 * @see einfuegenVorhanden
+	 * @see einfuegenNeu
+	 * @see generiereTN
+	 * 
+	 * @param name: die Bezeichnung des Gegenstands, der eingelagert werden soll, Eingabe des Nutzers
+	 * @param teilenummer: 	die Teilenummer des Gegenstands, der eingelagert werden soll, entweder -1 oder die Eingabe des 
+	 * 						Nutzers
+	 * @param groesse: Größe des Gegenstands in Grundeinheiten, der eingelagert werden soll, Eingabe des Nutzers
+	 * 
+	 * @return int[4]: 	gibt ein Feld der Länge 4 zurück, welches übergibt, ob das Einlagern erfolgreich war und falls ja, 
+	 * 					den zurückgelegten Weg in x-, y- und z-Richtung ebenfalls übergibt, falls nicht erfolgreich, wird 
+	 * 					für x, y und z jeweils 0 zurückgegeben
+	 */
+    public int[] einlagern(String name, int teilenummer, int groesse) {
     	int[] coord_arr = new int[4];
-        int[] statusEinfügen = new int[3];
+        int[] statusEinfuegen = new int[3];
         boolean statusSuche = false;
         int test_tn = 0;
         int test_size = 0;
-        boolean check = false;
         for (Regal i: lager) {
             statusSuche = i.sucheViaNamen(name);
             if (statusSuche) {	//Vorhandener Name
@@ -85,11 +120,11 @@ public class LagerverwaltungDaten {
                 		break;
                 	}
                 }
-            	if(größe != test_size) {
+            	if(groesse != test_size) {
             	}
-            	größe = test_size;
-            	statusEinfügen = i.einfuegenVorhanden(name, teilenummer, größe);
-	            if(statusEinfügen[0]==1) {	//Einfügen erfolgreich
+            	groesse = test_size;
+            	statusEinfuegen = i.einfuegenVorhanden(name, teilenummer, groesse);
+	            if(statusEinfuegen[0]==1) {	//Einfügen erfolgreich
 	                for(ArrayList<String> arr : item_table) {
 	                	if(arr.get(0).equals(name)) {
 	                		anzahl = Integer.parseInt(arr.get(3));
@@ -98,8 +133,8 @@ public class LagerverwaltungDaten {
 	                	}
 	                }
 	                x = 2 + (i.getRegalnummer()-1) * 4;
-                    y = (statusEinfügen[1]) * 2;
-                    z = (statusEinfügen[2]-1) * 2;
+                    y = (statusEinfuegen[1]) * 2;
+                    z = (statusEinfuegen[2]-1) * 2;
                     coord_arr[0] = 2;	//2 = Vorhandenes Einfügen erfolgreich
                     coord_arr[1] = x;
                     coord_arr[2] = y;
@@ -117,31 +152,27 @@ public class LagerverwaltungDaten {
                 	for(ArrayList<String> arr : item_table) {
 	                	if(arr.get(1).equals(Integer.toString(teilenummer))) {	//Vorhandene TN
 	                		teilenummer = generiereTN();
-	                		check = false;
 	                		break;
 	                	}
-	                	else check = true;	//Neue TN
 	                }
-                	if(check == true) {
-            		}
                 }
-                statusEinfügen = i.einfuegenNeu(name, teilenummer, größe);
-                    if (statusEinfügen[0]==1) {	//Einfügen erfolgreich
+                statusEinfuegen = i.einfuegenNeu(name, teilenummer, groesse);
+                    if (statusEinfuegen[0]==1) {	//Einfügen erfolgreich
                         ArrayList<String> temp_arr = new ArrayList<String>();
                         temp_arr.add(name);
                         temp_arr.add(Integer.toString(teilenummer));
-                        temp_arr.add(Integer.toString(größe));
+                        temp_arr.add(Integer.toString(groesse));
                         temp_arr.add(Integer.toString(1));
                         xk = i.getRegalnummer();
-                        yk = statusEinfügen[1];
-                        zk = statusEinfügen[2];
+                        yk = statusEinfuegen[1];
+                        zk = statusEinfuegen[2];
                         temp_arr.add(Integer.toString(xk));
                         temp_arr.add(Integer.toString(yk));
                         temp_arr.add(Integer.toString(zk));
                         item_table.add(temp_arr);
                         x = 2 + (i.getRegalnummer()-1) * 4;
-                        y = (statusEinfügen[1]) * 2;
-                        z = (statusEinfügen[2]-1) * 2;
+                        y = (statusEinfuegen[1]) * 2;
+                        z = (statusEinfuegen[2]-1) * 2;
                         coord_arr[0] = 3;	//3 = Neues Einfügen erfolgreich
                         coord_arr[1] = x;
                         coord_arr[2] = y;
@@ -150,14 +181,14 @@ public class LagerverwaltungDaten {
                     }
                     
             }
-            if (statusEinfügen[0]==0) {
+            if (statusEinfuegen[0]==0) {
                 coord_arr[0] = 1;	//1 = Einfügen nicht erfolgreich, da Lager voll
                 for (int i = 1; i < coord_arr.length; i++) {
                 	coord_arr[i] = 0;
                 }
             }
         }
-        else if (statusSuche && (statusEinfügen[0]==0)) {
+        else if (statusSuche && (statusEinfuegen[0]==0)) {
             for (int i = 0; i < coord_arr.length; i++) {
             	coord_arr[i] = 0;	//0 = Einfügen nicht erfolgreich, da Fach voll
             }
@@ -165,6 +196,11 @@ public class LagerverwaltungDaten {
         return coord_arr;
     }
 
+    /**
+	 * Erzeugt eine zufällige Teilenummer von 1 bis 999.999.999, die noch nicht im Lager enthalten ist.
+	 * 
+	 * @return int: neue Teilenummer
+	 */
 	private int generiereTN() {
     	Random random = new Random();
     	int tn = 0;
@@ -186,7 +222,7 @@ public class LagerverwaltungDaten {
 	}
 	
 	/**
-	 * Name oder Teilenummer, welches vom Nutzer eingegeben wird, wird auf Existens geprüft und falls vorhanden aus dem 
+	 * Name oder Teilenummer, welches vom Nutzer eingegeben wird, wird auf Existenz geprüft und falls vorhanden aus dem 
 	 * Lager entfernt, wobei unterschieden wird, ob vom Nutzer Bezeichnung oder Teilenummer eingegeben wurden, weiterhin
 	 * wird der Weg in x-, y- und z-Richtung berechnet und anschließend zurückgegeben
 	 * 
@@ -310,7 +346,7 @@ public class LagerverwaltungDaten {
     }
     
     /**
-     * geht das gesamte Lager, also alle Regale, nacheinander durch, um davon die Anzahl der freien Fächer aufzusummieren
+     * Geht das gesamte Lager, also alle Regale, nacheinander durch, um davon die Anzahl der freien Fächer aufzusummieren
      * 
      * @see freieFaecher
      * 
@@ -325,7 +361,7 @@ public class LagerverwaltungDaten {
     }
     
     /**
-     * Ermittelt die belegte Grundeinheiten
+     * Ermittelt die belegten Grundeinheiten
      * maximal 8000, da 800 Fächer * 10 Grundeinheiten
      * 
      * @return int: übergibt die ermittelte Zahl
