@@ -165,6 +165,19 @@ public class Regal {
 
     }
 
+    /**
+	 * Lagert das Item in das vorgegebene Fach ein.
+	 * 
+	 * @see getSpalte
+	 * @see getZeile
+	 * @see addItem
+	 * 
+	 * @param name: Name des Items
+	 * @param tn: 	Teilenummer des Items
+	 * @param gr:	Größe des Items in Grundeinheiten
+	 * @param y:	Fachspalte
+	 * @param z:	Fachreihe
+	 */
     public void einfuegenLaden(String name, int tn, int gr, int y, int z) {
     	for (ArrayList<Fach> i: regal) {
             for (Fach j: i) {
