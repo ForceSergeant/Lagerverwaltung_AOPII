@@ -161,7 +161,7 @@ public class LagerverwaltungGUI extends JFrame{
 		oeffnenItem.addActionListener(e -> {
 			try {
 				actionlistener.oeffnen(this);
-			} catch (IOException e1) {
+			} catch (IOException ex) {
 				JOptionPane.showMessageDialog(null, "Es kam beim Öffnen der Datei zu einem Fehler, "
 						+ "veruschen Sie es erneut oder laden sie eine andere Datei.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -178,7 +178,7 @@ public class LagerverwaltungGUI extends JFrame{
 		oeffnenbtn.addActionListener(e -> {
 			try {
 				actionlistener.oeffnen(this);
-			} catch (IOException e2) {
+			} catch (IOException exc) {
 				JOptionPane.showMessageDialog(null, "Es kam beim Öffnen der Datei zu einem Fehler, "
 						+ "veruschen Sie es erneut oder laden sie eine andere Datei.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -212,7 +212,9 @@ public class LagerverwaltungGUI extends JFrame{
 		try {
 			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Beim Öffnen des Bildes für das rechte Panel kam es zu einem Fehler, "
+					+ "gehen Sie sicher, dass sich das Bild lager.jpg im Ordner img unter Lagerverwaltung_AOPII befindet",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 		rightpanel.setImage(image);
 		

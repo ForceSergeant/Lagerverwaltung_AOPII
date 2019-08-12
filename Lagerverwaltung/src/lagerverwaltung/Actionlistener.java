@@ -142,7 +142,8 @@ public class Actionlistener {
 		                try {
 							writer.close();
 						} catch (IOException e) {
-							e.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Beim Schließen des BufferedWriter kam es zu einem unerwarteten Fehler.",
+									"Fehler", JOptionPane.ERROR_MESSAGE);
 						}
 		            }
 				}       
@@ -769,7 +770,9 @@ public class Actionlistener {
 		try {
 			image = ImageIO.read(new File("../Lagerverwaltung_AOPII/img/lager.jpg"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Beim Öffnen des Bildes für das rechte Panel kam es zu einem Fehler, "
+					+ "gehen Sie sicher, dass sich das Bild lager.jpg im Ordner img unter Lagerverwaltung_AOPII befindet",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 		rightpanel.setImage(image);
 	}
